@@ -29,7 +29,7 @@ BUILD_PATHS = $(PATHB) $(PATHD) $(PATHO) $(PATHR)
 SRCT = $(wildcard $(PATHT)*.c)
 
 COMPILE=gcc -c
-LINK=gcc -lcurl
+LINK=gcc
 DEPEND=gcc -MM -MG -MF
 CFLAGS=-I. -I$(PATHU) -I$(PATHS) -DTEST
 
@@ -52,7 +52,7 @@ $(PATHR)%.txt: $(PATHB)%.$(TARGET_EXTENSION)
 	-./$< > $@ 2>&1
 
 $(PATHB)test-%.$(TARGET_EXTENSION): $(PATHO)test-%.o $(PATHO)%.o $(PATHO)unity.o 
-	$(LINK) -o $@ $^
+	$(LINK) -o $@ $^ -lcurl
 
 $(PATHO)%.o:: $(PATHT)%.c
 	$(COMPILE) $(CFLAGS) $< -o $@
