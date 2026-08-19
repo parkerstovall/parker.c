@@ -23,7 +23,7 @@ SRC = $(wildcard $(PATHS)*.c)
 OBJ = $(PATHO)main.o $(PATHO)parser.o
 
 COMPILE = gcc -c
-LINK = gcc
+LINK = gcc -Werror
 
 main: $(PATHB)main.$(TARGET_EXTENSION)
 
