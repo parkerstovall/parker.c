@@ -29,11 +29,11 @@ BUILD_PATHS = $(PATHB) $(PATHD) $(PATHO) $(PATHR)
 SRCT = $(wildcard $(PATHT)*.c)
 
 COMPILE=gcc -c
-LINK=gcc -lcurl
+LINK=gcc
 DEPEND=gcc -MM -MG -MF
 CFLAGS=-I. -I$(PATHU) -I$(PATHS) -DTEST
 
-RESULTS = $(patsubst $(PATHT)Test%.c,$(PATHR)Test%.txt,$(SRCT) )
+RESULTS = $(patsubst $(PATHT)test-%.c,$(PATHR)test-%.txt,$(SRCT) )
 
 PASSED = `grep -s PASS $(PATHR)*.txt`
 FAIL = `grep -s FAIL $(PATHR)*.txt`
@@ -47,12 +47,13 @@ test: $(BUILD_PATHS) $(RESULTS)
 	@echo "-----------------------\nPASSED:\n-----------------------"
 	@echo "$(PASSED)"
 	@echo "\nDONE"
+	@! grep -srq FAIL $(PATHR)*.txt
 
 $(PATHR)%.txt: $(PATHB)%.$(TARGET_EXTENSION)
 	-./$< > $@ 2>&1
 
-$(PATHB)Test%.$(TARGET_EXTENSION): $(PATHO)Test%.o $(PATHO)%.o $(PATHO)unity.o #$(PATHD)Test%.d
-	$(LINK) -o $@ $^
+$(PATHB)test-%.$(TARGET_EXTENSION): $(PATHO)test-%.o $(PATHO)%.o $(PATHO)unity.o 
+	$(LINK) -o $@ $^ -lcurl
 
 $(PATHO)%.o:: $(PATHT)%.c
 	$(COMPILE) $(CFLAGS) $< -o $@
@@ -83,7 +84,7 @@ clean:
 	$(CLEANUP) $(PATHB)*.$(TARGET_EXTENSION)
 	$(CLEANUP) $(PATHR)*.txt
 
-.PRECIOUS: $(PATHB)Test%.$(TARGET_EXTENSION)
+.PRECIOUS: $(PATHB)test-%.$(TARGET_EXTENSION)
 .PRECIOUS: $(PATHD)%.d
 .PRECIOUS: $(PATHO)%.o
 .PRECIOUS: $(PATHR)%.txt

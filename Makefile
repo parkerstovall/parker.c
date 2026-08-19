@@ -20,17 +20,17 @@ PATHB = build/
 PATHO = build/objs/
 
 SRC = $(wildcard $(PATHS)*.c)
-OBJ = $(PATHO)Main.o $(PATHO)Parser.o
+OBJ = $(PATHO)main.o $(PATHO)parser.o
 
 COMPILE = gcc -c
-LINK = gcc
+LINK = gcc -Werror
 
-main: $(PATHB)Main.$(TARGET_EXTENSION)
+main: $(PATHB)main.$(TARGET_EXTENSION)
 
 run: main
-	$(PATHB)Main.$(TARGET_EXTENSION)
+	$(PATHB)main.$(TARGET_EXTENSION)
 
-$(PATHB)Main.$(TARGET_EXTENSION): $(OBJ) | $(PATHB)
+$(PATHB)main.$(TARGET_EXTENSION): $(OBJ) | $(PATHB)
 	$(LINK) -o $@ $^ -lcurl
 
 $(PATHO)%.o: $(PATHS)%.c | $(PATHO)
