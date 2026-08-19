@@ -1,0 +1,28 @@
+name: Build and Test
+
+on: 
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Build main
+        run: make
+
+      - name: Run Tests
+        run: | 
+          make -f makefiles/RunTests.mk | grep ":FAIL:";
+
+          if [[ $? -eq 1 ]]; then
+              echo "::notice::Tests Passed!";
+              exit 0;
+          else 
+              echo "::error::Tests Failed...";
+              exit 1;
+          fi
