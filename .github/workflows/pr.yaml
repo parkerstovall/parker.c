@@ -26,4 +26,5 @@ jobs:
           make -f makefiles/RunTests.mk | grep ":FAIL:"
           if [[ $? -eq 0 ]]; then
             echo "::error::Tests Failed"
+            exit 1
           fi
