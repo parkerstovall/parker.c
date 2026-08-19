@@ -22,12 +22,13 @@ jobs:
           make
 
       - name: Run Tests
+        shell: /usr/bin/bash {0}
         run: | 
           make -f makefiles/RunTests.mk
           if [[ $? -eq 0 ]]; then
             echo "::error::Tests Failed"
             exit 1
-          else
-            echo "::notice::Tests Passed"
-            exit 0
           fi
+
+          echo "::notice::Tests Passed"
+          exit 0
