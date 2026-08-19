@@ -23,7 +23,7 @@ jobs:
 
       - name: Run Tests
         run: | 
-          make -f makefiles/RunTests.mk | grep ":FAIL:"
+          make -f makefiles/RunTests.mk
           if [[ $? -eq 0 ]]; then
             echo "::error::Tests Failed"
             exit 1
