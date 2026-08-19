@@ -1,5 +1,5 @@
 #include "../libs/unity/unity.h"
-#include "../src/Parser.h"
+#include "../src/parser.h"
 #include <string.h>
 
 void setUp() {}    // Nothing to do yet
