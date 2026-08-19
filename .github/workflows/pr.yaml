@@ -24,3 +24,6 @@ jobs:
       - name: Run Tests
         run: | 
           make -f makefiles/RunTests.mk
+          if [[ $? -eq 1 ]]; then
+            echo "::error::Tests Failed"
+          fi
