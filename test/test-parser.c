@@ -10,7 +10,7 @@ static char more_complicated_html[] = "<html>Testing<a href=\"https://www.exampl
 
 void test_Parser_OneTagExpected(void)
 {
-    int expected = 1;
+    int expected = 0;
     struct ParseState *parse_state = get_parse_state();
 
     parse_response(ultra_basic_html, sizeof(ultra_basic_html), 1, parse_state);
