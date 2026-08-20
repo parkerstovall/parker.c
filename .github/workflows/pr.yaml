@@ -12,10 +12,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v6
 
-      - name: Install libcurl development headers
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev
+      - name: Install libcurl
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libcurl4-openssl-dev
+          version: 1.0
 
       - name: Build main
         run: |
