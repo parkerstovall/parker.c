@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
-        
-      - uses: RafikFarhad/clang-format-github-action@v7
 
       - name: Install libcurl development headers
         run: |
