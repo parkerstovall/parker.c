@@ -76,6 +76,12 @@ main: $(PATHB)main.$(TARGET_EXTENSION)
 run: main
 	./$(PATHB)main.$(TARGET_EXTENSION)
 
+fails: | $(BUILD_PATHS)
+fails: $(RESULTS)
+	@echo "-----------------------\nFAILURES:\n-----------------------"
+	@echo "$(FAIL)"
+	@echo "\nDONE"
+
 test: | $(BUILD_PATHS)
 test: $(RESULTS)
 	@echo "-----------------------\nIGNORES:\n-----------------------"
