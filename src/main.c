@@ -1,4 +1,5 @@
-#include "parser.h"
+#include "parser/parser.h"
+#include "parser/parser-structs.h"
 
 int main(int argc, char *argv[])
 {
@@ -8,7 +9,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    struct HtmlDoc *html_doc = parse_html("https://www.example.com");
+    HtmlDoc *html_doc = parse_html("https://www.example.com");
     // struct HtmlDoc *html_doc = parse_html("https://parkerstovall.com");
     if (html_doc == NULL)
     {
