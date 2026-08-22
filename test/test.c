@@ -1,5 +1,6 @@
-#include "test-parser.h"
 #include <string.h>
+#include "test-parser.h"
+#include "test-stack.h"
 #include "../libs/unity/unity.h"
 
 void setUp() {}    // Nothing to do yet
@@ -10,6 +11,7 @@ int main(void)
     UNITY_BEGIN();
 
     run_parser_tests();
+    run_stack_tests();
 
     return UNITY_END();
 }

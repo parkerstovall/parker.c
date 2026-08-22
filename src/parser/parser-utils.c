@@ -1,6 +1,7 @@
 #include "parser-structs.h"
 #include <errno.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void free_html_doc(HtmlDoc *html_doc)
 {
@@ -94,8 +95,31 @@ int handle_attribute(ParseState *parse_state)
     }
 
     tag = tmpTag;
+    if (tag->attributeCount == 0)
+    {
+        tag->attributes = malloc(sizeof(HtmlAttribute *));
+        if (!tag->attributes)
+        {
+            printf("Error Code: %d\n", errno);
+            perror("tag->attributes");
+            return errno;
+        }
+    }
+    else
+    {
+        HtmlAttribute **tmpAttributes = realloc(tag->attributes, sizeof(HtmlAttribute *) * (tag->attributeCount + 1));
+        if (!tmpAttributes)
+        {
+            printf("Error Code: %d\n", errno);
+            perror("*tmpAttributes");
+            return errno;
+        }
+
+        tag->attributes = tmpAttributes;
+    }
+
     parse_state->html_doc->htmlTags[parse_state->tag_count] = tag;
-    tag->attributes[parse_state->attribute_count] = malloc(sizeof(HtmlAttribute));
+    tag->attributes[parse_state->attribute_count] = malloc(sizeof(HtmlAttribute *));
     if (tag->attributes[parse_state->attribute_count] == NULL)
     {
         printf("Error Code: %d\n", errno);

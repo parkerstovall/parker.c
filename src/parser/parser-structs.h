@@ -15,7 +15,8 @@ typedef struct HtmlTag
     int tagCount;
     int attributeCount;
     char *tagName;
-    HtmlAttribute *attributes[];
+    HtmlAttribute **attributes;
+    struct HtmlTag **nestedTags;
 } HtmlTag;
 
 typedef struct HtmlDoc

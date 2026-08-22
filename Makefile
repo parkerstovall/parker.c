@@ -103,6 +103,8 @@ test: $(RESULTS)
 	@echo "\nDONE"
 	@! grep -srq FAIL $(PATHR)*.txt
 
+test-norun: $(PATHB)test.$(TARGET_EXTENSION)
+
 # Run a compiled test binary and capture its output as the result file.
 $(PATHR)%.txt: $(PATHB)%.$(TARGET_EXTENSION) | $(PATHR)
 	-./$< > $@ 2>&1
