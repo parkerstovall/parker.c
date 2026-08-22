@@ -26,8 +26,8 @@ int main(int argc, char *argv[])
             continue;
         }
 
-        printf("Tag Found: %s, with %d attributes.\n", html_doc->htmlTags[i]->tagName, html_doc->htmlTags[i]->size);
-        for (int j = 0; j < html_doc->htmlTags[i]->size; j++)
+        printf("Tag Found: %s, with %d attributes.\n", html_doc->htmlTags[i]->tagName, html_doc->htmlTags[i]->attributeCount);
+        for (int j = 0; j < html_doc->htmlTags[i]->attributeCount; j++)
         {
             printf("\tAttribute Found: %s=\"%s\"\n", html_doc->htmlTags[i]->attributes[j]->attributeName, html_doc->htmlTags[i]->attributes[j]->attributeValue);
         }

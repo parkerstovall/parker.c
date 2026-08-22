@@ -48,7 +48,7 @@ void test_Parser_FindsOneAttribute(void)
     ParseState *parse_state = get_parse_state();
 
     parse_response(more_complicated_html, sizeof(more_complicated_html), 1, parse_state);
-    TEST_ASSERT_EQUAL_INT(expected, parse_state->html_doc->htmlTags[1]->size);
+    TEST_ASSERT_EQUAL_INT(expected, parse_state->html_doc->htmlTags[1]->attributeCount);
 }
 
 void test_Parser_AttributeNameIsCorrect(void)
@@ -75,7 +75,7 @@ void test_Parser_FindsTwoAttributes(void)
     ParseState *parse_state = get_parse_state();
 
     parse_response(more_complicated_html, sizeof(more_complicated_html), 1, parse_state);
-    TEST_ASSERT_EQUAL_INT(expected, parse_state->html_doc->htmlTags[2]->size);
+    TEST_ASSERT_EQUAL_INT(expected, parse_state->html_doc->htmlTags[2]->attributeCount);
 }
 
 void test_Parser_FirstAttributeNameIsCorrectForSecondTag(void)

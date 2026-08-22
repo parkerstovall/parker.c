@@ -4,37 +4,38 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-typedef struct
+typedef struct HtmlAttribute
 {
     char *attributeName;
     char *attributeValue;
 } HtmlAttribute;
 
-typedef struct
+typedef struct HtmlTag
 {
-    int size;
+    int tagCount;
+    int attributeCount;
     char *tagName;
     HtmlAttribute *attributes[];
 } HtmlTag;
 
-typedef struct
+typedef struct HtmlDoc
 {
     int size;
     HtmlTag *htmlTags[];
 } HtmlDoc;
 
-typedef struct
+typedef struct ParseState
 {
     bool in_tag;
     bool tag_added;
     bool attribute_name_added;
     bool just_opened_tag;
+    size_t max_size;
     int current_index;
     int tag_count;
     int attribute_count;
     HtmlDoc *html_doc;
     char *current_item;
-    size_t max_size;
 } ParseState;
 
 #endif // PARSER_STRUCTS_C_

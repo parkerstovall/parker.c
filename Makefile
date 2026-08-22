@@ -25,7 +25,7 @@ else
   TARGET_EXTENSION = out
 endif
 
-.PHONY: clean run test main
+.PHONY: clean run test main fresh
 
 PATHU = libs/unity/
 PATHS = src/
@@ -152,6 +152,11 @@ $(PATHR):
 
 clean:
 	$(CLEANUP_DIR) $(PATHB)
+
+fresh: 
+	$(MAKE) clean
+	$(MAKE) main
+	./$(PATHB)main.$(TARGET_EXTENSION)
 
 .PRECIOUS: $(PATHD)%.d
 .PRECIOUS: $(PATHO)%.o

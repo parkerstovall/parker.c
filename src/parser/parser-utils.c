@@ -17,7 +17,7 @@ void free_html_doc(HtmlDoc *html_doc)
             continue;
         }
 
-        for (int j = 0; j < tag->size; j++)
+        for (int j = 0; j < tag->attributeCount; j++)
         {
             HtmlAttribute *attr = tag->attributes[j];
             free(attr->attributeName);
@@ -118,7 +118,7 @@ int handle_attribute(ParseState *parse_state)
     }
 
     attr->attributeName[parse_state->current_index] = '\0';
-    tag->size++;
+    tag->attributeCount++;
     parse_state->current_index = 0;
     parse_state->attribute_name_added = true;
 
@@ -149,7 +149,7 @@ int handle_item_break(ParseState *parse_state)
         return errno;
     }
 
-    tag->size = 0;
+    tag->attributeCount = 0;
     parse_state->html_doc->htmlTags[parse_state->tag_count] = tag;
     tag->tagName = malloc(parse_state->current_index + 1);
     if (tag->tagName == NULL)
