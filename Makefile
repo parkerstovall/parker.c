@@ -61,7 +61,11 @@ TEST_OBJ = $(patsubst $(PATHT)test-%.c,$(PATHO)test-%.o,$(SRCT))
 COMPILE = gcc -c
 LINK    = gcc -Wall -Werror
 DEPEND  = gcc -MM -MG
-CFLAGS  = -I. -I$(PATHU) -I$(PATHS) -DTEST
+CFLAGS  = -I. -I$(PATHU) -I$(PATHS)
+
+RELEASE_FLAGS = -O2 -DNDEBUG
+TEST_FLAGS = -DTEST
+DEBUG_FLAGS = -g -O0 -DDEBUG
 
 # A single combined test binary, so a single result/log file.
 RESULTS = $(PATHR)test.txt
@@ -71,17 +75,23 @@ PASSED = `grep -s PASS $(PATHR)*.txt`
 FAIL   = `grep -s FAIL $(PATHR)*.txt`
 IGNORE = `grep -s IGNORE $(PATHR)*.txt`
 
+main: CFLAGS += $(RELEASE_FLAGS)
 main: $(PATHB)main.$(TARGET_EXTENSION)
+
+debug: CFLAGS += $(DEBUG_FLAGS)
+debug: main
 
 run: main
 	./$(PATHB)main.$(TARGET_EXTENSION)
 
+fails: CFLAGS += $(TEST_FLAGS)
 fails: | $(BUILD_PATHS)
 fails: $(RESULTS)
 	@echo "-----------------------\nFAILURES:\n-----------------------"
 	@echo "$(FAIL)"
 	@echo "\nDONE"
 
+test: CFLAGS += $(TEST_FLAGS)
 test: | $(BUILD_PATHS)
 test: $(RESULTS)
 	@echo "-----------------------\nIGNORES:\n-----------------------"
