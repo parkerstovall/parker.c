@@ -61,7 +61,13 @@ TEST_OBJ = $(patsubst $(PATHT)test-%.c,$(PATHO)test-%.o,$(SRCT))
 COMPILE = gcc -c
 LINK    = gcc -Wall -Werror
 DEPEND  = gcc -MM -MG
-CFLAGS  = -I. -I$(PATHU) -I$(PATHS) -DTEST
+
+# Plain flags for src/ objects — these get linked into the real
+# production binary, so they must NOT define TEST. TEST_CFLAGS is a
+# separate set used only for test.o, test-%.o, and unity.o, so
+# -DTEST never leaks into main.$(TARGET_EXTENSION).
+CFLAGS      = -I. -I$(PATHU) -I$(PATHS)
+TEST_CFLAGS = $(CFLAGS) -DTEST
 
 # A single combined test binary, so a single result/log file.
 RESULTS = $(PATHR)test.txt
@@ -110,6 +116,8 @@ $(PATHB)test.$(TARGET_EXTENSION): $(PATHO)test.o $(TEST_OBJ) $(OBJ_NO_MAIN) $(PA
 
 # Compiles any .c under src/, including nested subdirectories, into a
 # matching object path (src/parser/parser.c -> build/objs/parser/parser.o).
+# Uses plain CFLAGS (no -DTEST) since these objects are shared with the
+# production binary.
 # $(PATHO) alone (the order-only prereq) only guarantees the top-level
 # build/objs/ exists, not build/objs/parser/, so mkdir -p that too.
 $(PATHO)%.o: $(PATHS)%.c | $(PATHO)
@@ -120,21 +128,21 @@ $(PATHO)%.o: $(PATHS)%.c | $(PATHO)
 # from each test-*.c). An explicit (non-%) rule always takes precedence
 # over a pattern rule, so this can't collide with the %.o rule above.
 $(PATHO)test.o: $(PATHT)test.c | $(PATHO)
-	$(COMPILE) $(CFLAGS) $< -o $@
+	$(COMPILE) $(TEST_CFLAGS) $< -o $@
 
 # Compile test-*.c files (the test_* function definitions themselves).
 $(PATHO)test-%.o: $(PATHT)test-%.c | $(PATHO)
-	$(COMPILE) $(CFLAGS) $< -o $@
+	$(COMPILE) $(TEST_CFLAGS) $< -o $@
 
 # Compile Unity itself.
 $(PATHO)unity.o: $(PATHU)unity.c | $(PATHO)
-	$(COMPILE) $(CFLAGS) $< -o $@
+	$(COMPILE) $(TEST_CFLAGS) $< -o $@
 
 # Auto-generated header dependencies for everything under test/, so
 # editing a header triggers a rebuild of test.o and/or the affected
 # test-*.o.
 $(PATHD)%.d: $(PATHT)%.c | $(PATHD)
-	$(DEPEND) -MT $(PATHO)$*.o -MF $@ $(CFLAGS) $<
+	$(DEPEND) -MT $(PATHO)$*.o -MF $@ $(TEST_CFLAGS) $<
 
 -include $(DEPS)
 
