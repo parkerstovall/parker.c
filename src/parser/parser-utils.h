@@ -3,7 +3,9 @@
 
 #include "parser-structs.h"
 
-void freeParseState(ParseState *parseState, bool freeDoc);
+void freeHtmlTag(HtmlTag *htmlTag);
+
+void freeParseState(ParseState *parseState, bool freeTag);
 
 int handleAttributeValue(ParseState *parseState);
 

@@ -1,9 +1,33 @@
 #include <curl/curl.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 #include "parser-structs.h"
 #include "parser-utils.h"
 #include "../utils/stack.h"
+
+static bool tagNameNeedsClosingTag(const char *tagName)
+{
+    if (tagName == NULL)
+    {
+        return true;
+    }
+
+    static const char *voidTags[] = {
+        "area", "base", "br", "col", "embed", "hr", "img",
+        "input", "link", "meta", "param", "source", "track", "wbr"};
+    size_t count = sizeof(voidTags) / sizeof(voidTags[0]);
+
+    for (size_t i = 0; i < count; i++)
+    {
+        if (strcasecmp(voidTags[i], tagName) == 0)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
 {
@@ -71,6 +95,12 @@ size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
         }
         else if (parseState->inTag && c == '>')
         {
+            HtmlTag *currentTag = peekStack(parseState->htmlTags);
+            if (!tagNameNeedsClosingTag(currentTag->tagName))
+            {
+                popStack(parseState->htmlTags, true);
+            }
+
             if (parseState->currentIndex > 0)
             {
                 if (!parseState->tagAdded)
