@@ -12,15 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v6
 
-      - name: Install libcurl
-        uses: awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: libcurl4-openssl-dev
-          version: 1.0-libcurl
-        continue-on-error: true
-
       - name: Install libcurl (retry via apt-get)
-        if: failure()
         run: sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev
 
       - name: Build main
