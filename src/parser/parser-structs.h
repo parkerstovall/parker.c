@@ -3,38 +3,35 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "../utils/stack.h"
 
-typedef struct
+typedef struct HtmlAttribute
 {
     char *attributeName;
     char *attributeValue;
 } HtmlAttribute;
 
-typedef struct
+typedef struct HtmlTag
 {
-    int size;
+    int tagCount;
+    int attributeCount;
     char *tagName;
-    HtmlAttribute *attributes[];
+    HtmlAttribute **attributes;
+    struct HtmlTag **children;
 } HtmlTag;
 
-typedef struct
+typedef struct ParseState
 {
-    int size;
-    HtmlTag *htmlTags[];
-} HtmlDoc;
-
-typedef struct
-{
-    bool in_tag;
-    bool tag_added;
-    bool attribute_name_added;
-    bool just_opened_tag;
-    int current_index;
-    int tag_count;
-    int attribute_count;
-    HtmlDoc *html_doc;
-    char *current_item;
-    size_t max_size;
+    bool inTag;
+    bool tagAdded;
+    bool attributeNameAdded;
+    size_t maxSize;
+    int currentIndex;
+    int tagCount;
+    int attributeCount;
+    Stack *htmlTags;
+    char lastChar;
+    char *currentItem;
 } ParseState;
 
 #endif // PARSER_STRUCTS_C_

@@ -1,65 +1,73 @@
 #include "parser-structs.h"
 #include <errno.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-void free_html_doc(HtmlDoc *html_doc)
+void freeHtmlTag(HtmlTag *htmlTag)
 {
-    if (!html_doc)
+    if (!htmlTag)
     {
         return;
     }
 
-    for (int i = 0; i < html_doc->size; i++)
+    for (int i = 0; i < htmlTag->tagCount; i++)
     {
-        HtmlTag *tag = html_doc->htmlTags[i];
+        HtmlTag *tag = htmlTag->children[i];
         if (!tag)
         {
             continue;
         }
 
-        for (int j = 0; j < tag->size; j++)
-        {
-            HtmlAttribute *attr = tag->attributes[j];
-            free(attr->attributeName);
-            if (attr->attributeValue)
-            {
-                free(attr->attributeValue);
-            }
-
-            free(attr);
-        }
-
-        free(tag->tagName);
-        free(tag);
+        freeHtmlTag(tag);
     }
 
-    free(html_doc);
+    for (int i = 0; i < htmlTag->attributeCount; i++)
+    {
+        if (!htmlTag->attributes[i]->attributeName)
+        {
+            free(htmlTag->attributes[i]->attributeName);
+        }
+
+        if (htmlTag->attributes[i]->attributeValue)
+        {
+            free(htmlTag->attributes[i]->attributeValue);
+        }
+    }
+
+    if (htmlTag->tagName)
+    {
+        free(htmlTag->tagName);
+    }
+
+    free(htmlTag);
 }
 
-void free_parse_state(ParseState *parse_state, bool freeDoc)
+void freeParseState(ParseState *parseState, bool freeTags)
 {
-    if (!parse_state)
+    if (!parseState)
     {
         return;
     }
 
-    if (freeDoc)
+    if (freeTags)
     {
-        free_html_doc(parse_state->html_doc);
+        freeStackAndItems(parseState->htmlTags);
     }
 
-    if (parse_state->current_item)
+    if (parseState->currentItem)
     {
-        free(parse_state->current_item);
+        free(parseState->currentItem);
     }
 
-    free(parse_state);
+    free(parseState);
 }
 
-int handle_attribute_value(ParseState *parse_state)
+int handleAttributeValue(ParseState *parseState)
 {
-    HtmlAttribute *attr = parse_state->html_doc->htmlTags[parse_state->tag_count]->attributes[parse_state->attribute_count];
-    attr->attributeValue = malloc(parse_state->current_index + 1);
+    HtmlTag *tag = peekStack(parseState->htmlTags);
+    HtmlAttribute *attr = tag->attributes[parseState->attributeCount];
+
+    attr->attributeValue = malloc(parseState->currentIndex + 1);
     if (attr->attributeValue == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -67,44 +75,55 @@ int handle_attribute_value(ParseState *parse_state)
         return errno;
     }
 
-    for (int j = 0; j < parse_state->current_index; j++)
+    for (int j = 0; j < parseState->currentIndex; j++)
     {
-        attr->attributeValue[j] = parse_state->current_item[j];
+        attr->attributeValue[j] = parseState->currentItem[j];
     }
 
-    attr->attributeValue[parse_state->current_index] = '\0';
-    parse_state->current_index = 0;
-    parse_state->attribute_name_added = false;
-    parse_state->attribute_count++;
+    attr->attributeValue[parseState->currentIndex] = '\0';
+    parseState->currentIndex = 0;
+    parseState->attributeNameAdded = false;
+    parseState->attributeCount++;
 
     return 0;
 }
 
-int handle_attribute(ParseState *parse_state)
+int handleNewAttribute(ParseState *parseState)
 {
-    // NEW WAY WITH STRUCT
-    size_t new_tag_size = sizeof(HtmlTag) + ((parse_state->attribute_count + 1) * sizeof(HtmlAttribute *));
-    HtmlTag *tag = parse_state->html_doc->htmlTags[parse_state->tag_count];
-    HtmlTag *tmpTag = realloc(tag, new_tag_size);
-    if (!tmpTag)
+    HtmlTag *tag = peekStack(parseState->htmlTags);
+    if (tag->attributeCount == 0)
     {
-        printf("Error Code: %d\n", errno);
-        perror("*tmpTag");
-        return errno;
+        tag->attributes = malloc(sizeof(HtmlAttribute *));
+        if (!tag->attributes)
+        {
+            printf("Error Code: %d\n", errno);
+            perror("tag->attributes");
+            return errno;
+        }
+    }
+    else
+    {
+        HtmlAttribute **tmpAttributes = realloc(tag->attributes, sizeof(HtmlAttribute *) * (tag->attributeCount + 1));
+        if (!tmpAttributes)
+        {
+            printf("Error Code: %d\n", errno);
+            perror("*tmpAttributes");
+            return errno;
+        }
+
+        tag->attributes = tmpAttributes;
     }
 
-    tag = tmpTag;
-    parse_state->html_doc->htmlTags[parse_state->tag_count] = tag;
-    tag->attributes[parse_state->attribute_count] = malloc(sizeof(HtmlAttribute));
-    if (tag->attributes[parse_state->attribute_count] == NULL)
+    tag->attributes[parseState->attributeCount] = malloc(sizeof(HtmlAttribute));
+    if (tag->attributes[parseState->attributeCount] == NULL)
     {
         printf("Error Code: %d\n", errno);
         perror("htmlAttribute");
         return errno;
     }
 
-    HtmlAttribute *attr = tag->attributes[parse_state->attribute_count];
-    attr->attributeName = malloc(parse_state->current_index + 1);
+    HtmlAttribute *attr = tag->attributes[parseState->attributeCount];
+    attr->attributeName = malloc(parseState->currentIndex + 1);
     if (attr->attributeName == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -112,36 +131,23 @@ int handle_attribute(ParseState *parse_state)
         return errno;
     }
 
-    for (int j = 0; j < parse_state->current_index; j++)
+    for (int j = 0; j < parseState->currentIndex; j++)
     {
-        attr->attributeName[j] = parse_state->current_item[j];
+        attr->attributeName[j] = parseState->currentItem[j];
     }
 
-    attr->attributeName[parse_state->current_index] = '\0';
-    tag->size++;
-    parse_state->current_index = 0;
-    parse_state->attribute_name_added = true;
+    attr->attributeName[parseState->currentIndex] = '\0';
+    attr->attributeValue = NULL;
+    tag->attributeCount++;
+    parseState->currentIndex = 0;
+    parseState->attributeNameAdded = true;
 
     return 0;
 }
 
-int handle_item_break(ParseState *parse_state)
+int handleNewTag(ParseState *parseState)
 {
-    // NEW WAY WITH STRUCT
-    size_t new_doc_size = sizeof(HtmlDoc) + ((parse_state->tag_count + 1) * sizeof(HtmlTag *));
-    HtmlDoc *tmpDoc = realloc(parse_state->html_doc, new_doc_size);
-    if (tmpDoc == NULL)
-    {
-        printf("Error Code: %d\n", errno);
-        perror("*tmpDoc");
-        return errno;
-    }
-
-    parse_state->html_doc = tmpDoc;
-    parse_state->html_doc->size++;
-
-    HtmlTag *tag = parse_state->html_doc->htmlTags[parse_state->tag_count];
-    tag = malloc(sizeof(HtmlTag));
+    HtmlTag *tag = malloc(sizeof(HtmlTag));
     if (tag == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -149,9 +155,39 @@ int handle_item_break(ParseState *parse_state)
         return errno;
     }
 
-    tag->size = 0;
-    parse_state->html_doc->htmlTags[parse_state->tag_count] = tag;
-    tag->tagName = malloc(parse_state->current_index + 1);
+    tag->children = NULL;
+    tag->tagCount = 0;
+
+    HtmlTag *currentTag = peekStack(parseState->htmlTags);
+    if (currentTag->tagCount == 0)
+    {
+        currentTag->children = malloc(sizeof(HtmlTag *));
+        if (!currentTag->children)
+        {
+            printf("Error Code: %d\n", errno);
+            perror("currentTag->children");
+            return errno;
+        }
+    }
+    else
+    {
+        HtmlTag **tmpTags = realloc(currentTag->children, sizeof(HtmlTag *) * (currentTag->tagCount + 1));
+        if (!tmpTags)
+        {
+            printf("Error Code: %d\n", errno);
+            perror("*tmpTags");
+            return errno;
+        }
+
+        currentTag->children = tmpTags;
+    }
+
+    currentTag->children[currentTag->tagCount] = tag;
+    currentTag->tagCount++;
+
+    pushStack(parseState->htmlTags, tag);
+    tag->attributeCount = 0;
+    tag->tagName = malloc(parseState->currentIndex + 1);
     if (tag->tagName == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -159,26 +195,26 @@ int handle_item_break(ParseState *parse_state)
         return errno;
     }
 
-    for (int j = 0; j < parse_state->current_index; j++)
+    for (int j = 0; j < parseState->currentIndex; j++)
     {
-        tag->tagName[j] = parse_state->current_item[j];
+        tag->tagName[j] = parseState->currentItem[j];
     }
 
-    tag->tagName[parse_state->current_index] = '\0';
-    parse_state->attribute_count = 0;
-    parse_state->current_index = 0;
+    tag->tagName[parseState->currentIndex] = '\0';
+    parseState->attributeCount = 0;
+    parseState->currentIndex = 0;
 
     return 0;
 }
 
-int append_char_to_item(ParseState *parse_state, char c)
+int appendCharToItem(ParseState *parseState, char c)
 {
-    size_t new_size = sizeof(char) * parse_state->current_index;
-    if (new_size >= parse_state->max_size)
+    size_t new_size = sizeof(char) * parseState->currentIndex;
+    if (new_size >= parseState->maxSize)
     {
-        new_size = parse_state->max_size * 2;
-        void *tmp = realloc(parse_state->current_item, new_size);
-        parse_state->max_size = new_size;
+        new_size = parseState->maxSize * 2;
+        void *tmp = realloc(parseState->currentItem, new_size);
+        parseState->maxSize = new_size;
         if (!tmp)
         {
             printf("Error Code: %d\n", errno);
@@ -186,10 +222,10 @@ int append_char_to_item(ParseState *parse_state, char c)
             return errno;
         }
 
-        parse_state->current_item = tmp;
+        parseState->currentItem = tmp;
     }
 
-    parse_state->current_item[parse_state->current_index++] = c;
+    parseState->currentItem[parseState->currentIndex++] = c;
 
     return 0;
 }
