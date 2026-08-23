@@ -25,12 +25,12 @@ typedef struct ParseState
     bool inTag;
     bool tagAdded;
     bool attributeNameAdded;
-    bool justOpenedTag;
     size_t maxSize;
     int currentIndex;
     int tagCount;
     int attributeCount;
     Stack *htmlTags;
+    char lastChar;
     char *currentItem;
 } ParseState;
 

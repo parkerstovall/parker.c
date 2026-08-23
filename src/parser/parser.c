@@ -42,7 +42,7 @@ size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
         if (c == '<')
         {
             parseState->inTag = true;
-            parseState->justOpenedTag = true;
+            parseState->lastChar = c;
             continue;
         }
         else if (parseState->tagAdded && c == '=' && !parseState->attributeNameAdded)
@@ -71,9 +71,20 @@ size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
                     return err;
                 }
             }
+            else if (parseState->lastChar == '"')
+            {
+                // Empty Value, doesn't get added, carry on
+                parseState->attributeNameAdded = false;
+            }
         }
         else if (parseState->inTag && (c == ' ' || c == '\n'))
         {
+            if (parseState->currentIndex <= 0)
+            {
+                parseState->lastChar = c;
+                continue;
+            }
+
             if (parseState->attributeNameAdded)
             {
                 int err = handleAttributeValue(parseState);
@@ -92,19 +103,33 @@ size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
 
                 parseState->tagAdded = true;
             }
+            else
+            {
+                int err = handleNewAttribute(parseState);
+                if (err != 0)
+                {
+                    return err;
+                }
+
+                // This branch is hit by a lone attribute with no value
+                parseState->attributeNameAdded = false;
+                parseState->attributeCount++;
+                HtmlTag *currentTag = peekStack(parseState->htmlTags);
+            }
         }
         else if (parseState->inTag && c == '>')
         {
-            HtmlTag *currentTag = peekStack(parseState->htmlTags);
-            if (!tagNameNeedsClosingTag(currentTag->tagName))
-            {
-                popStack(parseState->htmlTags, true);
-            }
-
             if (parseState->currentIndex > 0)
             {
                 if (!parseState->tagAdded)
                 {
+
+                    HtmlTag *currentTag = peekStack(parseState->htmlTags);
+                    if (!tagNameNeedsClosingTag(currentTag->tagName))
+                    {
+                        popStack(parseState->htmlTags, true);
+                    }
+
                     int err = handleNewTag(parseState);
                     if (err != 0)
                     {
@@ -118,17 +143,24 @@ size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
                     {
                         return err;
                     }
+
+                    HtmlTag *currentTag = peekStack(parseState->htmlTags);
+                    if (!tagNameNeedsClosingTag(currentTag->tagName))
+                    {
+                        popStack(parseState->htmlTags, true);
+                    }
                 }
             }
 
             parseState->tagCount++;
             parseState->inTag = false;
             parseState->tagAdded = false;
+            parseState->attributeNameAdded = false;
         }
         // Skip closing tags
         else if (parseState->inTag && (c == '/' || c == '!'))
         {
-            if (parseState->justOpenedTag)
+            if (parseState->lastChar == '<')
             {
                 parseState->inTag = false;
                 parseState->tagAdded = false;
@@ -147,7 +179,7 @@ size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
             }
         }
 
-        parseState->justOpenedTag = false;
+        parseState->lastChar = c;
     }
 
     return realsize;
@@ -175,6 +207,7 @@ ParseState *newParseState()
     parseState->tagCount = 0;
     parseState->inTag = false;
     parseState->tagAdded = false;
+    parseState->lastChar = '\0';
     parseState->maxSize = 8 * sizeof(parseState->currentItem);
     parseState->currentItem = malloc(parseState->maxSize);
 

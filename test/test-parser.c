@@ -23,7 +23,7 @@ static int getTotalTags(HtmlTag *tag)
 void test_Parser_OneTagExpected(void)
 {
     ParseState *parseState = newParseState();
-    parseResponse(ultra_basic_html, sizeof(ultra_basic_html), 1, parseState);
+    parseResponse(ultra_basic_html, strlen(ultra_basic_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_CHAR_ARRAY_MESSAGE("ROOT", tag->tagName, strlen("ROOT"), "base tag name should always be 'root'");
@@ -35,7 +35,7 @@ void test_Parser_OneTagExpected(void)
 void test_Parser_OneHtmlTagExpected(void)
 {
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_CHAR_ARRAY_MESSAGE("ROOT", tag->tagName, strlen("ROOT"), "base tag name should always be 'ROOT'");
@@ -48,7 +48,7 @@ void test_Parser_ThreeTagsExpected(void)
 {
     int expected = 4;
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_INT_MESSAGE(expected, getTotalTags(tag), "Three tags expected, plus ROOT tag");
@@ -58,7 +58,7 @@ void test_Parser_ThreeTagsButLastIsITagExpected(void)
 {
     char expected[] = "i";
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
     HtmlTag *itag = tag->children[0]->children[0]->children[0];
 
@@ -70,7 +70,7 @@ void test_Parser_FindsOneAttribute(void)
 {
     int expected = 1;
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_INT(expected, tag->children[0]->children[0]->attributeCount);
@@ -80,7 +80,7 @@ void test_Parser_AttributeNameIsCorrect(void)
 {
     char expected[] = "href";
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->attributes[0]->attributeName, strlen(expected));
@@ -90,7 +90,7 @@ void test_Parser_AttributeValueIsCorrect(void)
 {
     char expected[] = "https://www.example.com";
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->attributes[0]->attributeValue, strlen(expected));
@@ -100,7 +100,7 @@ void test_Parser_FindsTwoAttributes(void)
 {
     int expected = 2;
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_INT(expected, tag->children[0]->children[0]->children[0]->attributeCount);
@@ -111,7 +111,7 @@ void test_Parser_FirstAttributeNameIsCorrectForSecondTag(void)
     char expected[] = "attr1";
 
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->children[0]->attributes[0]->attributeName, strlen(expected));
@@ -122,7 +122,7 @@ void test_Parser_FirstAttributeValueIsCorrectForSecondTag(void)
     char expected[] = "test1";
 
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->children[0]->attributes[0]->attributeValue, strlen(expected));
@@ -133,7 +133,7 @@ void test_Parser_SecondAttributeNameIsCorrectForSecondTag(void)
     char expected[] = "attr2";
 
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->children[0]->attributes[1]->attributeName, strlen(expected));
@@ -144,10 +144,80 @@ void test_Parser_SecondAttributeValueIsCorrectForSecondTag(void)
     char expected[] = "test2";
 
     ParseState *parseState = newParseState();
-    parseResponse(more_complicated_html, sizeof(more_complicated_html), 1, parseState);
+    parseResponse(more_complicated_html, strlen(more_complicated_html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->children[0]->attributes[1]->attributeValue, strlen(expected));
+}
+
+void test_Parser_DoesNotAddChildrenToMetaTags(void)
+{
+    char *html = "<html><meta><p></p></html>";
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_INT(1, tag->tagCount);
+    TEST_ASSERT_EQUAL_INT(2, tag->children[0]->tagCount);
+}
+
+void test_Parser_DoesNotAddChildrenToMetaTagsCaseInsensitive(void)
+{
+    char *html = "<html><META><p></p></html>";
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_INT(1, tag->tagCount);
+    TEST_ASSERT_EQUAL_INT(2, tag->children[0]->tagCount);
+}
+
+void test_Parser_DoesNotAddChildrenToMetaTagsCaseInsensitiveWithAttributes(void)
+{
+    char *html = "<html><META test=\"123\"><p></p></html>";
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_INT(1, tag->tagCount);
+    TEST_ASSERT_EQUAL_INT(2, tag->children[0]->tagCount);
+}
+
+void test_Parser_DoesNotAddAttributeValueIfNotPresent(void)
+{
+    char *html = "<html><META test><p></p></html>";
+    char *expected = "test";
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_INT(1, tag->children[0]->children[0]->attributeCount);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->attributes[0]->attributeName, strlen(expected));
+    TEST_ASSERT_NULL(tag->children[0]->children[0]->attributes[0]->attributeValue);
+}
+
+void test_Parser_DoesNotAddAttributeValueIfNotPresentMiddleOfTag(void)
+{
+    char *html = "<html><META test attr1=\"value1\"><p></p></html>";
+    char *expected = "test";
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->attributes[0]->attributeName, strlen(expected));
+    TEST_ASSERT_NULL(tag->children[0]->children[0]->attributes[0]->attributeValue);
+}
+
+void test_Parser_DoesNotAddAttributeValueIfEmpty(void)
+{
+    char *html = "<html><META test=\"\"><p></p></html>";
+    char *expected = "test";
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->attributes[0]->attributeName, strlen(expected));
+    TEST_ASSERT_NULL(tag->children[0]->children[0]->attributes[0]->attributeValue);
 }
 
 void run_parser_tests()
@@ -164,4 +234,10 @@ void run_parser_tests()
     RUN_TEST(test_Parser_FirstAttributeValueIsCorrectForSecondTag);
     RUN_TEST(test_Parser_SecondAttributeNameIsCorrectForSecondTag);
     RUN_TEST(test_Parser_SecondAttributeValueIsCorrectForSecondTag);
+    RUN_TEST(test_Parser_DoesNotAddChildrenToMetaTags);
+    RUN_TEST(test_Parser_DoesNotAddChildrenToMetaTagsCaseInsensitive);
+    RUN_TEST(test_Parser_DoesNotAddChildrenToMetaTagsCaseInsensitiveWithAttributes);
+    RUN_TEST(test_Parser_DoesNotAddAttributeValueIfNotPresent);
+    RUN_TEST(test_Parser_DoesNotAddAttributeValueIfNotPresentMiddleOfTag);
+    RUN_TEST(test_Parser_DoesNotAddAttributeValueIfEmpty);
 }

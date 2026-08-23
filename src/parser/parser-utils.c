@@ -137,6 +137,7 @@ int handleNewAttribute(ParseState *parseState)
     }
 
     attr->attributeName[parseState->currentIndex] = '\0';
+    attr->attributeValue = NULL;
     tag->attributeCount++;
     parseState->currentIndex = 0;
     parseState->attributeNameAdded = true;
