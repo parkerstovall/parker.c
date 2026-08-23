@@ -55,9 +55,9 @@ void test_Stack_PopItemReturnsItem(void)
     pushStack(stack, &y);
 
     TEST_ASSERT_EQUAL_size_t_MESSAGE(2, stack->size, "Size should increase after adding");
-    StackPop pop = popStack(stack, false);
+    void *item = popStack(stack, false);
     TEST_ASSERT_EQUAL_size_t_MESSAGE(1, stack->size, "Size should decrease after removing");
-    TEST_ASSERT_EQUAL_PTR_MESSAGE(&y, pop.item, "Should return pointer to last item");
+    TEST_ASSERT_EQUAL_PTR_MESSAGE(&y, item, "Should return pointer to last item");
 }
 
 void test_Stack_PopItemReducesCapacityWhenSpecified(void)
@@ -69,7 +69,7 @@ void test_Stack_PopItemReducesCapacityWhenSpecified(void)
 
     TEST_ASSERT_EQUAL_size_t_MESSAGE(2, stack->size, "Size should increase after adding");
     TEST_ASSERT_EQUAL_size_t_MESSAGE(2, stack->capacity, "Capacity should increase after adding");
-    StackPop pop = popStack(stack, true);
+    popStack(stack, true);
     TEST_ASSERT_EQUAL_size_t_MESSAGE(1, stack->size, "Size should decrease after removing");
     TEST_ASSERT_EQUAL_size_t_MESSAGE(1, stack->capacity, "Capacity should decrease after removing");
 }
@@ -83,7 +83,7 @@ void test_Stack_PopItemDoesNotReduceCapacityWhenSpecified(void)
 
     TEST_ASSERT_EQUAL_size_t_MESSAGE(2, stack->size, "Size should increase after adding");
     TEST_ASSERT_EQUAL_size_t_MESSAGE(2, stack->capacity, "Capacity should increase after adding");
-    StackPop pop = popStack(stack, false);
+    popStack(stack, false);
     TEST_ASSERT_EQUAL_size_t_MESSAGE(1, stack->size, "Size should decrease after removing");
     TEST_ASSERT_EQUAL_size_t_MESSAGE(2, stack->capacity, "Capacity should not decrease after removing if requested");
 }

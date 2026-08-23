@@ -11,10 +11,4 @@ typedef struct Stack
     void **items;
 } Stack;
 
-typedef struct StackPop
-{
-    Stack *stack;
-    void *item;
-} StackPop;
-
 #endif // STACK_STRUCTS_C

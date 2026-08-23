@@ -62,15 +62,14 @@ Stack *pushStack(Stack *stack, void *item)
     return stack;
 }
 
-StackPop popStack(Stack *stack, bool resize)
+void *popStack(Stack *stack, bool resize)
 {
-    StackPop returnObj = {.stack = stack, .item = NULL};
     if (stack->size <= 0)
     {
-        return returnObj;
+        return NULL;
     }
 
-    returnObj.item = stack->items[stack->size - 1];
+    void *item = stack->items[stack->size - 1];
 
     stack->items[stack->size - 1] = NULL;
     stack->size--;
@@ -86,14 +85,14 @@ StackPop popStack(Stack *stack, bool resize)
         {
             printf("Error Code: %d\n", errno);
             perror("stack: tempItems");
-            return returnObj;
+            return item;
         }
 
         stack->capacity = newCapacity;
         stack->items = tempItems;
     }
 
-    return returnObj;
+    return item;
 }
 
 void *peekStack(Stack *stack)
@@ -104,6 +103,19 @@ void *peekStack(Stack *stack)
     }
 
     return stack->items[stack->size - 1];
+}
+
+void *swapStack(Stack *stack, void *newItem)
+{
+    if (stack->size <= 0)
+    {
+        return NULL;
+    }
+
+    void *oldItem = stack->items[stack->size - 1];
+    stack->items[stack->size - 1] = newItem;
+
+    return oldItem;
 }
 
 void freeStack(Stack *stack, void (*f)(void *))

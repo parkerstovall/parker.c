@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include "parser-structs.h"
 #include "parser-utils.h"
+#include "../utils/stack.h"
 
-size_t parse_response(char *contents, size_t size, size_t nmemb, void *userp)
+size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
 {
-    ParseState *parse_state = (ParseState *)userp;
+    ParseState *parseState = (ParseState *)userp;
 
     size_t realsize = size * nmemb;
 
@@ -16,65 +17,65 @@ size_t parse_response(char *contents, size_t size, size_t nmemb, void *userp)
 
         if (c == '<')
         {
-            parse_state->in_tag = true;
-            parse_state->just_opened_tag = true;
+            parseState->inTag = true;
+            parseState->justOpenedTag = true;
             continue;
         }
-        else if (parse_state->tag_added && c == '=' && !parse_state->attribute_name_added)
+        else if (parseState->tagAdded && c == '=' && !parseState->attributeNameAdded)
         {
-            int err = handle_attribute(parse_state);
+            int err = handleNewAttribute(parseState);
             if (err != 0)
             {
                 return err;
             }
         }
-        else if (parse_state->attribute_name_added)
+        else if (parseState->attributeNameAdded)
         {
             if (c != '"')
             {
-                int err = append_char_to_item(parse_state, c);
+                int err = appendCharToItem(parseState, c);
                 if (err != 0)
                 {
                     return err;
                 }
             }
-            else if (parse_state->current_index > 0)
+            else if (parseState->currentIndex > 0)
             {
-                int err = handle_attribute_value(parse_state);
+                int err = handleAttributeValue(parseState);
                 if (err != 0)
                 {
                     return err;
                 }
             }
         }
-        else if (parse_state->in_tag && (c == ' ' || c == '\n'))
+        else if (parseState->inTag && (c == ' ' || c == '\n'))
         {
-            if (parse_state->attribute_name_added)
+            if (parseState->attributeNameAdded)
             {
-                int err = handle_attribute_value(parse_state);
+                int err = handleAttributeValue(parseState);
                 if (err != 0)
                 {
                     return err;
                 }
             }
-            else if (!parse_state->tag_added)
+            else if (!parseState->tagAdded)
             {
-                int err = handle_item_break(parse_state);
+                int err = handleNewTag(parseState);
                 if (err != 0)
                 {
                     return err;
                 }
 
-                parse_state->tag_added = true;
+                parseState->tagAdded = true;
             }
         }
-        else if (parse_state->in_tag && c == '>')
+        else if (parseState->inTag && c == '>')
         {
-            if (parse_state->current_index > 0)
+            if (parseState->currentIndex > 0)
             {
-                if (!parse_state->tag_added)
+                if (!parseState->tagAdded)
                 {
-                    int err = handle_item_break(parse_state);
+                    int err = handleNewTag(parseState);
                     if (err != 0)
                     {
                         return err;
@@ -82,7 +83,7 @@ size_t parse_response(char *contents, size_t size, size_t nmemb, void *userp)
                 }
                 else
                 {
-                    int err = handle_attribute(parse_state);
+                    int err = handleNewAttribute(parseState);
                     if (err != 0)
                     {
                         return err;
@@ -90,79 +91,81 @@ size_t parse_response(char *contents, size_t size, size_t nmemb, void *userp)
                 }
             }
 
-            parse_state->tag_count++;
-            parse_state->in_tag = false;
-            parse_state->tag_added = false;
+            parseState->tagCount++;
+            parseState->inTag = false;
+            parseState->tagAdded = false;
         }
         // Skip closing tags
-        else if (parse_state->in_tag && (c == '/' || c == '!'))
+        else if (parseState->inTag && (c == '/' || c == '!'))
         {
-            if (parse_state->just_opened_tag)
+            if (parseState->justOpenedTag)
             {
-                parse_state->in_tag = false;
-                parse_state->tag_added = false;
+                parseState->inTag = false;
+                parseState->tagAdded = false;
+                if (parseState->htmlTags->size > 1) // This guard ignores '<!doctype>' headers
+                {
+                    popStack(parseState->htmlTags, true);
+                }
             }
         }
-        else if (parse_state->in_tag)
+        else if (parseState->inTag)
         {
-            int err = append_char_to_item(parse_state, c);
+            int err = appendCharToItem(parseState, c);
             if (err != 0)
             {
                 return err;
             }
         }
 
-        parse_state->just_opened_tag = false;
+        parseState->justOpenedTag = false;
     }
 
     return realsize;
 }
 
-ParseState *get_parse_state()
+ParseState *newParseState()
 {
-    ParseState *parse_state = malloc(sizeof(ParseState));
-    if (!parse_state)
+    ParseState *parseState = malloc(sizeof(ParseState));
+    if (!parseState)
     {
         printf("Error Code: %d\n", errno);
-        perror("parse_state");
+        perror("parseState");
         return NULL;
     }
 
-    parse_state->html_doc = malloc(sizeof(HtmlDoc));
-    if (!parse_state->html_doc)
-    {
-        printf("Error Code: %d\n", errno);
-        perror("html_doc");
-        free_parse_state(parse_state, false);
-        return NULL;
-    }
+    HtmlTag *rootTag = malloc(sizeof(HtmlTag));
+    rootTag->children = NULL;
+    rootTag->attributeCount = 0;
+    rootTag->tagCount = 0;
+    rootTag->tagName = "ROOT";
+    parseState->htmlTags = newStack(10, 10);
+    pushStack(parseState->htmlTags, rootTag);
 
-    parse_state->html_doc->size = 0;
-    parse_state->current_index = 0;
-    parse_state->tag_count = 0;
-    parse_state->in_tag = false;
-    parse_state->tag_added = false;
-    parse_state->max_size = 8 * sizeof(parse_state->current_item);
-    parse_state->current_item = malloc(parse_state->max_size);
+    parseState->currentIndex = 0;
+    parseState->tagCount = 0;
+    parseState->inTag = false;
+    parseState->tagAdded = false;
+    parseState->maxSize = 8 * sizeof(parseState->currentItem);
+    parseState->currentItem = malloc(parseState->maxSize);
 
-    return parse_state;
+    return parseState;
 }
 
-HtmlDoc *parse_html(char *url)
+HtmlTag *parseHtml(char *url)
 {
     CURL *curl;
 
-    ParseState *parse_state = get_parse_state();
-    if (parse_state == NULL)
+    ParseState *parseState = newParseState();
+    if (parseState == NULL)
     {
         return NULL;
     }
 
-    if (!parse_state->current_item)
+    if (!parseState->currentItem)
     {
         printf("Error Code: %d\n", errno);
         perror("current_item");
-        free_parse_state(parse_state, true);
+        freeParseState(parseState, true);
         return NULL;
     }
 
@@ -170,7 +173,7 @@ HtmlDoc *parse_html(char *url)
     curl = curl_easy_init();
     if (!curl)
     {
-        free_parse_state(parse_state, true);
+        freeParseState(parseState, true);
         return NULL;
     }
 
@@ -178,10 +181,10 @@ HtmlDoc *parse_html(char *url)
     curl_easy_setopt(curl, CURLOPT_URL, url);
 
     /* send all data to this function */
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, parse_response);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, parseResponse);
 
     /* pass custom param to function */
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, parse_state);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, parseState);
 
     /* some servers do not like requests that are made without a user-agent
        field, so we provide one */
@@ -199,11 +202,11 @@ HtmlDoc *parse_html(char *url)
         fprintf(stderr, "curl_easy_perform() failed: %s\n",
                 curl_easy_strerror(result));
 
-        free_parse_state(parse_state, true);
+        freeParseState(parseState, true);
         return NULL;
     }
 
-    HtmlDoc *html_doc = parse_state->html_doc;
-    free_parse_state(parse_state, false);
-    return html_doc;
+    HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
+    freeParseState(parseState, false);
+    return htmlTag;
 }

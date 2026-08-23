@@ -3,16 +3,14 @@
 
 #include "parser-structs.h"
 
-void free_html_doc(HtmlDoc *html_doc);
+void freeParseState(ParseState *parseState, bool freeDoc);
 
-void free_parse_state(ParseState *parse_state, bool freeDoc);
+int handleAttributeValue(ParseState *parseState);
 
-int handle_attribute_value(ParseState *parse_state);
+int handleNewAttribute(ParseState *parseState);
 
-int handle_attribute(ParseState *parse_state);
+int handleNewTag(ParseState *parseState);
 
-int handle_item_break(ParseState *parse_state);
-
-int append_char_to_item(ParseState *parse_state, char c);
+int appendCharToItem(ParseState *parseState, char c);
 
 #endif // PARSER_UTILS_C_
