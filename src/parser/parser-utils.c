@@ -65,7 +65,7 @@ void freeParseState(ParseState *parseState, bool freeTags)
 int handleAttributeValue(ParseState *parseState)
 {
     HtmlTag *tag = peekStack(parseState->htmlTags);
-    HtmlAttribute *attr = tag->attributes[parseState->attributeCount];
+    HtmlAttribute *attr = tag->attributes[tag->attributeCount];
 
     attr->attributeValue = malloc(parseState->currentIndex + 1);
     if (attr->attributeValue == NULL)
@@ -83,7 +83,6 @@ int handleAttributeValue(ParseState *parseState)
     attr->attributeValue[parseState->currentIndex] = '\0';
     parseState->currentIndex = 0;
     parseState->attributeNameAdded = false;
-    parseState->attributeCount++;
 
     return 0;
 }
@@ -114,15 +113,15 @@ int handleNewAttribute(ParseState *parseState)
         tag->attributes = tmpAttributes;
     }
 
-    tag->attributes[parseState->attributeCount] = malloc(sizeof(HtmlAttribute));
-    if (tag->attributes[parseState->attributeCount] == NULL)
+    tag->attributes[tag->attributeCount] = malloc(sizeof(HtmlAttribute));
+    if (tag->attributes[tag->attributeCount] == NULL)
     {
         printf("Error Code: %d\n", errno);
         perror("htmlAttribute");
         return errno;
     }
 
-    HtmlAttribute *attr = tag->attributes[parseState->attributeCount];
+    HtmlAttribute *attr = tag->attributes[tag->attributeCount];
     attr->attributeName = malloc(parseState->currentIndex + 1);
     if (attr->attributeName == NULL)
     {
@@ -201,7 +200,6 @@ int handleNewTag(ParseState *parseState)
     }
 
     tag->tagName[parseState->currentIndex] = '\0';
-    parseState->attributeCount = 0;
     parseState->currentIndex = 0;
 
     return 0;
