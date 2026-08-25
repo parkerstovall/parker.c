@@ -27,8 +27,6 @@ typedef struct ParseState
     bool attributeNameAdded;
     size_t maxSize;
     int currentIndex;
-    int tagCount;
-    int attributeCount;
     Stack *htmlTags;
     char lastChar;
     char *currentItem;
