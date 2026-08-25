@@ -113,8 +113,6 @@ size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
 
                 // This branch is hit by a lone attribute with no value
                 parseState->attributeNameAdded = false;
-                parseState->attributeCount++;
-                HtmlTag *currentTag = peekStack(parseState->htmlTags);
             }
         }
         else if (parseState->inTag && c == '>')
@@ -152,7 +150,6 @@ size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
                 }
             }
 
-            parseState->tagCount++;
             parseState->inTag = false;
             parseState->tagAdded = false;
             parseState->attributeNameAdded = false;
@@ -204,7 +201,6 @@ ParseState *newParseState()
     pushStack(parseState->htmlTags, rootTag);
 
     parseState->currentIndex = 0;
-    parseState->tagCount = 0;
     parseState->inTag = false;
     parseState->tagAdded = false;
     parseState->lastChar = '\0';
