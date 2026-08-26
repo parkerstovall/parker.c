@@ -173,6 +173,7 @@ int handleAttributeValue(ParseState *parseState)
     attr->attributeValue[parseState->currentIndex] = '\0';
     parseState->currentIndex = 0;
     parseState->attributeNameAdded = false;
+    parseState->attributeValueMark = NULL;
 
     return 0;
 }
