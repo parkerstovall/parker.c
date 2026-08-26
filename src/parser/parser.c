@@ -6,17 +6,17 @@
 #include "parser-utils.h"
 #include "../utils/stack.h"
 
+static const char *voidTags[] = {
+        "area", "base", "br", "col", "embed", "hr", "img",
+        "input", "link", "meta", "param", "source", "track", "wbr"};
+static const size_t count = sizeof(voidTags) / sizeof(voidTags[0]);
+
 static bool tagNameNeedsClosingTag(const char *tagName)
 {
     if (tagName == NULL)
     {
         return true;
     }
-
-    static const char *voidTags[] = {
-        "area", "base", "br", "col", "embed", "hr", "img",
-        "input", "link", "meta", "param", "source", "track", "wbr"};
-    size_t count = sizeof(voidTags) / sizeof(voidTags[0]);
 
     for (size_t i = 0; i < count; i++)
     {
