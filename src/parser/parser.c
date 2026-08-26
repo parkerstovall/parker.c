@@ -60,7 +60,11 @@ int parseNextChar(ParseState *parseState, char c)
     }
     else if (parseState->attributeNameAdded)
     {
-        if (c != '"')
+        if (parseState->attributeValueMark == NULL) 
+        {
+            parseState->attributeValueMark = c;
+        }
+        else if (c != parseState->attributeValueMark && parseState->lastChar != '\')
         {
             int err = appendCharToItem(parseState, c);
             if (err != 0)
@@ -76,7 +80,7 @@ int parseNextChar(ParseState *parseState, char c)
                 return err;
             }
         }
-        else if (parseState->lastChar == '"')
+        else if (parseState->lastChar == parseState->attributeValueMark)
         {
             // Empty Value, doesn't get added, carry on
             parseState->attributeNameAdded = false;
