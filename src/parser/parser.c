@@ -64,7 +64,7 @@ int parseNextChar(ParseState *parseState, char c)
         {
             parseState->attributeValueMark = c;
         }
-        else if (c != parseState->attributeValueMark && parseState->lastChar != '\')
+        else if (c != parseState->attributeValueMark && parseState->lastChar != '\\')
         {
             int err = appendCharToItem(parseState, c);
             if (err != 0)
@@ -161,6 +161,7 @@ int parseNextChar(ParseState *parseState, char c)
         parseState->inTag = false;
         parseState->tagAdded = false;
         parseState->attributeNameAdded = false;
+        parseState->attributeValueMark = false;
         parseState->currentIndex = 0;
     }
     // Skip closing tags
