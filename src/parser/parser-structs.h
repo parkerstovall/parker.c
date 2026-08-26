@@ -29,6 +29,7 @@ typedef struct ParseState
     int currentIndex;
     Stack *htmlTags;
     char lastChar;
+    char attributeValuMark;
     char *currentItem;
 } ParseState;
 
