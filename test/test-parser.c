@@ -5,8 +5,9 @@
 #include "../src/utils/stack.h"
 #include <string.h>
 
-static char ultra_basic_html[] = "<html>Testing</html>";
-static char more_complicated_html[] = "<html>Testing<a href=\"https://www.example.com\">Link! <i attr1=\"test1\" attr2=\"test2\">with italics</i></a></html>";
+static char ultra_basic_html[] = "<html></html>";
+static char ultra_basic_html_with_text[] = "<html>Test</html>";
+static char more_complicated_html[] = "<html><a href=\"https://www.example.com\"><i attr1=\"test1\" attr2=\"test2\"></i></a></html>";
 static char example_com_html[] = "<!doctype html><html lang=\"en\"><head><title>Example Domain</title><link rel=\"icon\" href=\"data:,\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><style>CSS</style></head><body><div><h1>Example Domain</h1><p>This domain is for use in documentation examples without needing permission. Avoid use in operations.</p><p><a href=\"https://iana.org/domains/example\">Learn more</a></p></div></body></html>";
 
 static int getTotalTags(HtmlTag *tag)
@@ -220,6 +221,18 @@ void test_Parser_DoesNotAddAttributeValueIfEmpty(void)
     TEST_ASSERT_NULL(tag->children[0]->children[0]->attributes[0]->attributeValue);
 }
 
+void test_Parser_FindsTextNotes(void)
+{
+    char *expected = "Test";
+    ParseState *parseState = newParseState();
+    parseResponse(ultra_basic_html_with_text, strlen(ultra_basic_html_with_text), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("TEXT", tag->children[0]->children[0]->tagName, strlen("TEXT"));
+    TEST_ASSERT_EQUAL_CHAR_ARRAY("CONTENT", tag->children[0]->children[0]->attributes[0]->attributeName, strlen("CONTENT"));
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->attributes[0]->attributeValue, strlen(expected));
+}
+
 void run_parser_tests()
 {
     RUN_TEST(test_Parser_OneTagExpected);
@@ -240,4 +253,5 @@ void run_parser_tests()
     RUN_TEST(test_Parser_DoesNotAddAttributeValueIfNotPresent);
     RUN_TEST(test_Parser_DoesNotAddAttributeValueIfNotPresentMiddleOfTag);
     RUN_TEST(test_Parser_DoesNotAddAttributeValueIfEmpty);
+    RUN_TEST(test_Parser_FindsTextNotes);
 }
