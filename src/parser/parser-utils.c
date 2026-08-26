@@ -62,6 +62,96 @@ void freeParseState(ParseState *parseState, bool freeTags)
     free(parseState);
 }
 
+int handleTextNode(ParseState *parseState)
+{
+    HtmlAttribute *textAttr = malloc(sizeof(HtmlAttribute));
+
+    textAttr->attributeName = malloc(7 * (sizeof(char)));
+    if (textAttr->attributeName == NULL)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("attributeName");
+        return errno;
+    }
+
+    textAttr->attributeName = "CONTENT";
+
+    textAttr->attributeValue = malloc(parseState->currentIndex + 1);
+    if (textAttr->attributeValue == NULL)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("attributeValue");
+        return errno;
+    }
+
+    for (int j = 0; j < parseState->currentIndex; j++)
+    {
+        textAttr->attributeValue[j] = parseState->currentItem[j];
+    }
+
+    textAttr->attributeValue[parseState->currentIndex] = '\0';
+
+    HtmlTag *tag = malloc(sizeof(HtmlTag));
+    if (tag == NULL)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("htmlTags");
+        return errno;
+    }
+
+    tag->children = NULL;
+    tag->tagCount = 0;
+    tag->tagName = malloc(sizeof(char) * 4);
+    if (tag->tagName == NULL)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("tagName");
+        return errno;
+    }
+
+    tag->tagName = "TEXT";
+
+    HtmlTag *currentTag = peekStack(parseState->htmlTags);
+    if (currentTag->tagCount == 0)
+    {
+        currentTag->children = malloc(sizeof(HtmlTag *));
+        if (!currentTag->children)
+        {
+            printf("Error Code: %d\n", errno);
+            perror("currentTag->children");
+            return errno;
+        }
+    }
+    else
+    {
+        HtmlTag **tmpTags = realloc(currentTag->children, sizeof(HtmlTag *) * (currentTag->tagCount + 1));
+        if (!tmpTags)
+        {
+            printf("Error Code: %d\n", errno);
+            perror("*tmpTags");
+            return errno;
+        }
+
+        currentTag->children = tmpTags;
+    }
+
+    tag->attributes = malloc(sizeof(HtmlAttribute *));
+    if (!tag->attributes)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("tag->attributes");
+        return errno;
+    }
+
+    tag->attributes[0] = textAttr;
+    tag->attributeCount = 1;
+
+    currentTag->children[currentTag->tagCount] = tag;
+    currentTag->tagCount++;
+
+    return 0;
+}
+
 int handleAttributeValue(ParseState *parseState)
 {
     HtmlTag *tag = peekStack(parseState->htmlTags);

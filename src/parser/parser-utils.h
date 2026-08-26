@@ -7,6 +7,8 @@ void freeHtmlTag(HtmlTag *htmlTag);
 
 void freeParseState(ParseState *parseState, bool freeTag);
 
+int handleTextNode(ParseState *parseState);
+
 int handleAttributeValue(ParseState *parseState);
 
 int handleNewAttribute(ParseState *parseState);

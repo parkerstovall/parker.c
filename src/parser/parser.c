@@ -29,79 +29,114 @@ static bool tagNameNeedsClosingTag(const char *tagName)
     return true;
 }
 
-size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
+int parseNextChar(ParseState *parseState, char c)
 {
-    ParseState *parseState = (ParseState *)userp;
-
-    size_t realsize = size * nmemb;
-
-    for (size_t i = 0; i < realsize; i++)
+    if (c == '<')
     {
-        char c = contents[i];
-
-        if (c == '<')
+        if (parseState->currentIndex > 0)
         {
-            parseState->inTag = true;
-            parseState->lastChar = c;
-            continue;
+            int err = handleTextNode(parseState);
+            if (err != 0)
+            {
+                return err;
+            }
+
+            parseState->currentIndex = 0;
         }
-        else if (parseState->tagAdded && c == '=' && !parseState->attributeNameAdded)
+
+        parseState->inTag = true;
+        parseState->lastChar = c;
+        return 0;
+    }
+    else if (parseState->tagAdded && c == '=' && !parseState->attributeNameAdded)
+    {
+        int err = handleNewAttribute(parseState);
+        if (err != 0)
+        {
+            return err;
+        }
+
+        parseState->currentIndex = 0;
+    }
+    else if (parseState->attributeNameAdded)
+    {
+        if (c != '"')
+        {
+            int err = appendCharToItem(parseState, c);
+            if (err != 0)
+            {
+                return err;
+            }
+        }
+        else if (parseState->currentIndex > 0)
+        {
+            int err = handleAttributeValue(parseState);
+            if (err != 0)
+            {
+                return err;
+            }
+        }
+        else if (parseState->lastChar == '"')
+        {
+            // Empty Value, doesn't get added, carry on
+            parseState->attributeNameAdded = false;
+        }
+    }
+    else if (parseState->inTag && (c == ' ' || c == '\n'))
+    {
+        if (parseState->currentIndex <= 0)
+        {
+            parseState->lastChar = c;
+            return 0;
+        }
+
+        if (parseState->attributeNameAdded)
+        {
+            int err = handleAttributeValue(parseState);
+            if (err != 0)
+            {
+                return err;
+            }
+        }
+        else if (!parseState->tagAdded)
+        {
+            int err = handleNewTag(parseState);
+            if (err != 0)
+            {
+                return err;
+            }
+
+            parseState->tagAdded = true;
+        }
+        else
         {
             int err = handleNewAttribute(parseState);
             if (err != 0)
             {
                 return err;
             }
-        }
-        else if (parseState->attributeNameAdded)
-        {
-            if (c != '"')
-            {
-                int err = appendCharToItem(parseState, c);
-                if (err != 0)
-                {
-                    return err;
-                }
-            }
-            else if (parseState->currentIndex > 0)
-            {
-                int err = handleAttributeValue(parseState);
-                if (err != 0)
-                {
-                    return err;
-                }
-            }
-            else if (parseState->lastChar == '"')
-            {
-                // Empty Value, doesn't get added, carry on
-                parseState->attributeNameAdded = false;
-            }
-        }
-        else if (parseState->inTag && (c == ' ' || c == '\n'))
-        {
-            if (parseState->currentIndex <= 0)
-            {
-                parseState->lastChar = c;
-                continue;
-            }
 
-            if (parseState->attributeNameAdded)
+            // This branch is hit by a lone attribute with no value
+            parseState->attributeNameAdded = false;
+        }
+    }
+    else if (parseState->inTag && c == '>')
+    {
+        if (parseState->currentIndex > 0)
+        {
+            if (!parseState->tagAdded)
             {
-                int err = handleAttributeValue(parseState);
-                if (err != 0)
+                HtmlTag *currentTag = peekStack(parseState->htmlTags);
+                if (!tagNameNeedsClosingTag(currentTag->tagName))
                 {
-                    return err;
+                    popStack(parseState->htmlTags, true);
                 }
-            }
-            else if (!parseState->tagAdded)
-            {
+
                 int err = handleNewTag(parseState);
                 if (err != 0)
                 {
                     return err;
                 }
-
-                parseState->tagAdded = true;
             }
             else
             {
@@ -111,69 +146,64 @@ size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
                     return err;
                 }
 
-                // This branch is hit by a lone attribute with no value
-                parseState->attributeNameAdded = false;
-            }
-        }
-        else if (parseState->inTag && c == '>')
-        {
-            if (parseState->currentIndex > 0)
-            {
-                if (!parseState->tagAdded)
-                {
-
-                    HtmlTag *currentTag = peekStack(parseState->htmlTags);
-                    if (!tagNameNeedsClosingTag(currentTag->tagName))
-                    {
-                        popStack(parseState->htmlTags, true);
-                    }
-
-                    int err = handleNewTag(parseState);
-                    if (err != 0)
-                    {
-                        return err;
-                    }
-                }
-                else
-                {
-                    int err = handleNewAttribute(parseState);
-                    if (err != 0)
-                    {
-                        return err;
-                    }
-
-                    HtmlTag *currentTag = peekStack(parseState->htmlTags);
-                    if (!tagNameNeedsClosingTag(currentTag->tagName))
-                    {
-                        popStack(parseState->htmlTags, true);
-                    }
-                }
-            }
-
-            parseState->inTag = false;
-            parseState->tagAdded = false;
-            parseState->attributeNameAdded = false;
-        }
-        // Skip closing tags
-        else if (parseState->inTag && (c == '/' || c == '!'))
-        {
-            if (parseState->lastChar == '<')
-            {
-                parseState->inTag = false;
-                parseState->tagAdded = false;
-                if (parseState->htmlTags->size > 1) // This guard ignores '<!doctype>' headers
+                HtmlTag *currentTag = peekStack(parseState->htmlTags);
+                if (!tagNameNeedsClosingTag(currentTag->tagName))
                 {
                     popStack(parseState->htmlTags, true);
                 }
             }
         }
-        else if (parseState->inTag)
+
+        parseState->inTag = false;
+        parseState->tagAdded = false;
+        parseState->attributeNameAdded = false;
+        parseState->currentIndex = 0;
+    }
+    // Skip closing tags
+    else if (parseState->inTag && (c == '/' || c == '!'))
+    {
+        if (parseState->lastChar == '<')
         {
-            int err = appendCharToItem(parseState, c);
-            if (err != 0)
+            parseState->inTag = false;
+            parseState->tagAdded = false;
+            if (parseState->htmlTags->size > 1) // This guard ignores '<!doctype>' headers
             {
-                return err;
+                popStack(parseState->htmlTags, true);
             }
+        }
+    }
+    else
+    {
+        // After closing tag
+        if (c == '>')
+        {
+            parseState->currentIndex = 0;
+            return 0;
+        }
+
+        int err = appendCharToItem(parseState, c);
+        if (err != 0)
+        {
+            return err;
+        }
+    }
+
+    return 0;
+}
+
+size_t parseResponse(char *contents, size_t size, size_t nmemb, void *userp)
+{
+    ParseState *parseState = (ParseState *)userp;
+
+    size_t realsize = size * nmemb;
+
+    for (size_t i = 0; i < realsize; i++)
+    {
+        char c = contents[i];
+        int ret = parseNextChar(parseState, c);
+        if (ret > 0)
+        {
+            return ret;
         }
 
         parseState->lastChar = c;
