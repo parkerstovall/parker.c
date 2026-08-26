@@ -38,7 +38,7 @@ static void printTags(HtmlTag *tag, int depth)
 static char more_complicated_html[] = "<html>Testing<a href=\"https://www.example.com\">Link! <i attr1=\"test1\" attr2=\"test2\">with italics</i></a></html>";
 int main(int argc, char *argv[])
 {
-    char *html = "<html><META test><p></p></html>";
+    char *html = "<html><META test attr1=\"value\"><p></p></html>";
     ParseState *parseState = newParseState();
     parseResponse(html, strlen(html), 1, parseState);
     HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
