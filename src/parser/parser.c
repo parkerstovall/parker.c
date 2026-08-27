@@ -325,7 +325,7 @@ ParseState *newParseState()
     parseState->tagAdded = false;
     parseState->lastChar = '\0';
     parseState->maxSize = 100 * sizeof(parseState->currentItem);
-    parseState->attributeValueMark = NULL;
+    parseState->attributeValueMark = '\0';
     parseState->currentItem = malloc(parseState->maxSize);
 
     return parseState;
