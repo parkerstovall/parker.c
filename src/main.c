@@ -37,23 +37,23 @@ static void printTags(HtmlTag *tag, int depth)
 
 int main(int argc, char *argv[])
 {
-    char *html = "<html attr1=\"va\\\"lue1\" attr2='val\\'ue2'></html>";
-    printf("%s\n", html);
-    ParseState *parseState = newParseState();
-    parseResponse(html, strlen(html), 1, parseState);
-    HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
+    // char *html = "<html attr1=\"value1\" attr2='value2'><script>this is ignored</script><style>This is ignored</style></html>";
+    // printf("%s\n", html);
+    // ParseState *parseState = newParseState();
+    // parseResponse(html, strlen(html), 1, parseState);
+    // HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
     // CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
     // if (result != CURLE_OK)
     // {
     //     return -1;
     // }
 
-    // HtmlTag *htmlTag = parseHtml("https://www.parkerstovall.com");
-    // if (htmlTag == NULL)
-    // {
-    //     printf("Error during html parse\n");
-    //     return 1;
-    // }
+    HtmlTag *htmlTag = parseHtml("https://www.example.com");
+    if (htmlTag == NULL)
+    {
+        printf("Error during html parse\n");
+        return 1;
+    }
 
     printTags(htmlTag, 0);
 

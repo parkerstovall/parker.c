@@ -6,10 +6,29 @@
 #include "parser-utils.h"
 #include "../utils/stack.h"
 
-static const char *voidTags[] = {
-    "area", "base", "br", "col", "embed", "hr", "img",
-    "input", "link", "meta", "param", "source", "track", "wbr"};
-static const size_t count = sizeof(voidTags) / sizeof(voidTags[0]);
+static const char *ignoreTags[] = {"style", "script"};
+static const char *voidTags[] = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"};
+
+static const size_t ignoreTagCount = sizeof(ignoreTags) / sizeof(ignoreTags[0]);
+static const size_t voidTagCount = sizeof(voidTags) / sizeof(voidTags[0]);
+
+static bool isIgnoredTag(const char *tagName)
+{
+    if (tagName == NULL)
+    {
+        return true;
+    }
+
+    for (size_t i = 0; i < ignoreTagCount; i++)
+    {
+        if (strcasecmp(ignoreTags[i], tagName) == 0)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 static bool tagNameNeedsClosingTag(const char *tagName)
 {
@@ -18,7 +37,7 @@ static bool tagNameNeedsClosingTag(const char *tagName)
         return true;
     }
 
-    for (size_t i = 0; i < count; i++)
+    for (size_t i = 0; i < voidTagCount; i++)
     {
         if (strcasecmp(voidTags[i], tagName) == 0)
         {
@@ -31,7 +50,52 @@ static bool tagNameNeedsClosingTag(const char *tagName)
 
 int parseNextChar(ParseState *parseState, char c)
 {
-    if (c == '<')
+    if (parseState->inIgnoredTag)
+    {
+        if (c == '<')
+        {
+            parseState->inTag = true;
+            return 0;
+        }
+        else if (c == '>' && parseState->inTag)
+        {
+            if (isIgnoredTag(parseState->currentItem))
+            {
+                parseState->inIgnoredTag = false;
+                parseState->inTag = false;
+                parseState->currentIndex = 0;
+                popStack(parseState->htmlTags, true);
+
+                HtmlTag *currentTag = peekStack(parseState->htmlTags);
+                currentTag->tagCount--;
+                free(currentTag->children[currentTag->tagCount]);
+                currentTag->children[currentTag->tagCount] = NULL;
+            }
+        }
+        else if (parseState->inTag)
+        {
+            if (c == ' ')
+            {
+                if (isIgnoredTag(parseState->currentItem))
+                {
+                    parseState->inIgnoredTag = false;
+                    parseState->inTag = false;
+                    parseState->currentIndex = 0;
+                    popStack(parseState->htmlTags, true);
+
+                    HtmlTag *currentTag = peekStack(parseState->htmlTags);
+                    currentTag->tagCount--;
+                    free(currentTag->children[currentTag->tagCount]);
+                    currentTag->children[currentTag->tagCount] = NULL;
+                }
+            }
+            else
+            {
+                appendCharToItem(parseState, c);
+            }
+        }
+    }
+    else if (c == '<')
     {
         if (parseState->currentIndex > 0)
         {
@@ -66,17 +130,6 @@ int parseNextChar(ParseState *parseState, char c)
         }
         else if (c != parseState->attributeValueMark)
         {
-            int err = appendCharToItem(parseState, c);
-            if (err != 0)
-            {
-                return err;
-            }
-        }
-        else if (c == parseState->attributeValueMark && parseState->lastChar == '\\')
-        {
-            // Overwrite '\' appended to current item with the attributeValueMark
-            parseState->currentIndex--;
-
             int err = appendCharToItem(parseState, c);
             if (err != 0)
             {
@@ -121,7 +174,17 @@ int parseNextChar(ParseState *parseState, char c)
                 return err;
             }
 
-            parseState->tagAdded = true;
+            HtmlTag *newTag = peekStack(parseState->htmlTags);
+            if (!isIgnoredTag(newTag->tagName))
+            {
+                parseState->inIgnoredTag = true;
+                parseState->inTag = false;
+                parseState->currentIndex = 0;
+            }
+            else
+            {
+                parseState->tagAdded = true;
+            }
         }
         else
         {
@@ -151,6 +214,15 @@ int parseNextChar(ParseState *parseState, char c)
                 if (err != 0)
                 {
                     return err;
+                }
+
+                HtmlTag *newTag = peekStack(parseState->htmlTags);
+                if (!isIgnoredTag(newTag->tagName))
+                {
+                    parseState->inIgnoredTag = true;
+                    parseState->inTag = false;
+                    parseState->tagAdded = false;
+                    parseState->currentIndex = 0;
                 }
             }
             else
@@ -252,7 +324,7 @@ ParseState *newParseState()
     parseState->inTag = false;
     parseState->tagAdded = false;
     parseState->lastChar = '\0';
-    parseState->maxSize = 8 * sizeof(parseState->currentItem);
+    parseState->maxSize = 100 * sizeof(parseState->currentItem);
     parseState->currentItem = malloc(parseState->maxSize);
 
     return parseState;

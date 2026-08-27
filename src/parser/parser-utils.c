@@ -113,15 +113,20 @@ int handleTextNode(ParseState *parseState)
     }
     else
     {
-        HtmlTag **tmpTags = realloc(currentTag->children, sizeof(HtmlTag *) * (currentTag->tagCount + 1));
-        if (!tmpTags)
+        size_t newSize = sizeof(HtmlTag *) * (currentTag->tagCount + 1);
+        if (newSize > currentTag->maxSize)
         {
-            printf("Error Code: %d\n", errno);
-            perror("*tmpTags");
-            return errno;
-        }
+            currentTag->maxSize = sizeof(HtmlTag *) * (currentTag->tagCount * 2);
+            HtmlTag **tmpTags = realloc(currentTag->children, currentTag->maxSize);
+            if (!tmpTags)
+            {
+                printf("Error Code: %d\n", errno);
+                perror("*tmpTags");
+                return errno;
+            }
 
-        currentTag->children = tmpTags;
+            currentTag->children = tmpTags;
+        }
     }
 
     tag->attributes = malloc(sizeof(HtmlAttribute *));
@@ -253,15 +258,20 @@ int handleNewTag(ParseState *parseState)
     }
     else
     {
-        HtmlTag **tmpTags = realloc(currentTag->children, sizeof(HtmlTag *) * (currentTag->tagCount + 1));
-        if (!tmpTags)
+        size_t newSize = sizeof(HtmlTag *) * (currentTag->tagCount + 1);
+        if (newSize > currentTag->maxSize)
         {
-            printf("Error Code: %d\n", errno);
-            perror("*tmpTags");
-            return errno;
-        }
+            currentTag->maxSize = sizeof(HtmlTag *) * (currentTag->tagCount * 2);
+            HtmlTag **tmpTags = realloc(currentTag->children, currentTag->maxSize);
+            if (!tmpTags)
+            {
+                printf("Error Code: %d\n", errno);
+                perror("*tmpTags");
+                return errno;
+            }
 
-        currentTag->children = tmpTags;
+            currentTag->children = tmpTags;
+        }
     }
 
     currentTag->children[currentTag->tagCount] = tag;

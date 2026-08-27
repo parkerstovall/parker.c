@@ -247,18 +247,15 @@ void test_Parser_CanUseEitherSingleOrDoubleQuotesForAttrValues(void)
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected2, tag->children[0]->attributes[1]->attributeValue, strlen(expected2));
 }
 
-void test_Parser_CanEscapeQuotes(void)
+void test_Parser_ScriptAndStyleTagsIgnored(void)
 {
-    char *html = "<html attr1=\"va\\\"lue1\" attr2='val\\'ue2'></html>";
-    char *expected1 = "va\"lue1";
-    char *expected2 = "val'ue2";
+    char *html = "<html attr1=\"value1\" attr2='value2'><script>this is ignored</script><style>This is ignored</style></html>";
+    int expected = 0;
     ParseState *parseState = newParseState();
     parseResponse(html, strlen(html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
-    TEST_ASSERT_EQUAL_INT(2, tag->children[0]->attributeCount);
-    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected1, tag->children[0]->attributes[0]->attributeValue, strlen(expected1));
-    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected2, tag->children[0]->attributes[1]->attributeValue, strlen(expected2));
+    TEST_ASSERT_EQUAL_INT(expected, tag->children[0]->tagCount);
 }
 
 void run_parser_tests()
@@ -283,5 +280,5 @@ void run_parser_tests()
     RUN_TEST(test_Parser_DoesNotAddAttributeValueIfEmpty);
     RUN_TEST(test_Parser_FindsTextNotes);
     RUN_TEST(test_Parser_CanUseEitherSingleOrDoubleQuotesForAttrValues);
-    RUN_TEST(test_Parser_CanEscapeQuotes);
+    RUN_TEST(test_Parser_ScriptAndStyleTagsIgnored);
 }
