@@ -60,12 +60,23 @@ int parseNextChar(ParseState *parseState, char c)
     }
     else if (parseState->attributeNameAdded)
     {
-        if (parseState->attributeValueMark == NULL) 
+        if (parseState->attributeValueMark == '\0' && (c == '"' || c == '\''))
         {
             parseState->attributeValueMark = c;
         }
-        else if (c != parseState->attributeValueMark && parseState->lastChar != '\\')
+        else if (c != parseState->attributeValueMark)
         {
+            int err = appendCharToItem(parseState, c);
+            if (err != 0)
+            {
+                return err;
+            }
+        }
+        else if (c == parseState->attributeValueMark && parseState->lastChar == '\\')
+        {
+            // Overwrite '\' appended to current item with the attributeValueMark
+            parseState->currentIndex--;
+
             int err = appendCharToItem(parseState, c);
             if (err != 0)
             {
@@ -182,7 +193,9 @@ int parseNextChar(ParseState *parseState, char c)
         // After closing tag
         if (c == '>')
         {
+            parseState->inTag = false;
             parseState->currentIndex = 0;
+            parseState->nonWhiteSpaceInTextContent = false;
             return 0;
         }
 

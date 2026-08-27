@@ -103,7 +103,6 @@ run: main
 # is what previously risked -DNDEBUG and -DDEBUG both being active at
 # once.
 debug: $(PATHB)main-debug.$(TARGET_EXTENSION)
-	./$(PATHB)main-debug.$(TARGET_EXTENSION)
 
 fails: | $(BUILD_PATHS)
 fails: $(RESULTS)

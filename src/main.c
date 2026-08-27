@@ -35,10 +35,10 @@ static void printTags(HtmlTag *tag, int depth)
     printf("</%s>\n", tag->tagName);
 }
 
-static char more_complicated_html[] = "<html>Testing<a href=\"https://www.example.com\">Link! <i attr1=\"test1\" attr2=\"test2\">with italics</i></a></html>";
 int main(int argc, char *argv[])
 {
-    char *html = "<html>Testing<a href=\"https://www.example.com\">Link! <i attr1=\"test1\" attr2=\"test2\">with italics</i></a></html>";
+    char *html = "<html attr1=\"va\\\"lue1\" attr2='val\\'ue2'></html>";
+    printf("%s\n", html);
     ParseState *parseState = newParseState();
     parseResponse(html, strlen(html), 1, parseState);
     HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     //     return -1;
     // }
 
-    // HtmlTag *htmlTag = parseHtml("https://www.example.com");
+    // HtmlTag *htmlTag = parseHtml("https://www.parkerstovall.com");
     // if (htmlTag == NULL)
     // {
     //     printf("Error during html parse\n");
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
     printTags(htmlTag, 0);
 
-    // freeHtmlTag(htmlTag);
+    freeHtmlTag(htmlTag);
 
     /* we are done with libcurl, so clean it up */
     curl_global_cleanup();
