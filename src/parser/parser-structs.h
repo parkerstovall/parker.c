@@ -15,7 +15,9 @@ typedef struct HtmlTag
 {
     int tagCount;
     int attributeCount;
+    size_t maxSize;
     char *tagName;
+    char *content;
     HtmlAttribute **attributes;
     struct HtmlTag **children;
 } HtmlTag;
@@ -25,10 +27,13 @@ typedef struct ParseState
     bool inTag;
     bool tagAdded;
     bool attributeNameAdded;
+    bool nonWhiteSpaceInTextContent;
+    bool inIgnoredTag;
     size_t maxSize;
     int currentIndex;
     Stack *htmlTags;
     char lastChar;
+    char attributeValueMark;
     char *currentItem;
 } ParseState;
 

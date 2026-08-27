@@ -70,8 +70,8 @@ OBJ_TEST_NO_MAIN = $(filter-out $(PATHO_TEST)main.o,$(OBJ_TEST))
 # One object per test-*.c file, built with the test variant's flags.
 TEST_OBJ = $(patsubst $(PATHT)test-%.c,$(PATHO_TEST)test-%.o,$(SRCT))
 
-COMPILE = gcc -c
-LINK    = gcc -Wall -Werror
+COMPILE = gcc -c -Wall -Werror
+LINK    = gcc
 DEPEND  = gcc -MM -MG
 CFLAGS  = -I. -I$(PATHU) -I$(PATHS)
 
@@ -103,7 +103,6 @@ run: main
 # is what previously risked -DNDEBUG and -DDEBUG both being active at
 # once.
 debug: $(PATHB)main-debug.$(TARGET_EXTENSION)
-	./$(PATHB)main-debug.$(TARGET_EXTENSION)
 
 fails: | $(BUILD_PATHS)
 fails: $(RESULTS)

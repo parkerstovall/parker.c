@@ -8,7 +8,7 @@
 static char ultra_basic_html[] = "<html></html>";
 static char ultra_basic_html_with_text[] = "<html>Test</html>";
 static char more_complicated_html[] = "<html><a href=\"https://www.example.com\"><i attr1=\"test1\" attr2=\"test2\"></i></a></html>";
-static char example_com_html[] = "<!doctype html><html lang=\"en\"><head><title>Example Domain</title><link rel=\"icon\" href=\"data:,\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><style>CSS</style></head><body><div><h1>Example Domain</h1><p>This domain is for use in documentation examples without needing permission. Avoid use in operations.</p><p><a href=\"https://iana.org/domains/example\">Learn more</a></p></div></body></html>";
+// static char example_com_html[] = "<!doctype html><html lang=\"en\"><head><title>Example Domain</title><link rel=\"icon\" href=\"data:,\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><style>CSS</style></head><body><div><h1>Example Domain</h1><p>This domain is for use in documentation examples without needing permission. Avoid use in operations.</p><p><a href=\"https://iana.org/domains/example\">Learn more</a></p></div></body></html>";
 
 static int getTotalTags(HtmlTag *tag)
 {
@@ -233,6 +233,31 @@ void test_Parser_FindsTextNotes(void)
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->children[0]->children[0]->attributes[0]->attributeValue, strlen(expected));
 }
 
+void test_Parser_CanUseEitherSingleOrDoubleQuotesForAttrValues(void)
+{
+    char *html = "<html attr1=\"value1\" attr2='value2'></html>";
+    char *expected1 = "value1";
+    char *expected2 = "value2";
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_INT(2, tag->children[0]->attributeCount);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected1, tag->children[0]->attributes[0]->attributeValue, strlen(expected1));
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected2, tag->children[0]->attributes[1]->attributeValue, strlen(expected2));
+}
+
+void test_Parser_ScriptAndStyleTagsIgnored(void)
+{
+    char *html = "<html attr1=\"value1\" attr2='value2'><script>this is ignored</script><style>This is ignored</style></html>";
+    int expected = 0;
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_INT(expected, tag->children[0]->tagCount);
+}
+
 void run_parser_tests()
 {
     RUN_TEST(test_Parser_OneTagExpected);
@@ -254,4 +279,6 @@ void run_parser_tests()
     RUN_TEST(test_Parser_DoesNotAddAttributeValueIfNotPresentMiddleOfTag);
     RUN_TEST(test_Parser_DoesNotAddAttributeValueIfEmpty);
     RUN_TEST(test_Parser_FindsTextNotes);
+    RUN_TEST(test_Parser_CanUseEitherSingleOrDoubleQuotesForAttrValues);
+    RUN_TEST(test_Parser_ScriptAndStyleTagsIgnored);
 }

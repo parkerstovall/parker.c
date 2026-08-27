@@ -1,4 +1,5 @@
 #include "parser-structs.h"
+#include <string.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -23,7 +24,7 @@ void freeHtmlTag(HtmlTag *htmlTag)
 
     for (int i = 0; i < htmlTag->attributeCount; i++)
     {
-        if (!htmlTag->attributes[i]->attributeName)
+        if (!htmlTag->attributes[i]->attributeName && strcmp("CONTENT", htmlTag->tagName) != 0)
         {
             free(htmlTag->attributes[i]->attributeName);
         }
@@ -34,7 +35,7 @@ void freeHtmlTag(HtmlTag *htmlTag)
         }
     }
 
-    if (htmlTag->tagName)
+    if (htmlTag->tagName && strcmp("TEXT", htmlTag->tagName) != 0 && strcmp("ROOT", htmlTag->tagName) != 0)
     {
         free(htmlTag->tagName);
     }
@@ -64,18 +65,14 @@ void freeParseState(ParseState *parseState, bool freeTags)
 
 int handleTextNode(ParseState *parseState)
 {
-    HtmlAttribute *textAttr = malloc(sizeof(HtmlAttribute));
-
-    textAttr->attributeName = malloc(7 * (sizeof(char)));
-    if (textAttr->attributeName == NULL)
+    // Dont want to add whitespace as text content
+    if (!parseState->nonWhiteSpaceInTextContent)
     {
-        printf("Error Code: %d\n", errno);
-        perror("attributeName");
-        return errno;
+        return 0;
     }
 
+    HtmlAttribute *textAttr = malloc(sizeof(HtmlAttribute));
     textAttr->attributeName = "CONTENT";
-
     textAttr->attributeValue = malloc(parseState->currentIndex + 1);
     if (textAttr->attributeValue == NULL)
     {
@@ -101,14 +98,6 @@ int handleTextNode(ParseState *parseState)
 
     tag->children = NULL;
     tag->tagCount = 0;
-    tag->tagName = malloc(sizeof(char) * 4);
-    if (tag->tagName == NULL)
-    {
-        printf("Error Code: %d\n", errno);
-        perror("tagName");
-        return errno;
-    }
-
     tag->tagName = "TEXT";
 
     HtmlTag *currentTag = peekStack(parseState->htmlTags);
@@ -124,15 +113,20 @@ int handleTextNode(ParseState *parseState)
     }
     else
     {
-        HtmlTag **tmpTags = realloc(currentTag->children, sizeof(HtmlTag *) * (currentTag->tagCount + 1));
-        if (!tmpTags)
+        size_t newSize = sizeof(HtmlTag *) * (currentTag->tagCount + 1);
+        if (newSize > currentTag->maxSize)
         {
-            printf("Error Code: %d\n", errno);
-            perror("*tmpTags");
-            return errno;
-        }
+            currentTag->maxSize = sizeof(HtmlTag *) * (currentTag->tagCount * 2);
+            HtmlTag **tmpTags = realloc(currentTag->children, currentTag->maxSize);
+            if (!tmpTags)
+            {
+                printf("Error Code: %d\n", errno);
+                perror("*tmpTags");
+                return errno;
+            }
 
-        currentTag->children = tmpTags;
+            currentTag->children = tmpTags;
+        }
     }
 
     tag->attributes = malloc(sizeof(HtmlAttribute *));
@@ -148,6 +142,7 @@ int handleTextNode(ParseState *parseState)
 
     currentTag->children[currentTag->tagCount] = tag;
     currentTag->tagCount++;
+    parseState->nonWhiteSpaceInTextContent = false;
 
     return 0;
 }
@@ -173,6 +168,8 @@ int handleAttributeValue(ParseState *parseState)
     attr->attributeValue[parseState->currentIndex] = '\0';
     parseState->currentIndex = 0;
     parseState->attributeNameAdded = false;
+    parseState->attributeValueMark = '\0';
+    parseState->nonWhiteSpaceInTextContent = false;
 
     return 0;
 }
@@ -230,6 +227,7 @@ int handleNewAttribute(ParseState *parseState)
     tag->attributeCount++;
     parseState->currentIndex = 0;
     parseState->attributeNameAdded = true;
+    parseState->nonWhiteSpaceInTextContent = false;
 
     return 0;
 }
@@ -260,15 +258,20 @@ int handleNewTag(ParseState *parseState)
     }
     else
     {
-        HtmlTag **tmpTags = realloc(currentTag->children, sizeof(HtmlTag *) * (currentTag->tagCount + 1));
-        if (!tmpTags)
+        size_t newSize = sizeof(HtmlTag *) * (currentTag->tagCount + 1);
+        if (newSize > currentTag->maxSize)
         {
-            printf("Error Code: %d\n", errno);
-            perror("*tmpTags");
-            return errno;
-        }
+            currentTag->maxSize = sizeof(HtmlTag *) * (currentTag->tagCount * 2);
+            HtmlTag **tmpTags = realloc(currentTag->children, currentTag->maxSize);
+            if (!tmpTags)
+            {
+                printf("Error Code: %d\n", errno);
+                perror("*tmpTags");
+                return errno;
+            }
 
-        currentTag->children = tmpTags;
+            currentTag->children = tmpTags;
+        }
     }
 
     currentTag->children[currentTag->tagCount] = tag;
@@ -291,12 +294,18 @@ int handleNewTag(ParseState *parseState)
 
     tag->tagName[parseState->currentIndex] = '\0';
     parseState->currentIndex = 0;
+    parseState->nonWhiteSpaceInTextContent = false;
 
     return 0;
 }
 
 int appendCharToItem(ParseState *parseState, char c)
 {
+    if (!parseState->inTag && !parseState->nonWhiteSpaceInTextContent && c != ' ' && c != '\n' && c != '\t' && c != '\r')
+    {
+        parseState->nonWhiteSpaceInTextContent = true;
+    }
+
     size_t new_size = sizeof(char) * parseState->currentIndex;
     if (new_size >= parseState->maxSize)
     {
