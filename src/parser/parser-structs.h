@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "../utils/stack.h"
+#include "../stack/stack.h"
 
 typedef struct HtmlAttribute
 {

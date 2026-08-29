@@ -244,11 +244,13 @@ int handleNewTag(ParseState *parseState)
 
     tag->children = NULL;
     tag->tagCount = 0;
+    tag->maxSize = 0;
 
     HtmlTag *currentTag = peekStack(parseState->htmlTags);
     if (currentTag->tagCount == 0)
     {
         currentTag->children = malloc(sizeof(HtmlTag *));
+        currentTag->maxSize = sizeof(HtmlTag *);
         if (!currentTag->children)
         {
             printf("Error Code: %d\n", errno);

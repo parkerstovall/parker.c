@@ -4,7 +4,7 @@
 #include <string.h>
 #include "parser-structs.h"
 #include "parser-utils.h"
-#include "../utils/stack.h"
+#include "../stack/stack.h"
 
 static const char *ignoreTags[] = {"style", "script"};
 static const char *voidTags[] = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"};

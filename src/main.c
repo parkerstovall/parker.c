@@ -1,64 +1,76 @@
 #include "parser/parser.h"
 #include "parser/parser-utils.h"
 #include "parser/parser-structs.h"
+#include <time.h>
 
-static void printTags(HtmlTag *tag, int depth)
-{
-    for (int i = 0; i < depth; i++)
-    {
-        printf(" ");
-    }
+// static void printTags(HtmlTag *tag, int depth)
+// {
+//     for (int i = 0; i < depth; i++)
+//     {
+//         printf(" ");
+//     }
 
-    printf("<%s", tag->tagName);
-    for (int i = 0; i < tag->attributeCount; i++)
-    {
-        printf(" %s", tag->attributes[i]->attributeName);
+//     printf("<%s", tag->tagName);
+//     for (int i = 0; i < tag->attributeCount; i++)
+//     {
+//         printf(" %s", tag->attributes[i]->attributeName);
 
-        if (tag->attributes[i]->attributeValue)
-        {
-            printf("=\"%s\"", tag->attributes[i]->attributeValue);
-        }
-    }
+//         if (tag->attributes[i]->attributeValue)
+//         {
+//             printf("=\"%s\"", tag->attributes[i]->attributeValue);
+//         }
+//     }
 
-    printf(">\n");
+//     printf(">\n");
 
-    for (int i = 0; i < tag->tagCount; i++)
-    {
-        printTags(tag->children[i], depth + 1);
-    }
+//     for (int i = 0; i < tag->tagCount; i++)
+//     {
+//         printTags(tag->children[i], depth + 1);
+//     }
 
-    for (int i = 0; i < depth; i++)
-    {
-        printf(" ");
-    }
+//     for (int i = 0; i < depth; i++)
+//     {
+//         printf(" ");
+//     }
 
-    printf("</%s>\n", tag->tagName);
-}
+//     printf("</%s>\n", tag->tagName);
+// }
+
+static char *html = "<!doctype html><html lang=\"en\"><head><title>Example Domain</title><link rel=\"icon\" href=\"data:,\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><style>CSS</style></head><body><div><h1>Example Domain</h1><p>This domain is for use in documentation examples without needing permission. Avoid use in operations.</p><p><a href=\"https://iana.org/domains/example\">Learn more</a></p></div></body></html>";
 
 int main(int argc, char *argv[])
 {
-    // char *html = "<html attr1=\"value1\" attr2='value2'><script>this is ignored</script><style>This is ignored</style></html>";
-    // printf("%s\n", html);
-    // ParseState *parseState = newParseState();
-    // parseResponse(html, strlen(html), 1, parseState);
-    // HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
-    // CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
-    // if (result != CURLE_OK)
-    // {
-    //     return -1;
-    // }
+    printf("%s\n", html);
 
-    HtmlTag *htmlTag = parseHtml("https://www.example.com");
-    if (htmlTag == NULL)
+    clock_t start = clock();
+    for (long i = 0; i < 9999999; i++)
     {
-        printf("Error during html parse\n");
-        return 1;
+        ParseState *parseState = newParseState();
+        parseResponse(html, strlen(html), 1, parseState);
     }
 
-    printTags(htmlTag, 0);
+    clock_t end = clock();
+    double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
 
-    freeHtmlTag(htmlTag);
+    printf("Execution time: %f seconds\n", cpu_time_used);
+    // HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
+    //  CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
+    //  if (result != CURLE_OK)
+    //  {
+    //      return -1;
+    //  }
 
-    /* we are done with libcurl, so clean it up */
-    curl_global_cleanup();
+    // HtmlTag *htmlTag = parseHtml("https://www.example.com");
+    // if (htmlTag == NULL)
+    // {
+    //     printf("Error during html parse\n");
+    //     return 1;
+    // }
+
+    // printTags(htmlTag, 0);
+
+    // freeHtmlTag(htmlTag);
+
+    // /* we are done with libcurl, so clean it up */
+    // curl_global_cleanup();
 }
