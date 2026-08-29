@@ -4,7 +4,8 @@
 #include <string.h>
 #include "parser-structs.h"
 #include "parser-utils.h"
-#include "../utils/stack.h"
+#include "../stack/stack.h"
+#include "../arena/arena.h"
 
 static const char *ignoreTags[] = {"style", "script"};
 static const char *voidTags[] = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"};
@@ -68,7 +69,7 @@ int parseNextChar(ParseState *parseState, char c)
 
                 HtmlTag *currentTag = peekStack(parseState->htmlTags);
                 currentTag->tagCount--;
-                free(currentTag->children[currentTag->tagCount]);
+                // free(currentTag->children[currentTag->tagCount]);
                 currentTag->children[currentTag->tagCount] = NULL;
             }
         }
@@ -312,7 +313,8 @@ ParseState *newParseState()
         return NULL;
     }
 
-    HtmlTag *rootTag = malloc(sizeof(HtmlTag));
+    parseState->arena = newArena(sizeof(HtmlTag) * 100);
+    HtmlTag *rootTag = arenaAllocate(parseState->arena, sizeof(HtmlTag));
     rootTag->children = NULL;
     rootTag->attributeCount = 0;
     rootTag->tagCount = 0;
@@ -326,12 +328,12 @@ ParseState *newParseState()
     parseState->lastChar = '\0';
     parseState->maxSize = 100 * sizeof(parseState->currentItem);
     parseState->attributeValueMark = '\0';
-    parseState->currentItem = malloc(parseState->maxSize);
+    parseState->currentItem = arenaAllocate(parseState->arena, parseState->maxSize);
 
     return parseState;
 }
 
-HtmlTag *parseHtml(char *url)
+HtmlDoc *parseHtml(char *url)
 {
     CURL *curl;
 
@@ -388,5 +390,9 @@ HtmlTag *parseHtml(char *url)
 
     HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
     freeParseState(parseState, false);
-    return htmlTag;
+
+    HtmlDoc *doc = arenaAllocate(parseState->arena, sizeof(HtmlDoc));
+    doc->arena = parseState->arena;
+    doc->rootTag = htmlTag;
+    return doc;
 }

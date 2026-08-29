@@ -7,7 +7,6 @@ Stack *newStack(int capacity, int growthStep)
 {
     if (capacity <= 0 || growthStep <= 0)
     {
-        printf("Error Code: %d\n", errno);
         perror("stack -> all arguments should be higher than zero");
         return NULL;
     }

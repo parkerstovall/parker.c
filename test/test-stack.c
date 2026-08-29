@@ -1,6 +1,6 @@
 #include "../libs/unity/unity.h"
-#include "../src/utils/stack.h"
-#include "../src/utils/stack-structs.h"
+#include "../src/stack/stack.h"
+#include "../src/stack/stack-structs.h"
 
 void test_Stack_DefaultStackUsesDefaultValues(void)
 {

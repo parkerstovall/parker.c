@@ -2,7 +2,7 @@
 #include "../src/parser/parser.h"
 #include "../src/parser/parser-structs.h"
 #include "../src/parser/parser-utils.h"
-#include "../src/utils/stack.h"
+#include "../src/stack/stack.h"
 #include <string.h>
 
 static char ultra_basic_html[] = "<html></html>";
