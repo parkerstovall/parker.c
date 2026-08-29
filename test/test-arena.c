@@ -36,10 +36,10 @@ void test_Arena_AllocingWillUpdateCapacityIfNeeded(void)
 void test_Arena_AllocingWillUpdateCapacityIfNeededMultipleTimes(void)
 {
     Arena *arena = newArena(50);
-    void *ptr = arenaAllocate(arena, 100);
+    void *ptr = arenaAllocate(arena, 101);
     TEST_ASSERT_NOT_NULL(ptr);
-    TEST_ASSERT_EQUAL_size_t(100, arena->size);
-    TEST_ASSERT_EQUAL_size_t(150, arena->capacity);
+    TEST_ASSERT_EQUAL_size_t(101, arena->size);
+    TEST_ASSERT_EQUAL_size_t(200, arena->capacity);
 }
 
 void test_Arena_ReallocateWorks(void)
@@ -50,7 +50,7 @@ void test_Arena_ReallocateWorks(void)
     ptr[1] = 2;
     ptr[2] = 3;
 
-    int *ptr2 = areanaReallocate(arena, ptr, sizeof(int) * 3, sizeof(int) * 4);
+    int *ptr2 = areanReallocate(arena, ptr, sizeof(int) * 3, sizeof(int) * 4);
     TEST_ASSERT_EQUAL_INT(1, ptr2[0]);
     TEST_ASSERT_EQUAL_INT(2, ptr2[1]);
     TEST_ASSERT_EQUAL_INT(3, ptr2[2]);
@@ -67,7 +67,7 @@ void test_Arena_ReallocateChangesSize(void)
     ptr[2] = 3;
 
     TEST_ASSERT_EQUAL_size_t(oldSize, arena->size);
-    areanaReallocate(arena, ptr, oldSize, newSize);
+    areanReallocate(arena, ptr, oldSize, newSize);
     TEST_ASSERT_EQUAL_size_t(oldSize + newSize, arena->size);
 }
 

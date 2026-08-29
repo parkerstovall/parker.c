@@ -22,7 +22,7 @@ void *arenaAllocate(Arena *arena, size_t requested)
 {
     // First check if we have enough space
     size_t requestedSize = arena->size + requested;
-    if (requestedSize < arena->capacity)
+    if (requestedSize <= arena->capacity)
     {
         void *returnPtr = arena->content + arena->size;
         arena->size = requestedSize;
@@ -33,14 +33,14 @@ void *arenaAllocate(Arena *arena, size_t requested)
     size_t newSize = arena->capacity * 2;
     while (newSize <= requestedSize)
     {
-        newSize += arena->capacity;
+        newSize *= 2;
     }
 
     void *newContent = realloc(arena->content, newSize);
     if (!newContent)
     {
         printf("Error Code: %d\n", errno);
-        perror("*tmpTags");
+        perror("*newContent");
         return NULL;
     }
 
@@ -52,7 +52,7 @@ void *arenaAllocate(Arena *arena, size_t requested)
     return returnPtr;
 }
 
-void *areanaReallocate(Arena *arena, void *oldPtr, size_t oldSize, size_t newSize)
+void *areanReallocate(Arena *arena, void *oldPtr, size_t oldSize, size_t newSize)
 {
     void *newPtr = arenaAllocate(arena, newSize);
     memcpy(newPtr, oldPtr, oldSize);

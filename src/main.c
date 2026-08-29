@@ -1,64 +1,50 @@
 #include "parser/parser.h"
 #include "parser/parser-utils.h"
 #include "parser/parser-structs.h"
+#include "arena/arena.h"
 #include <time.h>
 
-// static void printTags(HtmlTag *tag, int depth)
-// {
-//     for (int i = 0; i < depth; i++)
-//     {
-//         printf(" ");
-//     }
+static void printTags(HtmlTag *tag, int depth)
+{
+    for (int i = 0; i < depth; i++)
+    {
+        printf(" ");
+    }
 
-//     printf("<%s", tag->tagName);
-//     for (int i = 0; i < tag->attributeCount; i++)
-//     {
-//         printf(" %s", tag->attributes[i]->attributeName);
+    printf("<%s", tag->tagName);
+    for (int i = 0; i < tag->attributeCount; i++)
+    {
+        printf(" %s", tag->attributes[i]->attributeName);
 
-//         if (tag->attributes[i]->attributeValue)
-//         {
-//             printf("=\"%s\"", tag->attributes[i]->attributeValue);
-//         }
-//     }
+        if (tag->attributes[i]->attributeValue)
+        {
+            printf("=\"%s\"", tag->attributes[i]->attributeValue);
+        }
+    }
 
-//     printf(">\n");
+    printf(">\n");
 
-//     for (int i = 0; i < tag->tagCount; i++)
-//     {
-//         printTags(tag->children[i], depth + 1);
-//     }
+    for (int i = 0; i < tag->tagCount; i++)
+    {
+        printTags(tag->children[i], depth + 1);
+    }
 
-//     for (int i = 0; i < depth; i++)
-//     {
-//         printf(" ");
-//     }
+    for (int i = 0; i < depth; i++)
+    {
+        printf(" ");
+    }
 
-//     printf("</%s>\n", tag->tagName);
-// }
+    printf("</%s>\n", tag->tagName);
+}
 
 static char *html = "<!doctype html><html lang=\"en\"><head><title>Example Domain</title><link rel=\"icon\" href=\"data:,\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><style>CSS</style></head><body><div><h1>Example Domain</h1><p>This domain is for use in documentation examples without needing permission. Avoid use in operations.</p><p><a href=\"https://iana.org/domains/example\">Learn more</a></p></div></body></html>";
 
-// Old 1: 41.133475 seconds
-// Old 2: 41.264032 seconds
-// Old 3: 41.180400 seconds
-
 int main(int argc, char *argv[])
 {
-    printf("%s\n", html);
-
-    clock_t start = clock();
-    for (long i = 0; i < 9999999; i++)
-    {
-        ParseState *parseState = newParseState();
-        parseResponse(html, strlen(html), 1, parseState);
-        freeParseState(parseState, true);
-    }
-
-    clock_t end = clock();
-    double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-
-    printf("Execution time: %f seconds\n", cpu_time_used);
-    // HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
+    printTags(htmlTag, 0);
     //  CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
     //  if (result != CURLE_OK)
     //  {
