@@ -331,7 +331,7 @@ ParseState *newParseState()
     return parseState;
 }
 
-HtmlTag *parseHtml(char *url)
+HtmlDoc *parseHtml(char *url)
 {
     CURL *curl;
 
@@ -388,5 +388,9 @@ HtmlTag *parseHtml(char *url)
 
     HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
     freeParseState(parseState, false);
-    return htmlTag;
+
+    HtmlDoc *doc = malloc(sizeof(HtmlDoc));
+    doc->arena = parseState->arena;
+    doc->rootTag = htmlTag;
+    return doc;
 }

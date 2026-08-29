@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../stack/stack.h"
+#include "../arena/arena-structs.h"
 
 typedef struct HtmlAttribute
 {
@@ -22,6 +23,12 @@ typedef struct HtmlTag
     struct HtmlTag **children;
 } HtmlTag;
 
+typedef struct HtmlDoc
+{
+    Arena *arena;
+    HtmlTag *rootTag;
+} HtmlDoc;
+
 typedef struct ParseState
 {
     bool inTag;
@@ -32,6 +39,7 @@ typedef struct ParseState
     size_t maxSize;
     int currentIndex;
     Stack *htmlTags;
+    Arena *arena;
     char lastChar;
     char attributeValueMark;
     char *currentItem;

@@ -38,6 +38,10 @@
 
 static char *html = "<!doctype html><html lang=\"en\"><head><title>Example Domain</title><link rel=\"icon\" href=\"data:,\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><style>CSS</style></head><body><div><h1>Example Domain</h1><p>This domain is for use in documentation examples without needing permission. Avoid use in operations.</p><p><a href=\"https://iana.org/domains/example\">Learn more</a></p></div></body></html>";
 
+// Old 1: 41.133475 seconds
+// Old 2: 41.264032 seconds
+// Old 3: 41.180400 seconds
+
 int main(int argc, char *argv[])
 {
     printf("%s\n", html);
@@ -47,6 +51,7 @@ int main(int argc, char *argv[])
     {
         ParseState *parseState = newParseState();
         parseResponse(html, strlen(html), 1, parseState);
+        freeParseState(parseState, true);
     }
 
     clock_t end = clock();
