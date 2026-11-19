@@ -5,45 +5,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void freeHtmlTag(HtmlTag *htmlTag)
-{
-    if (!htmlTag)
-    {
-        return;
-    }
-
-    for (int i = 0; i < htmlTag->tagCount; i++)
-    {
-        HtmlTag *tag = htmlTag->children[i];
-        if (!tag)
-        {
-            continue;
-        }
-
-        freeHtmlTag(tag);
-    }
-
-    for (int i = 0; i < htmlTag->attributeCount; i++)
-    {
-        if (!htmlTag->attributes[i]->attributeName && strcmp("CONTENT", htmlTag->tagName) != 0)
-        {
-            free(htmlTag->attributes[i]->attributeName);
-        }
-
-        if (htmlTag->attributes[i]->attributeValue)
-        {
-            free(htmlTag->attributes[i]->attributeValue);
-        }
-    }
-
-    if (htmlTag->tagName && strcmp("TEXT", htmlTag->tagName) != 0 && strcmp("ROOT", htmlTag->tagName) != 0)
-    {
-        free(htmlTag->tagName);
-    }
-
-    free(htmlTag);
-}
-
 void freeParseState(ParseState *parseState, bool freeTags)
 {
     if (!parseState)
