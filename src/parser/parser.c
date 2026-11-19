@@ -13,7 +13,7 @@ static const char *voidTags[] = {"area", "base", "br", "col", "embed", "hr", "im
 static const size_t ignoreTagCount = sizeof(ignoreTags) / sizeof(ignoreTags[0]);
 static const size_t voidTagCount = sizeof(voidTags) / sizeof(voidTags[0]);
 
-static bool isIgnoredTag(const char *tagName)
+static bool isNotIgnoredTag(const char *tagName)
 {
     if (tagName == NULL)
     {
@@ -60,7 +60,7 @@ int parseNextChar(ParseState *parseState, char c)
         }
         else if (c == '>' && parseState->inTag)
         {
-            if (isIgnoredTag(parseState->currentItem))
+            if (isNotIgnoredTag(parseState->currentItem))
             {
                 parseState->inIgnoredTag = false;
                 parseState->inTag = false;
@@ -77,7 +77,7 @@ int parseNextChar(ParseState *parseState, char c)
         {
             if (c == ' ')
             {
-                if (isIgnoredTag(parseState->currentItem))
+                if (isNotIgnoredTag(parseState->currentItem))
                 {
                     parseState->inIgnoredTag = false;
                     parseState->inTag = false;
@@ -86,7 +86,7 @@ int parseNextChar(ParseState *parseState, char c)
 
                     HtmlTag *currentTag = peekStack(parseState->htmlTags);
                     currentTag->tagCount--;
-                    free(currentTag->children[currentTag->tagCount]);
+                    // free(currentTag->children[currentTag->tagCount]);
                     currentTag->children[currentTag->tagCount] = NULL;
                 }
             }
@@ -96,7 +96,7 @@ int parseNextChar(ParseState *parseState, char c)
             }
         }
     }
-    else if (c == '<')
+    else if (c == '/' && parseState->lastChar == '<')
     {
         if (parseState->currentIndex > 0)
         {
@@ -176,7 +176,7 @@ int parseNextChar(ParseState *parseState, char c)
             }
 
             HtmlTag *newTag = peekStack(parseState->htmlTags);
-            if (!isIgnoredTag(newTag->tagName))
+            if (!isNotIgnoredTag(newTag->tagName))
             {
                 parseState->inIgnoredTag = true;
                 parseState->inTag = false;
@@ -218,7 +218,7 @@ int parseNextChar(ParseState *parseState, char c)
                 }
 
                 HtmlTag *newTag = peekStack(parseState->htmlTags);
-                if (!isIgnoredTag(newTag->tagName))
+                if (!isNotIgnoredTag(newTag->tagName))
                 {
                     parseState->inIgnoredTag = true;
                     parseState->inTag = false;

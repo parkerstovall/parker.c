@@ -1,0 +1,1230 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <meta property="og:site_name" content="Vimm's Lair">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vimm.net/emulate">
+    <meta property="og:image" content="https://vimm.net/images/vimmbutton-100-black.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="100">
+    <meta property="og:image:height" content="100">
+    <meta name="description" content="Download popular emulators for every console at Vimm&#039;s Lair">
+    <meta property="og:title" content="Emulation Lair">
+    <meta property="og:description" content="Download popular emulators for every console at Vimm&#039;s Lair">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vimm&#039;s Lair: Emulation Lair</title>
+    <link rel="icon" sizes="100x100" href="/images/vimmbutton-100.png" type="image/png">
+    <link rel="icon" sizes="32x32" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/css/global3.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marmelad&display=swap">
+    <link rel="canonical" href="https://vimm.net/emulate">
+    <style>
+        caption {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #FFFF99;
+            position: relative;
+        }
+
+        input {
+            border: 1px solid transparent;
+            transition: border-color .5s ease;
+        }
+
+        input:hover {
+            border: 1px solid white;
+            transition: 0s;
+        }
+
+        .year {
+            position: absolute;
+            right: 10px;
+            bottom: 1px;
+            font-size: 11pt;
+            cursor: help;
+        }
+
+        .tableContent {
+            width: 100%;
+            max-width: 650px;
+        }
+    </style>
+    <script src="/js/menu.min.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4BESX0QC2N"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-4BESX0QC2N');
+    </script>
+    <link rel="stylesheet" href="https://static.cheftoondiligord.site/static/assets/style.min.css?query=1750085049">
+    <script>var blocked_0 = true;</script>
+    <script async src="https://cdn.fuseplatform.net/publift/tags/2/2108/fuse.js" onload="blocked_0 = false"></script>
+    <script data-sdk="l/1.1.11" data-cfasync="false" nowprocket src="https://html-load.com/loader.min.js"
+        charset="UTF-8"></script>
+    <script
+        nowprocket>(function () { function t() { const n = ["264yBZVTo", "attributes", "onLine", "split", "/loader.min.js", "data", "textContent", "width: 100vw; height: 100vh; z-index: 2147483647; position: fixed; left: 0; top: 0;", "8547759BWWkdP", "5146550Tgqmju", "remove", "btoa", "map", "outerHTML", "title", "append", "Script not found", "&url=", "iframe", "close-error-report", "&domain=", "now", "text", "setAttribute", "1HUiCMZ", "54IVsyqr", "check", "https://report.error-report.com/modal?eventId=&error=", "Failed to load script: ", "setItem", "281799vIQkUs", "hostname", "getComputedStyle", "display", "concat", "104ZFpQha", "appendChild", "getBoundingClientRect", "POST", "3630090wHdbHg", "height", "currentScript", "none", "length", "&error=", "removeEventListener", "width", "VGhlcmUgd2FzIGEgcHJvYmxlbSBsb2FkaW5nIHRoZSBwYWdlLiBQbGVhc2UgY2xpY2sgT0sgdG8gbGVhcm4gbW9yZS4=", "loader_light", "Cannot find currentScript", "addEventListener", "https://report.error-report.com/modal?eventId=&error=Vml0YWwgQVBJIGJsb2NrZWQ%3D&domain=", '/loader.min.js"]', "name", "querySelectorAll", "toString", "as_modal_loaded", "contains", "reload", "createElement", "Fallback Failed", "https://report.error-report.com/modal?eventId=", "value", "type", "href", "style", 'script[src*="//', "forEach", "last_bfa_at", "_fa_", "https://", "as_", "from", "error", "documentElement", "location", "write", "link,style", "localStorage", "host", "1858126RHrbsr", "connection", "loader-check", "rtt", "querySelector", "https://error-report.com/report", "as_index", "script", "searchParams", "recovery", "236988QujiCq", "message", "src", "49659nUBJkg", "url", "charCodeAt"]; return (t = function () { return n })() } function n(o, r) { const e = t(); return (n = function (t, n) { return e[t -= 295] })(o, r) } (function () { const o = n, r = t(); for (; ;)try { if (647036 === -parseInt(o(378)) / 1 * (parseInt(o(338)) / 2) + parseInt(o(351)) / 3 * (parseInt(o(354)) / 4) + parseInt(o(297)) / 5 + parseInt(o(379)) / 6 * (parseInt(o(384)) / 7) + parseInt(o(389)) / 8 * (-parseInt(o(348)) / 9) + parseInt(o(363)) / 10 + -parseInt(o(362)) / 11) break; r.push(r.shift()) } catch (t) { r.push(r.shift()) } })(), (() => { "use strict"; const t = n, o = t => { const o = n; let r = 0; for (let n = 0, e = t[o(301)]; n < e; n++)r = (r << 5) - r + t[o(353)](n), r |= 0; return r }, r = class { static [t(380)]() { const n = t; var r, e; let c = arguments[n(301)] > 0 && void 0 !== arguments[0] ? arguments[0] : n(347), a = !(arguments[n(301)] > 1 && void 0 !== arguments[1]) || arguments[1]; const i = Date[n(375)](), s = i - i % 864e5, d = s - 864e5, l = s + 864e5, u = n(329) + o(c + "_" + s), w = n(329) + o(c + "_" + d), h = n(329) + o(c + "_" + l); return u !== w && u !== h && w !== h && !(null !== (r = null !== (e = window[u]) && void 0 !== e ? e : window[w]) && void 0 !== r ? r : window[h]) && (a && (window[u] = !0, window[w] = !0, window[h] = !0), !0) } }; function e(o, r) { const e = t; try { window[e(336)][e(383)](window[e(333)][e(337)] + e(327) + btoa(e(326)), Date[e(375)]()[e(313)]()) } catch (t) { } try { !async function (t, o) { const r = e; try { if (await async function () { const t = n; try { if (await async function () { const t = n; if (!navigator[t(356)]) return !0; try { await fetch(location[t(322)]) } catch (t) { return !0 } return !1 }()) return !0; try { if (navigator[t(339)][t(341)] > 1e3) return !0 } catch (t) { } return !1 } catch (t) { return !1 } }()) return; const e = await async function (t) { const o = n; try { const n = new URL(o(343)); n[o(346)][o(369)](o(321), o(306)), n[o(346)][o(369)](o(368), ""), n[o(346)][o(369)](o(349), t), n[o(346)][o(369)](o(352), location[o(322)]); const r = await fetch(n[o(322)], { method: o(296) }); return await r[o(376)]() } catch (t) { return o(331) } }(t); document[r(312)](r(335))[r(325)]((t => { const n = r; t[n(364)](), t[n(360)] = "" })); let a = !1; window[r(308)](r(349), (t => { const n = r; n(314) === t[n(359)] && (a = !0) })); const i = document[r(317)](r(372)); i[r(350)] = r(319)[r(388)](e, r(302))[r(388)](btoa(t), r(374))[r(388)](o, r(371))[r(388)](btoa(location[r(322)])), i[r(377)](r(323), r(361)), document[r(332)][r(390)](i); const s = t => { const n = r; n(373) === t[n(359)] && (i[n(364)](), window[n(303)](n(349), s)) }; window[r(308)](r(349), s); const d = () => { const t = r, n = i[t(295)](); return t(300) !== window[t(386)](i)[t(387)] && 0 !== n[t(304)] && 0 !== n[t(298)] }; let l = !1; const u = setInterval((() => { if (!document[r(315)](i)) return clearInterval(u); d() || l || (clearInterval(u), l = !0, c(t, o)) }), 1e3); setTimeout((() => { a || l || (l = !0, c(t, o)) }), 3e3) } catch (n) { c(t, o) } }(o, r) } catch (t) { c(o, r) } } function c(n, o) { const r = t; try { const t = atob(r(305)); confirm(t) ? location[r(322)] = r(381)[r(388)](btoa(n), r(374))[r(388)](o, r(371))[r(388)](btoa(location[r(322)])) : location[r(316)]() } catch (t) { location[r(322)] = r(309)[r(388)](o) } } (() => { const n = t, o = t => n(382)[n(388)](t); let c = ""; try { var a, i; null === (a = document[n(299)]) || void 0 === a || a[n(364)](); const t = null !== (i = function () { const t = n, o = t(344) + window[t(365)](window[t(333)][t(385)]); return window[o] }()) && void 0 !== i ? i : 0; if (!r[n(380)](n(340), !1)) return; const s = "html-load.com,fb.html-load.com,content-loader.com,fb.content-loader.com"[n(357)](","); c = s[0]; const d = document[n(342)](n(324)[n(388)](s[t], n(310))); if (!d) throw new Error(n(370)); const l = Array[n(330)](d[n(355)])[n(366)]((t => ({ name: t[n(311)], value: t[n(320)] }))); if (t + 1 < s[n(301)]) return function (t, o) { const r = n, e = r(344) + window[r(365)](window[r(333)][r(385)]); window[e] = o }(0, t + 1), void function (t, o) { const r = n; var e; const c = document[r(317)](r(345)); o[r(325)]((t => { const n = r; let { name: o, value: e } = t; return c[n(377)](o, e) })), c[r(377)](r(350), r(328)[r(388)](t, r(358))), document[r(334)](c[r(367)]); const a = null === (e = document[r(299)]) || void 0 === e ? void 0 : e[r(367)]; if (!a) throw new Error(r(307)); document[r(334)](a) }(s[t + 1], l); e(o(n(318)), c) } catch (t) { try { t = t[n(313)]() } catch (t) { } e(o(t), c) } })() })(); })();</script>
+</head>
+
+<body>
+    <nav id="menu">
+        <div class="menu-segment" style="background:url('/images/menu/sprite4.php') 0px 0px; height:10px"></div>
+        <div class="menu-segment"
+            style="background:#000035 url('/images/menu/sprite4.php') 0px -10px; text-align:center; position:relative">
+            <a href="/"
+                onmouseover="document.getElementById('menuTip').style.removeProperty('display'); document.images['logo'].style.opacity = .5"
+                onmouseout="document.getElementById('menuTip').style.display = 'none'; document.images['logo'].style.opacity = 1">
+                <img style="display:block; margin:auto; transition: opacity .2s" id="logo"
+                    src="/images/vimmbutton-100.png" width="100" height="100" alt="">
+                <div id="menuTip"
+                    style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:100%; color:white; display:none">
+                    Vimm's Lair</div>
+            </a>
+        </div>
+        <div class="menu-segment" style="background:url('/images/menu/sprite4.php') 0px -110px; height:16px"></div>
+        <div id="mainMenu" class="menu"
+            style="background-image:url('/images/menu/sprite4.php#svgView(viewBox(0,125,160,1))'); background-repeat:repeat-y; background-size:160px 1px">
+            <a href="/emulate" class="active">Emulation Lair</a><a href="/vault">The Vault</a><a href="/manual">Manual
+                Project</a><a href="/romhacking">ROM Hacking</a><a href="/bbs">Message Boards</a><a href="/links">FFA
+                Links</a>
+        </div>
+        <div class="menu-segment" style="background:url('/images/menu/sprite4.php') 0px -125px; height:16px"></div>
+        <div class="menu-segment" style="background:url('/images/menu/sprite4.php') 0px -142px; height:10px"></div>
+
+        <div class="menu-footer"
+            style="display:flex; display:none; flex-grow:1; flex-direction:column; justify-content:space-between; margin:0px auto 2px auto">
+            <div class="menu"><a href="#"
+                    onclick="loadDialog('/bbs/ajax/login-dialog.php', 'login-dialog'); return false">Login /
+                    Register</a></div>
+            <div class="menu" style="display:none; margin:0px auto 2px auto"><a href="#">Test</a></div>
+        </div>
+
+    </nav>
+    <nav id="navbar">
+        <div class="navbar">
+            <a href="/" style="padding-left:2px; display:flex; align-items:center"><img class="navLogo"
+                    src="/images/vimmbutton-100.png" title="Home" alt="Home"></a>
+
+            <select class="mainMenuDropdown rounded" onchange="location.href=this.value">
+                <option hidden disabled>-Main Menu-</option>
+                <option value="/emulate" selected>Emulation Lair</option>
+                <option value="/vault">The Vault</option>
+                <option value="/manual">Manual Project</option>
+                <option value="/romhacking">ROM Hacking</option>
+                <option value="/bbs">Message Boards</option>
+                <option value="/links">FFA Links</option>
+            </select>
+
+            <a href="/emulate" class="navlink rounded">Emulation Lair</a>
+            <div class="dropdown">
+                <button class="dropbtn rounded">The Vault
+                    <span style="font-size:75%">&#9660;</span>
+                </button>
+                <div class="dropdown-content">
+                    <div class="rounded" style="height:100%; overflow:hidden">
+                        <a href="/vault/">Home</a>
+                        <a href="/vault/Atari2600">Atari 2600</a><a href="/vault/Atari5200">Atari 5200</a><a
+                            href="/vault/NES">Nintendo</a><a href="/vault/SMS">Master System</a><a
+                            href="/vault/Atari7800">Atari 7800</a><a href="/vault/TG16">TurboGrafx-16</a><a
+                            href="/vault/Genesis">Genesis</a><a href="/vault/TGCD">TurboGrafx-CD</a><a
+                            href="/vault/SNES">Super Nintendo</a><a href="/vault/CDi">CD-i</a><a
+                            href="/vault/SegaCD">Sega CD</a><a href="/vault/Jaguar">Jaguar</a><a href="/vault/32X">Sega
+                            32X</a><a href="/vault/Saturn">Saturn</a><a href="/vault/PS1">PlayStation</a><a
+                            href="/vault/JaguarCD">Jaguar CD</a><a href="/vault/N64">Nintendo 64</a><a
+                            href="/vault/Dreamcast">Dreamcast</a><a href="/vault/PS2">PlayStation 2</a><a
+                            href="/vault/GameCube">GameCube</a><a href="/vault/Xbox">Xbox</a><a
+                            href="/vault/Xbox360">Xbox 360</a><a href="/vault/X360-D">Xbox 360 (Digital)</a><a
+                            href="/vault/PS3">PlayStation 3</a><a href="/vault/Wii">Wii</a><a
+                            href="/vault/WiiWare">WiiWare</a><a href="/vault/WiiU">Wii U</a>
+                        <div>
+                            <hr>
+                        </div><a href="/vault/GB">Game Boy</a><a href="/vault/Lynx">Lynx</a><a href="/vault/GG">Game
+                            Gear</a><a href="/vault/VB">Virtual Boy</a><a href="/vault/GBC">Game Boy Color</a><a
+                            href="/vault/GBA">Game Boy Adv</a><a href="/vault/DS">Nintendo DS</a><a href="/vault/PSP">PS
+                            Portable</a><a href="/vault/3DS">Nintendo 3DS</a>
+                    </div>
+                </div>
+            </div>
+            <a href="/manual" class="navlink rounded">Manual Project</a>
+            <div class="dropdown">
+                <button class="dropbtn rounded">Message Boards
+                    <span style="font-size:75%">&#9660;</span>
+                </button>
+                <div class="dropdown-content">
+                    <div class="rounded" style="height:100%">
+                        <a href="/bbs/">Home</a>
+                        <a href="/bbs/?Board=1">Message Board</a><a href="/bbs/?Board=2">Request Board</a><a
+                            href="/bbs/?Board=3">Misc Board</a><a href="/bbs/?Board=4">Manual Project</a><a
+                            href="/bbs/?Board=5">ROM Hacking</a>
+                    </div>
+                </div>
+            </div>
+            <a href="/links" class="navlink rounded">FFA Links</a>
+        </div>
+    </nav>
+    <div id="ads" style="height:auto">
+        <div class="menuColor" style="display:flex; width:100%; height:90px">
+            <div style="flex:0 0 6px; background:url('/images/menu/sprite4.php') -160px 0px"></div>
+            <div
+                style="flex:1 0 4px; background-image:url('/images/menu/sprite4.php#svgView(viewBox(198,0,1,90))'); background-repeat:repeat-x; background-size:1px 90px">
+            </div>
+            <div style="flex:0 0 16px; background:url('/images/menu/sprite4.php') -166px 0px"></div>
+            <div style="flex:0 0 728px; background-image:url('/images/menu/sprite4.php#svgView(viewBox(181,0,1,90))'); background-repeat:repeat-x; background-size:1px 90px"
+                id="headerAdContainerFixed"><!-- 71161633/home_header/home_header -->
+                <div data-fuse="22052550483"></div>
+            </div>
+            <div style="flex:0 0 16px; background:url('/images/menu/sprite4.php') -182px 0px"></div>
+            <div
+                style="flex:1 0 0px; background-image:url('/images/menu/sprite4.php#svgView(viewBox(198,0,1,90))'); background-repeat:repeat-x; background-size:1px 90px">
+            </div>
+            <div style="flex:0 0 10px; background:url('/images/menu/sprite4.php') -198px 0px"></div>
+        </div>
+        <div style="height:10px"></div>
+    </div>
+    <div id="main">
+        <div style="display:flex; align-items:flex-start">
+            <div class="sidebarContainer" style="order:0; position:sticky; top:0px">
+                <div class="sidebarUnit"><!-- 71161633/home_vrec_2/home_vrec_2 -->
+                    <div data-fuse="22603077917" style="background-color:#000001"></div>
+                </div>
+            </div>
+            <div class="sidebarContainer" style="order:2; position:sticky; top:0px">
+                <div class="sidebarUnit"><!-- GAM 71161633/VIMM_vimm/home_vrec_3 -->
+                    <div data-fuse="home_vrec_3" style="background-color:#000001"></div>
+                </div>
+            </div>
+            <main class="mainContent" style="order:1">
+                <div id="headerAdContainerInline"></div>
+                <div class="mainContent">
+
+                    <img style="margin:0px auto; display:block" src="/images/emulate.png" alt="Emulation Lair"
+                        width="300" height="50">
+
+
+                    <p class="mainContent">Emulators are software which allow one system to act like
+                        another. Many people have written freeware emulators which allow your PC
+                        to emulate many different video game consoles. While emulators aren't
+                        perfect and can never replace the real thing, they can often get pretty close. Here you can
+                        download popular emulators
+                        for systems in The Vault.</p>
+
+                    <div style="text-align:center">Need help? Don't know what to do? Check out the <a
+                            href="/instructions">instructions</a>.</div>
+
+                    <div>&nbsp;</div>
+
+                    <form method="POST" action="//dl.vimm.net/" id="emulatorForm">
+                        <div>
+                            <input type="hidden" name="category" value="emulator">
+                            <input type="hidden" name="file">
+                            <input type="hidden" name="id">
+
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched September 11, 1977">1977</div>Atari 2600
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://stella-emu.github.io" title="Stella homepage"
+                                            class="external">Stella</a></td>
+                                    <td>7.0c<br><br>7.0</td>
+                                    <td>Jan 02, 2025<br><br>Oct 04, 2024</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=52"
+                                            title="Download Stella for Windows (3.32 MB)" alt="Download"><br><input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=53"
+                                            title="Download Stella for Mac (10.07 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 30, 1982">1982</div>Atari 5200
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://www.virtualdub.org/altirra.html" title="Altirra homepage"
+                                            class="external">Altirra</a></td>
+                                    <td>4.40</td>
+                                    <td>Dec 31, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=54"
+                                            title="Download Altirra for Windows (6.97 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched July 15, 1983">1983</div>Nintendo
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://fceux.com" title="FCEUX homepage" class="external">FCEUX</a>
+                                    </td>
+                                    <td>2.6.6</td>
+                                    <td>Aug 26, 2023</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=2"
+                                            title="Download FCEUX for Windows (4.53 MB)" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="http://0ldsk00l.ca/nestopia/" title="Nestopia UE homepage"
+                                            class="external">Nestopia UE</a></td>
+                                    <td>1.99.0</td>
+                                    <td>Sep 13, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=5"
+                                            title="Download Nestopia UE for Windows (1.15 MB)" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://github.com/punesemu/puNES" title="puNES homepage"
+                                            class="external">puNES</a></td>
+                                    <td>0.111</td>
+                                    <td>Feb 25, 2024</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=6"
+                                            title="Download puNES for Windows (22.07 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched May 31, 1986">1986</div>Atari 7800
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="http://7800.8bitdev.org/index.php/A7800_Emulator"
+                                            title="A7800 homepage" class="external">A7800</a></td>
+                                    <td>5.2</td>
+                                    <td>Jun 26, 2022</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=55"
+                                            title="Download A7800 for Windows (8.46 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=56"
+                                            title="Download A7800 for Mac (7.61 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched October 29, 1988">1988</div>Genesis
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://ares-emu.net/" title="ares homepage" class="external">ares</a>
+                                    </td>
+                                    <td>148</td>
+                                    <td>May 30, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=7"
+                                            title="Download ares for Windows (341 KB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=8"
+                                            title="Download ares for Mac (936 KB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 21, 1990">1990</div>Super Nintendo
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://github.com/bsnes-emu/bsnes" title="bsnes homepage"
+                                            class="external">bsnes</a></td>
+                                    <td>1.15</td>
+                                    <td>Mar 13, 2020</td>
+                                    <td><input type="image" src="/images/icons/win64.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=10"
+                                            title="Download bsnes for Win64 (4.19 MB)" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://www.snes9x.com/" title="SNES9x homepage"
+                                            class="external">SNES9x</a></td>
+                                    <td>1.63</td>
+                                    <td>Jul 15, 2024</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=11"
+                                            title="Download SNES9x for Windows (4.28 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=13"
+                                            title="Download SNES9x for Mac (3.23 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched December 03, 1991">1991</div>CD-i
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://www.cdiemu.org/" title="CD-i Emulator homepage"
+                                            class="external">CD-i Emulator</a></td>
+                                    <td>0.5.3-beta10</td>
+                                    <td>Aug 08, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=69"
+                                            title="Download CD-i Emulator for Windows (0 B)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 23, 1993">1993</div>Jaguar
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://www.richwhitehouse.com/jaguar/" title="BigPEmu homepage"
+                                            class="external">BigPEmu</a></td>
+                                    <td>1.221</td>
+                                    <td>May 10, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=3"
+                                            title="Download BigPEmu for Windows (493 KB)" alt="Download"> <input
+                                            type="image" src="/images/icons/ios.svg" width="32" height="32"
+                                            onclick="location.href='https://apps.apple.com/us/app/bigpemu/id6737359949'; return false"
+                                            title="Download BigPEmu for Ios" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 22, 1994">1994</div>Saturn
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://github.com/FCare/Kronos" title="Kronos homepage"
+                                            class="external">Kronos</a></td>
+                                    <td>2.7.0</td>
+                                    <td>Jan 16, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=14"
+                                            title="Download Kronos for Windows (12.15 MB)" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://github.com/StrikerX3/Ymir" title="Ymir homepage"
+                                            class="external">Ymir</a></td>
+                                    <td>0.3.3</td>
+                                    <td>Jun 21, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=80"
+                                            title="Download Ymir for Windows (0 B)" alt="Download"> <input type="image"
+                                            src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=81"
+                                            title="Download Ymir for Mac (0 B)" alt="Download"> <input type="image"
+                                            src="/images/icons/linux.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=82"
+                                            title="Download Ymir for Linux (0 B)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched December 03, 1994">1994</div>PlayStation
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://github.com/stenzek/duckstation" title="DuckStation homepage"
+                                            class="external">DuckStation</a></td>
+                                    <td>0.1-11580</td>
+                                    <td>Jul 07, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=15"
+                                            title="Download DuckStation for Windows (18.63 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=17"
+                                            title="Download DuckStation for Mac (38.51 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/android.svg" width="32" height="32"
+                                            onclick="location.href='https://play.google.com/store/apps/details?id=com.github.stenzek.duckstation'; return false"
+                                            title="Download DuckStation for Android" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div class="centered tableContent" style="font-size:10pt; text-align:right">Requires a <a
+                                    href="#"
+                                    onClick="document.forms['emulatorForm'].elements['file'].value='PS1_bios.zip'; document.forms['emulatorForm'].elements['id'].value=''; document.forms['emulatorForm'].submit(); return false">PS1
+                                    BIOS</a> to play games</div>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched June 23, 1996">1996</div>Nintendo 64
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://github.com/gopher64/gopher64" title="gopher64 homepage"
+                                            class="external">gopher64</a></td>
+                                    <td>1.1.34</td>
+                                    <td>Jul 09, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=22"
+                                            title="Download gopher64 for Windows (44.41 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=72"
+                                            title="Download gopher64 for Mac (0 B)" alt="Download"> <input type="image"
+                                            src="/images/icons/linux.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=73"
+                                            title="Download gopher64 for Linux (0 B)" alt="Download"> <input
+                                            type="image" src="/images/icons/android.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=74"
+                                            title="Download gopher64 for Android (0 B)" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://www.pj64-emu.com/" title="Project64 homepage"
+                                            class="external">Project64</a></td>
+                                    <td>3.0.1</td>
+                                    <td>Jun 18, 2021</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=19"
+                                            title="Download Project64 for Windows (4.16 MB)" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://github.com/Rosalie241/RMG" title="RMG homepage"
+                                            class="external">RMG</a></td>
+                                    <td>0.9.0</td>
+                                    <td>Jun 14, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=20"
+                                            title="Download RMG for Windows (72.74 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/linux.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=57"
+                                            title="Download RMG for Linux (81.08 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 27, 1998">1998</div>Dreamcast
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://github.com/flyinghead/flycast" title="Flycast homepage"
+                                            class="external">Flycast</a></td>
+                                    <td>2.7</td>
+                                    <td>Aug 19, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=24"
+                                            title="Download Flycast for Windows (4.68 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=77"
+                                            title="Download Flycast for Mac (4.68 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/android.svg" width="32" height="32"
+                                            onclick="location.href='https://play.google.com/store/apps/details?id=com.flycast.emulator'; return false"
+                                            title="Download Flycast for Android" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://redream.io/" title="Redream homepage"
+                                            class="external">Redream</a></td>
+                                    <td>1.5.0</td>
+                                    <td>Feb 17, 2019</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=25"
+                                            title="Download Redream for Windows (2.78 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/android.svg" width="32" height="32"
+                                            onclick="location.href='https://play.google.com/store/apps/details?id=io.recompiled.redream'; return false"
+                                            title="Download Redream for Android" alt="Download"> <input type="image"
+                                            src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=29"
+                                            title="Download Redream for Mac (2.46 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/linux.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=30"
+                                            title="Download Redream for Linux (1.99 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched March 04, 2000">2000</div>PlayStation 2
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://pcsx2.net/" title="PCSX2 homepage" class="external">PCSX2</a>
+                                    </td>
+                                    <td>2.8.2</td>
+                                    <td>Sep 04, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=27"
+                                            title="Download PCSX2 for Windows (25.54 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=28"
+                                            title="Download PCSX2 for Mac (18.19 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div class="centered tableContent" style="font-size:10pt; text-align:right">Requires a <a
+                                    href="#"
+                                    onClick="document.forms['emulatorForm'].elements['file'].value='PS2_bios.zip'; document.forms['emulatorForm'].elements['id'].value=''; document.forms['emulatorForm'].submit(); return false">PS2
+                                    BIOS</a> to play games</div>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched September 14, 2001">2001</div>GameCube
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://dolphin-emu.org/" title="Dolphin homepage"
+                                            class="external">Dolphin</a></td>
+                                    <td>2606</td>
+                                    <td>Jun 25, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=33"
+                                            title="Download Dolphin for Windows (24.1 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=34"
+                                            title="Download Dolphin for Mac (38.55 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/android.svg" width="32" height="32"
+                                            onclick="location.href='https://play.google.com/store/apps/details?id=org.dolphinemu.dolphinemu'; return false"
+                                            title="Download Dolphin for Android" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 15, 2001">2001</div>Xbox
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://xemu.app/" title="Xemu homepage" class="external">Xemu</a></td>
+                                    <td>0.8.10</td>
+                                    <td>Jan 15, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=31"
+                                            title="Download Xemu for Windows (11.26 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=32"
+                                            title="Download Xemu for Mac (20.22 MB)" alt="Download"> <input type="image"
+                                            src="/images/icons/linux.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=58"
+                                            title="Download Xemu for Linux (19.6 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 22, 2005">2005</div>Xbox 360
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://xenia.jp/" title="Xenia homepage" class="external">Xenia</a>
+                                    </td>
+                                    <td>1.0.2844</td>
+                                    <td>Feb 18, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=36"
+                                            title="Download Xenia for Windows (17.06 MB)" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://github.com/xenia-canary/xenia-canary"
+                                            title="Xenia Canary homepage" class="external">Xenia Canary</a></td>
+                                    <td>experimental</td>
+                                    <td>Mar 31, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=71"
+                                            title="Download Xenia Canary for Windows (4.51 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 11, 2006">2006</div>PlayStation 3
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://rpcs3.net/" title="RPCS3 homepage" class="external">RPCS3</a>
+                                    </td>
+                                    <td>0.0.41-19431</td>
+                                    <td>Jun 04, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=37"
+                                            title="Download RPCS3 for Windows (38.77 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=38"
+                                            title="Download RPCS3 for Mac (98.67 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 19, 2006">2006</div>Wii
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://dolphin-emu.org/" title="Dolphin homepage"
+                                            class="external">Dolphin</a></td>
+                                    <td>2606</td>
+                                    <td>Jun 25, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=33"
+                                            title="Download Dolphin for Windows (24.1 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=34"
+                                            title="Download Dolphin for Mac (38.55 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/android.svg" width="32" height="32"
+                                            onclick="location.href='https://play.google.com/store/apps/details?id=org.dolphinemu.dolphinemu'; return false"
+                                            title="Download Dolphin for Android" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 18, 2012">2012</div>Wii U
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://cemu.info/" title="Cemu homepage" class="external">Cemu</a>
+                                    </td>
+                                    <td>2.6</td>
+                                    <td>Feb 06, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=75"
+                                            title="Download Cemu for Windows (0 B)" alt="Download"> <input type="image"
+                                            src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=76"
+                                            title="Download Cemu for Mac (0 B)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched April 21, 1989">1989</div>Game Boy
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://mgba.io/" title="mGBA homepage" class="external">mGBA</a></td>
+                                    <td>0.10.5</td>
+                                    <td>Mar 08, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=41"
+                                            title="Download mGBA for Windows (15.31 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=42"
+                                            title="Download mGBA for Mac (30.71 MB)" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://sameboy.github.io/" title="SameBoy homepage"
+                                            class="external">SameBoy</a></td>
+                                    <td>1.0.3</td>
+                                    <td>Mar 04, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=39"
+                                            title="Download SameBoy for Windows (910 KB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=40"
+                                            title="Download SameBoy for Mac (3.36 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/ios.svg" width="32" height="32"
+                                            onclick="location.href='https://apps.apple.com/us/app/sameboy/id6496971295'; return false"
+                                            title="Download SameBoy for Ios" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://www.visualboyadvance-m.org/"
+                                            title="VisualBoyAdvance-M homepage" class="external">VisualBoyAdvance-M</a>
+                                    </td>
+                                    <td>2.2.3</td>
+                                    <td>Oct 25, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=43"
+                                            title="Download VisualBoyAdvance-M for Windows (14.09 MB)" alt="Download">
+                                        <input type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=44"
+                                            title="Download VisualBoyAdvance-M for Mac (22.5 MB)" alt="Download">
+                                    </td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched October 21, 1998">1998</div>Game Boy Color
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://mgba.io/" title="mGBA homepage" class="external">mGBA</a></td>
+                                    <td>0.10.5</td>
+                                    <td>Mar 08, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=41"
+                                            title="Download mGBA for Windows (15.31 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=42"
+                                            title="Download mGBA for Mac (30.71 MB)" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://sameboy.github.io/" title="SameBoy homepage"
+                                            class="external">SameBoy</a></td>
+                                    <td>1.0.3</td>
+                                    <td>Mar 04, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=39"
+                                            title="Download SameBoy for Windows (910 KB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=40"
+                                            title="Download SameBoy for Mac (3.36 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/ios.svg" width="32" height="32"
+                                            onclick="location.href='https://apps.apple.com/us/app/sameboy/id6496971295'; return false"
+                                            title="Download SameBoy for Ios" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://www.visualboyadvance-m.org/"
+                                            title="VisualBoyAdvance-M homepage" class="external">VisualBoyAdvance-M</a>
+                                    </td>
+                                    <td>2.2.3</td>
+                                    <td>Oct 25, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=43"
+                                            title="Download VisualBoyAdvance-M for Windows (14.09 MB)" alt="Download">
+                                        <input type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=44"
+                                            title="Download VisualBoyAdvance-M for Mac (22.5 MB)" alt="Download">
+                                    </td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched March 21, 2001">2001</div>Game Boy Advance
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://mgba.io/" title="mGBA homepage" class="external">mGBA</a></td>
+                                    <td>0.10.5</td>
+                                    <td>Mar 08, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=41"
+                                            title="Download mGBA for Windows (15.31 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=42"
+                                            title="Download mGBA for Mac (30.71 MB)" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://www.visualboyadvance-m.org/"
+                                            title="VisualBoyAdvance-M homepage" class="external">VisualBoyAdvance-M</a>
+                                    </td>
+                                    <td>2.2.3</td>
+                                    <td>Oct 25, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=43"
+                                            title="Download VisualBoyAdvance-M for Windows (14.09 MB)" alt="Download">
+                                        <input type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=44"
+                                            title="Download VisualBoyAdvance-M for Mac (22.5 MB)" alt="Download">
+                                    </td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched November 21, 2004">2004</div>Nintendo DS
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://melonds.kuribo64.net/" title="melonDS homepage"
+                                            class="external">melonDS</a></td>
+                                    <td>1.1</td>
+                                    <td>Nov 18, 2025</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=45"
+                                            title="Download melonDS for Windows (16.93 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=47"
+                                            title="Download melonDS for Mac (21.84 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched December 12, 2004">2004</div>PlayStation Portable
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://www.ppsspp.org/" title="PPSSPP homepage"
+                                            class="external">PPSSPP</a></td>
+                                    <td>1.20.4</td>
+                                    <td>May 16, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=48"
+                                            title="Download PPSSPP for Windows (21.03 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=49"
+                                            title="Download PPSSPP for Mac (30.26 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/android.svg" width="32" height="32"
+                                            onclick="location.href='https://play.google.com/store/apps/details?id=org.ppsspp.ppsspp'; return false"
+                                            title="Download PPSSPP for Android" alt="Download"> <input type="image"
+                                            src="/images/icons/ios.svg" width="32" height="32"
+                                            onclick="location.href='https://apps.apple.com/us/app/ppsspp-psp-emulator/id6496972903'; return false"
+                                            title="Download PPSSPP for Ios" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                            <table class="cellpadding1 rounded centered tableContent">
+                                <caption>
+                                    <div class="year" title="Launched February 26, 2011">2011</div>Nintendo 3DS
+                                </caption>
+                                <tr style="font-size:90%">
+                                    <th style="width:32%">Emulator</th>
+                                    <th style="width:18%">Version</th>
+                                    <th style="width:18%">Release Date</th>
+                                    <th style="width:32%">Download</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://azahar-emu.org/" title="Azahar homepage"
+                                            class="external">Azahar</a></td>
+                                    <td>2126.2</td>
+                                    <td>Oct 08, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=62"
+                                            title="Download Azahar for Windows (27.38 MB)" alt="Download"> <input
+                                            type="image" src="/images/icons/mac.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=66"
+                                            title="Download Azahar for Mac (105 MB)" alt="Download"> <input type="image"
+                                            src="/images/icons/android.svg" width="32" height="32"
+                                            onclick="location.href='https://play.google.com/store/apps/details?id=io.github.lime3ds.android'; return false"
+                                            title="Download Azahar for Android" alt="Download"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td><a href="https://github.com/AzaharPlus/AzaharPlus" title="AzaharPlus homepage"
+                                            class="external">AzaharPlus</a></td>
+                                    <td>2126.2-A</td>
+                                    <td>Oct 09, 2026</td>
+                                    <td><input type="image" src="/images/icons/windows.svg" width="32" height="32"
+                                            onClick="this.form.elements['id'].value=68"
+                                            title="Download AzaharPlus for Windows (56.94 MB)" alt="Download"></td>
+                                </tr>
+                            </table>
+                            <div>&nbsp;</div>
+                        </div>
+                    </form>
+
+                </div>
+                <div id="footerContainer">
+                    <div id="footerUnit"><!-- 71161633/desk_footer_sticky/desk_footer_sticky -->
+                        <div class="fuseFooter" data-fuse="22052548581"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>
