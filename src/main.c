@@ -61,6 +61,8 @@ int main(int argc, char *argv[])
     HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
     printTags(htmlTag, 0);
 
+    freeParseState(parseState, true);
+
     fclose(fptr);
     //  CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
     //  if (result != CURLE_OK)
