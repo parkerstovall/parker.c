@@ -13,12 +13,17 @@ static const char *voidTags[] = {"area", "base", "br", "col", "embed", "hr", "im
 static const size_t ignoreTagCount = sizeof(ignoreTags) / sizeof(ignoreTags[0]);
 static const size_t voidTagCount = sizeof(voidTags) / sizeof(voidTags[0]);
 
-static bool isNotIgnoredTag(const char *tagName)
+static bool isNotIgnoredTag(char *tagName, size_t length)
 {
     if (tagName == NULL)
     {
         return true;
     }
+
+    printf("len: %ld\n", length);
+    tagName[length] = '\0';
+
+    printf("compare: %s\n", tagName);
 
     for (size_t i = 0; i < ignoreTagCount; i++)
     {
@@ -55,29 +60,16 @@ int parseNextChar(ParseState *parseState, char c)
     {
         if (c == '<')
         {
+            printf("1current: %s\n", parseState->currentItem);
             parseState->inTag = true;
             return 0;
         }
-        else if (c == '>' && parseState->inTag)
-        {
-            if (isNotIgnoredTag(parseState->currentItem))
-            {
-                parseState->inIgnoredTag = false;
-                parseState->inTag = false;
-                parseState->currentIndex = 0;
-                popStack(parseState->htmlTags, true);
-
-                HtmlTag *currentTag = peekStack(parseState->htmlTags);
-                currentTag->tagCount--;
-                // free(currentTag->children[currentTag->tagCount]);
-                currentTag->children[currentTag->tagCount] = NULL;
-            }
-        }
         else if (parseState->inTag)
         {
-            if (c == ' ')
+            printf("3current: %s\n", parseState->currentItem);
+            if (c == ' ' || c == '>')
             {
-                if (isNotIgnoredTag(parseState->currentItem))
+                if (isNotIgnoredTag(parseState->currentItem, parseState->currentIndex))
                 {
                     parseState->inIgnoredTag = false;
                     parseState->inTag = false;
@@ -86,7 +78,6 @@ int parseNextChar(ParseState *parseState, char c)
 
                     HtmlTag *currentTag = peekStack(parseState->htmlTags);
                     currentTag->tagCount--;
-                    // free(currentTag->children[currentTag->tagCount]);
                     currentTag->children[currentTag->tagCount] = NULL;
                 }
             }
@@ -176,7 +167,7 @@ int parseNextChar(ParseState *parseState, char c)
             }
 
             HtmlTag *newTag = peekStack(parseState->htmlTags);
-            if (!isNotIgnoredTag(newTag->tagName))
+            if (!isNotIgnoredTag(newTag->tagName, parseState->currentIndex))
             {
                 parseState->inIgnoredTag = true;
                 parseState->inTag = false;
@@ -201,38 +192,36 @@ int parseNextChar(ParseState *parseState, char c)
     }
     else if (parseState->inTag && c == '>')
     {
-        if (parseState->currentIndex > 0)
+
+        if (!parseState->tagAdded)
         {
-            if (!parseState->tagAdded)
+            HtmlTag *currentTag = peekStack(parseState->htmlTags);
+            if (!tagNameNeedsClosingTag(currentTag->tagName))
             {
-                HtmlTag *currentTag = peekStack(parseState->htmlTags);
-                if (!tagNameNeedsClosingTag(currentTag->tagName))
-                {
-                    popStack(parseState->htmlTags, true);
-                }
-
-                int err = handleNewTag(parseState);
-                if (err != 0)
-                {
-                    return err;
-                }
-
-                HtmlTag *newTag = peekStack(parseState->htmlTags);
-                if (!isNotIgnoredTag(newTag->tagName))
-                {
-                    parseState->inIgnoredTag = true;
-                    parseState->inTag = false;
-                    parseState->tagAdded = false;
-                    parseState->currentIndex = 0;
-                }
+                popStack(parseState->htmlTags, true);
             }
-            else
+
+            int err = handleNewTag(parseState);
+            if (err != 0)
             {
-                int err = handleNewAttribute(parseState);
-                if (err != 0)
-                {
-                    return err;
-                }
+                return err;
+            }
+
+            HtmlTag *newTag = peekStack(parseState->htmlTags);
+            if (!isNotIgnoredTag(newTag->tagName, parseState->currentIndex - 1))
+            {
+                parseState->inIgnoredTag = true;
+                parseState->inTag = false;
+                parseState->tagAdded = false;
+                parseState->currentIndex = 0;
+            }
+        }
+        else if (parseState->currentIndex > 0)
+        {
+            int err = handleNewAttribute(parseState);
+            if (err != 0)
+            {
+                return err;
             }
         }
 

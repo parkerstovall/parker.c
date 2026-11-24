@@ -259,13 +259,24 @@ void test_Parser_ScriptAndStyleTagsIgnored(void)
 
 void test_Parser_InputTag(void)
 {
-    char *html = "<html attr1=\"value1\" attr2='value2'><script>this is ignored</script><style>This is ignored</style></html>";
+    char *html = "<input test=\"123\">";
+    char *expected = "ROOT";
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->tagName, strlen(expected));
+}
+
+void test_Parser_ScriptTagWithCarots(void)
+{
+    char *html = "<script>test<123>test123</script>";
     int expected = 0;
     ParseState *parseState = newParseState();
     parseResponse(html, strlen(html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
 
-    TEST_ASSERT_EQUAL_INT(expected, tag->children[0]->tagCount);
+    TEST_ASSERT_EQUAL_INT(expected, tag->tagCount);
 }
 
 void run_parser_tests()
@@ -291,4 +302,6 @@ void run_parser_tests()
     RUN_TEST(test_Parser_FindsTextNotes);
     RUN_TEST(test_Parser_CanUseEitherSingleOrDoubleQuotesForAttrValues);
     RUN_TEST(test_Parser_ScriptAndStyleTagsIgnored);
+    RUN_TEST(test_Parser_InputTag);
+    RUN_TEST(test_Parser_ScriptTagWithCarots);
 }
