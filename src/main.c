@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     printf("%lu\n", parseState->htmlTags->size);
     HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
     printf("<%s\n", htmlTag->tagName);
-    // printTags(htmlTag, 0);
+    printTags(htmlTag, 0);
 
     freeParseState(parseState, true);
 
