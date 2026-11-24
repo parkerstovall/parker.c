@@ -20,6 +20,7 @@ Arena *newArena(int capacity)
 
 void *arenaAllocate(Arena *arena, size_t requested)
 {
+    // printf("request: %lu, (%lu) of (%lu) already taken\n", requested, arena->size, arena->capacity);
     // First check if we have enough space
     size_t requestedSize = arena->size + requested;
     if (requestedSize <= arena->capacity)
@@ -55,6 +56,13 @@ void *arenaAllocate(Arena *arena, size_t requested)
 void *areanReallocate(Arena *arena, void *oldPtr, size_t oldSize, size_t newSize)
 {
     void *newPtr = arenaAllocate(arena, newSize);
+    if (!newPtr)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("*newPtr");
+        return NULL;
+    }
+
     memcpy(newPtr, oldPtr, oldSize);
     return newPtr;
 }

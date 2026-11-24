@@ -110,7 +110,6 @@ int handleAttributeValue(ParseState *parseState)
 {
     HtmlTag *tag = peekStack(parseState->htmlTags);
     HtmlAttribute *attr = tag->attributes[tag->attributeCount - 1];
-
     attr->attributeValue = arenaAllocate(parseState->arena, sizeof(char) * parseState->currentIndex + 1);
     if (attr->attributeValue == NULL)
     {
@@ -126,6 +125,7 @@ int handleAttributeValue(ParseState *parseState)
 
     attr->attributeValue[parseState->currentIndex] = '\0';
     parseState->currentIndex = 0;
+    parseState->currentItem[0] = '\0';
     parseState->attributeNameAdded = false;
     parseState->attributeValueMark = '\0';
     parseState->nonWhiteSpaceInTextContent = false;
@@ -187,6 +187,7 @@ int handleNewAttribute(ParseState *parseState)
     attr->attributeValue = NULL;
     tag->attributeCount++;
     parseState->currentIndex = 0;
+    parseState->currentItem[0] = '\0';
     parseState->attributeNameAdded = true;
     parseState->nonWhiteSpaceInTextContent = false;
 
@@ -253,13 +254,18 @@ int handleNewTag(ParseState *parseState)
 
     for (int j = 0; j < parseState->currentIndex; j++)
     {
+        if (parseState->currentItem[j] == '\n' || parseState->currentItem[j] == ' ')
+        {
+            break;
+        }
+
         tag->tagName[j] = parseState->currentItem[j];
     }
 
     tag->tagName[parseState->currentIndex] = '\0';
     parseState->currentIndex = 0;
+    parseState->currentItem[0] = '\0';
     parseState->nonWhiteSpaceInTextContent = false;
-
     return 0;
 }
 

@@ -20,14 +20,17 @@ static bool isNotIgnoredTag(char *tagName, size_t length)
         return true;
     }
 
-    printf("len: %ld\n", length);
-    tagName[length] = '\0';
+    char copy[length];
+    for (size_t i = 0; i < length; i++)
+    {
+        copy[i] = tagName[i];
+    }
 
-    printf("compare: %s\n", tagName);
+    copy[length] = '\0';
 
     for (size_t i = 0; i < ignoreTagCount; i++)
     {
-        if (strcasecmp(ignoreTags[i], tagName) == 0)
+        if (strcasecmp(ignoreTags[i], copy) == 0)
         {
             return false;
         }
@@ -60,28 +63,30 @@ int parseNextChar(ParseState *parseState, char c)
     {
         if (c == '<')
         {
-            printf("1current: %s\n", parseState->currentItem);
             parseState->inTag = true;
             return 0;
         }
         else if (parseState->inTag)
         {
-            printf("3current: %s\n", parseState->currentItem);
             if (c == ' ' || c == '>')
             {
-                if (isNotIgnoredTag(parseState->currentItem, parseState->currentIndex))
+                HtmlTag *ignoredTag = peekStack(parseState->htmlTags);
+                parseState->currentItem[parseState->currentIndex] = '\0';
+                if (strcasecmp(ignoredTag->tagName, parseState->currentItem) == 0)
                 {
                     parseState->inIgnoredTag = false;
-                    parseState->inTag = false;
-                    parseState->currentIndex = 0;
                     popStack(parseState->htmlTags, true);
 
                     HtmlTag *currentTag = peekStack(parseState->htmlTags);
                     currentTag->tagCount--;
                     currentTag->children[currentTag->tagCount] = NULL;
                 }
+
+                parseState->inTag = false;
+                parseState->currentIndex = 0;
+                parseState->currentItem[0] = '\0';
             }
-            else
+            else if (c != '/' || parseState->lastChar != '<')
             {
                 appendCharToItem(parseState, c);
             }
@@ -98,6 +103,7 @@ int parseNextChar(ParseState *parseState, char c)
             }
 
             parseState->currentIndex = 0;
+            parseState->currentItem[0] = '\0';
         }
 
         parseState->inTag = true;
@@ -113,6 +119,7 @@ int parseNextChar(ParseState *parseState, char c)
         }
 
         parseState->currentIndex = 0;
+        parseState->currentItem[0] = '\0';
     }
     else if (parseState->attributeNameAdded)
     {
@@ -160,6 +167,7 @@ int parseNextChar(ParseState *parseState, char c)
         }
         else if (!parseState->tagAdded)
         {
+            int tagLength = parseState->currentIndex;
             int err = handleNewTag(parseState);
             if (err != 0)
             {
@@ -167,11 +175,12 @@ int parseNextChar(ParseState *parseState, char c)
             }
 
             HtmlTag *newTag = peekStack(parseState->htmlTags);
-            if (!isNotIgnoredTag(newTag->tagName, parseState->currentIndex))
+            if (!isNotIgnoredTag(newTag->tagName, tagLength))
             {
                 parseState->inIgnoredTag = true;
                 parseState->inTag = false;
                 parseState->currentIndex = 0;
+                parseState->currentItem[0] = '\0';
             }
             else
             {
@@ -192,7 +201,6 @@ int parseNextChar(ParseState *parseState, char c)
     }
     else if (parseState->inTag && c == '>')
     {
-
         if (!parseState->tagAdded)
         {
             HtmlTag *currentTag = peekStack(parseState->htmlTags);
@@ -201,6 +209,7 @@ int parseNextChar(ParseState *parseState, char c)
                 popStack(parseState->htmlTags, true);
             }
 
+            int tagLength = parseState->currentIndex;
             int err = handleNewTag(parseState);
             if (err != 0)
             {
@@ -208,12 +217,13 @@ int parseNextChar(ParseState *parseState, char c)
             }
 
             HtmlTag *newTag = peekStack(parseState->htmlTags);
-            if (!isNotIgnoredTag(newTag->tagName, parseState->currentIndex - 1))
+            if (!isNotIgnoredTag(newTag->tagName, tagLength))
             {
                 parseState->inIgnoredTag = true;
                 parseState->inTag = false;
                 parseState->tagAdded = false;
                 parseState->currentIndex = 0;
+                parseState->currentItem[0] = '\0';
             }
         }
         else if (parseState->currentIndex > 0)
@@ -236,6 +246,7 @@ int parseNextChar(ParseState *parseState, char c)
         parseState->attributeNameAdded = false;
         parseState->attributeValueMark = false;
         parseState->currentIndex = 0;
+        parseState->currentItem[0] = '\0';
     }
     // Skip closing tags
     else if (parseState->inTag && (c == '/' || c == '!'))
@@ -257,6 +268,7 @@ int parseNextChar(ParseState *parseState, char c)
         {
             parseState->inTag = false;
             parseState->currentIndex = 0;
+            parseState->currentItem[0] = '\0';
             parseState->nonWhiteSpaceInTextContent = false;
             return 0;
         }

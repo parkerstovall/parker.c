@@ -15,6 +15,11 @@ static void printTags(HtmlTag *tag, int depth)
     printf("<%s", tag->tagName);
     for (int i = 0; i < tag->attributeCount; i++)
     {
+        if (!tag->attributes[i]->attributeName)
+        {
+            printf("UNKOWN");
+        }
+
         printf(" %s", tag->attributes[i]->attributeName);
 
         if (tag->attributes[i]->attributeValue)
@@ -58,8 +63,10 @@ int main(int argc, char *argv[])
         parseResponse(myString, strlen(myString), 1, parseState);
     }
 
+    printf("%lu\n", parseState->htmlTags->size);
     HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
-    printTags(htmlTag, 0);
+    printf("<%s\n", htmlTag->tagName);
+    // printTags(htmlTag, 0);
 
     freeParseState(parseState, true);
 

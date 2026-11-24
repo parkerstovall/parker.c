@@ -275,7 +275,7 @@ void test_Parser_ScriptTagWithCarots(void)
     ParseState *parseState = newParseState();
     parseResponse(html, strlen(html), 1, parseState);
     HtmlTag *tag = popStack(parseState->htmlTags, false);
-
+    printf("%d\n", tag->tagCount);
     TEST_ASSERT_EQUAL_INT(expected, tag->tagCount);
 }
 
