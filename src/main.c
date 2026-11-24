@@ -56,6 +56,12 @@ int main(int argc, char *argv[])
     }
 
     char *myString = malloc(sizeof(char) * 2500);
+    if (!myString)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("*myString");
+        exit(EXIT_FAILURE);
+    }
 
     ParseState *parseState = newParseState();
     while (fgets(myString, 2500, fptr))
@@ -65,7 +71,6 @@ int main(int argc, char *argv[])
 
     printf("%lu\n", parseState->htmlTags->size);
     HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
-    printf("<%s\n", htmlTag->tagName);
     printTags(htmlTag, 0);
 
     freeParseState(parseState, true);

@@ -36,7 +36,7 @@ int handleTextNode(ParseState *parseState)
     {
         printf("Error Code: %d\n", errno);
         perror("attributeValue");
-        return errno;
+        exit(EXIT_FAILURE);
     }
 
     for (int j = 0; j < parseState->currentIndex; j++)
@@ -51,7 +51,7 @@ int handleTextNode(ParseState *parseState)
     {
         printf("Error Code: %d\n", errno);
         perror("htmlTags");
-        return errno;
+        exit(EXIT_FAILURE);
     }
 
     tag->children = NULL;
@@ -66,7 +66,7 @@ int handleTextNode(ParseState *parseState)
         {
             printf("Error Code: %d\n", errno);
             perror("currentTag->children");
-            return errno;
+            exit(EXIT_FAILURE);
         }
     }
     else
@@ -80,7 +80,7 @@ int handleTextNode(ParseState *parseState)
             {
                 printf("Error Code: %d\n", errno);
                 perror("*tmpTags");
-                return errno;
+                exit(EXIT_FAILURE);
             }
 
             currentTag->children = tmpTags;
@@ -93,7 +93,7 @@ int handleTextNode(ParseState *parseState)
     {
         printf("Error Code: %d\n", errno);
         perror("tag->attributes");
-        return errno;
+        exit(EXIT_FAILURE);
     }
 
     tag->attributes[0] = textAttr;
@@ -115,7 +115,7 @@ int handleAttributeValue(ParseState *parseState)
     {
         printf("Error Code: %d\n", errno);
         perror("attributeName");
-        return errno;
+        exit(EXIT_FAILURE);
     }
 
     for (int j = 0; j < parseState->currentIndex; j++)
@@ -143,7 +143,7 @@ int handleNewAttribute(ParseState *parseState)
         {
             printf("Error Code: %d\n", errno);
             perror("tag->attributes");
-            return errno;
+            exit(EXIT_FAILURE);
         }
     }
     else
@@ -155,7 +155,7 @@ int handleNewAttribute(ParseState *parseState)
         {
             printf("Error Code: %d\n", errno);
             perror("*tmpAttributes");
-            return errno;
+            exit(EXIT_FAILURE);
         }
 
         tag->attributes = tmpAttributes;
@@ -166,7 +166,7 @@ int handleNewAttribute(ParseState *parseState)
     {
         printf("Error Code: %d\n", errno);
         perror("htmlAttribute");
-        return errno;
+        exit(EXIT_FAILURE);
     }
 
     HtmlAttribute *attr = tag->attributes[tag->attributeCount];
@@ -175,7 +175,7 @@ int handleNewAttribute(ParseState *parseState)
     {
         printf("Error Code: %d\n", errno);
         perror("attributeName");
-        return errno;
+        exit(EXIT_FAILURE);
     }
 
     for (int j = 0; j < parseState->currentIndex; j++)
@@ -201,7 +201,7 @@ int handleNewTag(ParseState *parseState)
     {
         printf("Error Code: %d\n", errno);
         perror("htmlTags");
-        return errno;
+        exit(EXIT_FAILURE);
     }
 
     tag->children = NULL;
@@ -217,7 +217,7 @@ int handleNewTag(ParseState *parseState)
         {
             printf("Error Code: %d\n", errno);
             perror("currentTag->children");
-            return errno;
+            exit(EXIT_FAILURE);
         }
     }
     else
@@ -231,7 +231,7 @@ int handleNewTag(ParseState *parseState)
             {
                 printf("Error Code: %d\n", errno);
                 perror("*tmpTags");
-                return errno;
+                exit(EXIT_FAILURE);
             }
 
             currentTag->children = tmpTags;
@@ -249,7 +249,7 @@ int handleNewTag(ParseState *parseState)
     {
         printf("Error Code: %d\n", errno);
         perror("tagName");
-        return errno;
+        exit(EXIT_FAILURE);
     }
 
     for (int j = 0; j < parseState->currentIndex; j++)
@@ -285,7 +285,7 @@ int appendCharToItem(ParseState *parseState, char c)
         {
             printf("Error Code: %d\n", errno);
             perror("*tmp");
-            return errno;
+            exit(EXIT_FAILURE);
         }
 
         parseState->currentItem = tmp;

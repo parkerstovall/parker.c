@@ -8,7 +8,7 @@ Stack *newStack(int capacity, int growthStep)
     if (capacity <= 0 || growthStep <= 0)
     {
         perror("stack -> all arguments should be higher than zero");
-        return NULL;
+        exit(EXIT_FAILURE);
     }
 
     Stack *stack = malloc(sizeof(Stack));
@@ -16,7 +16,7 @@ Stack *newStack(int capacity, int growthStep)
     {
         printf("Error Code: %d\n", errno);
         perror("stack-");
-        return NULL;
+        exit(EXIT_FAILURE);
     }
 
     stack->size = 0;
@@ -28,7 +28,7 @@ Stack *newStack(int capacity, int growthStep)
         printf("Error Code: %d\n", errno);
         perror("stack->items");
         free(stack);
-        return NULL;
+        exit(EXIT_FAILURE);
     }
 
     return stack;
@@ -49,7 +49,7 @@ Stack *pushStack(Stack *stack, void *item)
         {
             printf("Error Code: %d\n", errno);
             perror("stack: tempItems");
-            return stack;
+            exit(EXIT_FAILURE);
         }
 
         stack->capacity = newCapacity;
@@ -84,7 +84,7 @@ void *popStack(Stack *stack, bool resize)
         {
             printf("Error Code: %d\n", errno);
             perror("stack: tempItems");
-            return item;
+            exit(EXIT_FAILURE);
         }
 
         stack->capacity = newCapacity;

@@ -8,11 +8,24 @@ Arena *newArena(int capacity)
     if (capacity <= 0)
     {
         perror("newArena -> all arguments should be higher than zero");
-        return NULL;
+        exit(EXIT_FAILURE);
     }
 
     Arena *arena = malloc(sizeof(Arena));
+    if (!arena)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("*arena");
+        exit(EXIT_FAILURE);
+    }
+
     arena->content = malloc((size_t)capacity);
+    if (!arena->content)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("arena->content");
+        exit(EXIT_FAILURE);
+    }
     arena->capacity = (size_t)capacity;
     arena->size = 0;
     return arena;
@@ -20,7 +33,6 @@ Arena *newArena(int capacity)
 
 void *arenaAllocate(Arena *arena, size_t requested)
 {
-    // printf("request: %lu, (%lu) of (%lu) already taken\n", requested, arena->size, arena->capacity);
     // First check if we have enough space
     size_t requestedSize = arena->size + requested;
     if (requestedSize <= arena->capacity)
@@ -32,6 +44,7 @@ void *arenaAllocate(Arena *arena, size_t requested)
 
     // Otherwise, double arena size and THEN allocate
     size_t newSize = arena->capacity * 2;
+    printf("req: (%lu), new: (%lu), cur: (%lu)\n", requestedSize, newSize, arena->size);
     while (newSize <= requestedSize)
     {
         newSize *= 2;
@@ -42,7 +55,17 @@ void *arenaAllocate(Arena *arena, size_t requested)
     {
         printf("Error Code: %d\n", errno);
         perror("*newContent");
-        return NULL;
+        exit(EXIT_FAILURE);
+    }
+
+    if (newContent == NULL)
+    {
+        printf("Arena allocation failed\n");
+    }
+    else
+    {
+        printf("Arena reallocated to %lu, requested is: %lu\n", newSize, requestedSize);
+        printf("Current memory is %lu, requested additional %lu\n", arena->size, requested);
     }
 
     arena->content = newContent;
@@ -60,7 +83,7 @@ void *areanReallocate(Arena *arena, void *oldPtr, size_t oldSize, size_t newSize
     {
         printf("Error Code: %d\n", errno);
         perror("*newPtr");
-        return NULL;
+        exit(EXIT_FAILURE);
     }
 
     memcpy(newPtr, oldPtr, oldSize);
