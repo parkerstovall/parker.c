@@ -201,35 +201,38 @@ int parseNextChar(ParseState *parseState, char c)
     }
     else if (parseState->inTag && c == '>')
     {
-        if (!parseState->tagAdded)
+        if (parseState->currentIndex > 0)
         {
-            HtmlTag *currentTag = peekStack(parseState->htmlTags);
-            if (!tagNameNeedsClosingTag(currentTag->tagName))
+            if (!parseState->tagAdded)
             {
-                popStack(parseState->htmlTags, true);
-            }
+                HtmlTag *currentTag = peekStack(parseState->htmlTags);
+                if (!tagNameNeedsClosingTag(currentTag->tagName))
+                {
+                    popStack(parseState->htmlTags, true);
+                }
 
-            int err = handleNewTag(parseState);
-            if (err != 0)
-            {
-                return err;
-            }
+                int err = handleNewTag(parseState);
+                if (err != 0)
+                {
+                    return err;
+                }
 
-            HtmlTag *newTag = peekStack(parseState->htmlTags);
-            if (!isNotIgnoredTag(newTag->tagName))
-            {
-                parseState->inIgnoredTag = true;
-                parseState->inTag = false;
-                parseState->tagAdded = false;
-                parseState->currentIndex = 0;
+                HtmlTag *newTag = peekStack(parseState->htmlTags);
+                if (!isNotIgnoredTag(newTag->tagName))
+                {
+                    parseState->inIgnoredTag = true;
+                    parseState->inTag = false;
+                    parseState->tagAdded = false;
+                    parseState->currentIndex = 0;
+                }
             }
-        }
-        else if (parseState->currentIndex > 0)
-        {
-            int err = handleNewAttribute(parseState);
-            if (err != 0)
+            else
             {
-                return err;
+                int err = handleNewAttribute(parseState);
+                if (err != 0)
+                {
+                    return err;
+                }
             }
         }
 
