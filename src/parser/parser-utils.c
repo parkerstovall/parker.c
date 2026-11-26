@@ -20,10 +20,18 @@ void freeParseState(ParseState *parseState, bool freeTags)
     free(parseState);
 }
 
-HtmlTag *peekCurrentTag(ParseState *parseState)
+void *getPointer(ParseState *parseState, size_t size)
 {
-    size_t *tagLocation = peekStack(parseState->htmlTags);
-    return parseState->arena->content + *tagLocation;
+    ArenaAllocateResp resp = arenaAllocate(parseState->arena, size);
+    parseState->arena = resp.arena;
+    return resp.ptr;
+}
+
+void *getPointerRealloc(ParseState *parseState, void *oldPtr, size_t oldSize, size_t newSize)
+{
+    ArenaAllocateResp resp = areanReallocate(parseState->arena, oldPtr, oldSize, newSize);
+    parseState->arena = resp.arena;
+    return resp.ptr;
 }
 
 int handleTextNode(ParseState *parseState)
@@ -34,10 +42,10 @@ int handleTextNode(ParseState *parseState)
         return 0;
     }
 
-    HtmlAttribute *textAttr = arenaAllocate(parseState->arena, sizeof(HtmlAttribute));
+    HtmlAttribute *textAttr = getPointer(parseState, sizeof(HtmlAttribute));
     textAttr->attributeName = "CONTENT";
 
-    textAttr->attributeValue = arenaAllocate(parseState->arena, sizeof(char) * parseState->currentIndex + 1);
+    textAttr->attributeValue = getPointer(parseState, sizeof(char) * parseState->currentIndex + 1);
     if (textAttr->attributeValue == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -52,7 +60,7 @@ int handleTextNode(ParseState *parseState)
 
     textAttr->attributeValue[parseState->currentIndex] = '\0';
 
-    HtmlTag *tag = arenaAllocate(parseState->arena, sizeof(HtmlTag));
+    HtmlTag *tag = getPointer(parseState, sizeof(HtmlTag));
     if (tag == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -64,10 +72,10 @@ int handleTextNode(ParseState *parseState)
     tag->tagCount = 0;
     tag->tagName = "TEXT";
 
-    HtmlTag *currentTag = peekCurrentTag(parseState);
+    HtmlTag *currentTag = peekStack(parseState->htmlTags);
     if (currentTag->tagCount == 0)
     {
-        currentTag->children = arenaAllocate(parseState->arena, sizeof(HtmlTag *));
+        currentTag->children = getPointer(parseState, sizeof(HtmlTag *));
         if (!currentTag->children)
         {
             printf("Error Code: %d\n", errno);
@@ -81,7 +89,7 @@ int handleTextNode(ParseState *parseState)
         if (newSize > currentTag->maxSize)
         {
             newSize = sizeof(HtmlTag *) * (currentTag->tagCount * 2);
-            HtmlTag **tmpTags = areanReallocate(parseState->arena, currentTag->children, currentTag->maxSize, newSize);
+            HtmlTag **tmpTags = getPointerRealloc(parseState, currentTag->children, currentTag->maxSize, newSize);
             if (!tmpTags)
             {
                 printf("Error Code: %d\n", errno);
@@ -94,7 +102,7 @@ int handleTextNode(ParseState *parseState)
         }
     }
 
-    tag->attributes = arenaAllocate(parseState->arena, sizeof(HtmlAttribute *));
+    tag->attributes = getPointer(parseState, sizeof(HtmlAttribute *));
     if (!tag->attributes)
     {
         printf("Error Code: %d\n", errno);
@@ -114,9 +122,9 @@ int handleTextNode(ParseState *parseState)
 
 int handleAttributeValue(ParseState *parseState)
 {
-    HtmlTag *tag = peekCurrentTag(parseState);
+    HtmlTag *tag = peekStack(parseState->htmlTags);
     HtmlAttribute *attr = tag->attributes[tag->attributeCount - 1];
-    attr->attributeValue = arenaAllocate(parseState->arena, sizeof(char) * parseState->currentIndex + 1);
+    attr->attributeValue = getPointer(parseState, sizeof(char) * parseState->currentIndex + 1);
     if (attr->attributeValue == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -141,10 +149,10 @@ int handleAttributeValue(ParseState *parseState)
 
 int handleNewAttribute(ParseState *parseState)
 {
-    HtmlTag *tag = peekCurrentTag(parseState);
+    HtmlTag *tag = peekStack(parseState->htmlTags);
     if (tag->attributeCount == 0)
     {
-        tag->attributes = arenaAllocate(parseState->arena, sizeof(HtmlAttribute *));
+        tag->attributes = getPointer(parseState, sizeof(HtmlAttribute *));
         if (!tag->attributes)
         {
             printf("Error Code: %d\n", errno);
@@ -156,7 +164,7 @@ int handleNewAttribute(ParseState *parseState)
     {
         size_t oldSize = sizeof(HtmlAttribute *) * (tag->attributeCount);
         size_t newSize = sizeof(HtmlAttribute *) * (tag->attributeCount + 1);
-        HtmlAttribute **tmpAttributes = areanReallocate(parseState->arena, tag->attributes, oldSize, newSize);
+        HtmlAttribute **tmpAttributes = getPointerRealloc(parseState, tag->attributes, oldSize, newSize);
         if (!tmpAttributes)
         {
             printf("Error Code: %d\n", errno);
@@ -167,7 +175,7 @@ int handleNewAttribute(ParseState *parseState)
         tag->attributes = tmpAttributes;
     }
 
-    tag->attributes[tag->attributeCount] = arenaAllocate(parseState->arena, sizeof(HtmlAttribute));
+    tag->attributes[tag->attributeCount] = getPointer(parseState, sizeof(HtmlAttribute));
     if (tag->attributes[tag->attributeCount] == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -176,7 +184,7 @@ int handleNewAttribute(ParseState *parseState)
     }
 
     HtmlAttribute *attr = tag->attributes[tag->attributeCount];
-    attr->attributeName = arenaAllocate(parseState->arena, sizeof(char) * parseState->currentIndex + 1);
+    attr->attributeName = getPointer(parseState, sizeof(char) * parseState->currentIndex + 1);
     if (attr->attributeName == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -202,8 +210,7 @@ int handleNewAttribute(ParseState *parseState)
 
 int handleNewTag(ParseState *parseState)
 {
-    size_t *tagLocation = &parseState->arena->size;
-    HtmlTag *tag = arenaAllocate(parseState->arena, sizeof(HtmlTag));
+    HtmlTag *tag = getPointer(parseState, sizeof(HtmlTag));
     if (tag == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -215,10 +222,10 @@ int handleNewTag(ParseState *parseState)
     tag->tagCount = 0;
     tag->maxSize = 0;
 
-    HtmlTag *currentTag = peekCurrentTag(parseState);
+    HtmlTag *currentTag = peekStack(parseState->htmlTags);
     if (currentTag->tagCount == 0)
     {
-        currentTag->children = arenaAllocate(parseState->arena, sizeof(HtmlTag *));
+        currentTag->children = getPointer(parseState, sizeof(HtmlTag *));
         currentTag->maxSize = sizeof(HtmlTag *);
         if (!currentTag->children)
         {
@@ -233,7 +240,7 @@ int handleNewTag(ParseState *parseState)
         if (newSize > currentTag->maxSize)
         {
             newSize = sizeof(HtmlTag *) * (currentTag->tagCount * 2);
-            HtmlTag **tmpTags = areanReallocate(parseState->arena, currentTag->children, currentTag->maxSize, newSize);
+            HtmlTag **tmpTags = getPointerRealloc(parseState, currentTag->children, currentTag->maxSize, newSize);
             if (!tmpTags)
             {
                 printf("Error Code: %d\n", errno);
@@ -246,15 +253,12 @@ int handleNewTag(ParseState *parseState)
         }
     }
 
-    printf("Tag Name: %s\n", currentTag->tagName);
-    printf("Tag Count: %d\n", currentTag->tagCount);
-
     currentTag->children[currentTag->tagCount] = tag;
     currentTag->tagCount++;
 
-    pushStack(parseState->htmlTags, tagLocation);
+    pushStack(parseState->htmlTags, tag);
     tag->attributeCount = 0;
-    tag->tagName = arenaAllocate(parseState->arena, parseState->currentIndex + 1);
+    tag->tagName = getPointer(parseState, parseState->currentIndex + 1);
     if (tag->tagName == NULL)
     {
         printf("Error Code: %d\n", errno);
@@ -290,7 +294,7 @@ int appendCharToItem(ParseState *parseState, char c)
     if (newSize >= parseState->maxSize)
     {
         newSize = parseState->maxSize * 2;
-        void *tmp = areanReallocate(parseState->arena, parseState->currentItem, parseState->maxSize, newSize);
+        void *tmp = getPointerRealloc(parseState, parseState->currentItem, parseState->maxSize, newSize);
         if (!tmp)
         {
             printf("Error Code: %d\n", errno);

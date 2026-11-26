@@ -70,14 +70,14 @@ int parseNextChar(ParseState *parseState, char c)
         {
             if (c == ' ' || c == '>')
             {
-                HtmlTag *ignoredTag = peekCurrentTag(parseState);
+                HtmlTag *ignoredTag = peekStack(parseState->htmlTags);
                 parseState->currentItem[parseState->currentIndex] = '\0';
                 if (strcasecmp(ignoredTag->tagName, parseState->currentItem) == 0)
                 {
                     parseState->inIgnoredTag = false;
                     popStack(parseState->htmlTags, true);
 
-                    HtmlTag *currentTag = peekCurrentTag(parseState);
+                    HtmlTag *currentTag = peekStack(parseState->htmlTags);
                     currentTag->tagCount--;
                     currentTag->children[currentTag->tagCount] = NULL;
                 }
@@ -174,7 +174,7 @@ int parseNextChar(ParseState *parseState, char c)
                 exit(EXIT_FAILURE);
             }
 
-            HtmlTag *newTag = peekCurrentTag(parseState);
+            HtmlTag *newTag = peekStack(parseState->htmlTags);
             if (!isNotIgnoredTag(newTag->tagName, tagLength))
             {
                 parseState->inIgnoredTag = true;
@@ -203,7 +203,7 @@ int parseNextChar(ParseState *parseState, char c)
     {
         if (!parseState->tagAdded)
         {
-            HtmlTag *currentTag = peekCurrentTag(parseState);
+            HtmlTag *currentTag = peekStack(parseState->htmlTags);
             if (!tagNameNeedsClosingTag(currentTag->tagName))
             {
                 popStack(parseState->htmlTags, true);
@@ -216,7 +216,7 @@ int parseNextChar(ParseState *parseState, char c)
                 exit(EXIT_FAILURE);
             }
 
-            HtmlTag *newTag = peekCurrentTag(parseState);
+            HtmlTag *newTag = peekStack(parseState->htmlTags);
             if (!isNotIgnoredTag(newTag->tagName, tagLength))
             {
                 parseState->inIgnoredTag = true;
@@ -235,7 +235,7 @@ int parseNextChar(ParseState *parseState, char c)
             }
         }
 
-        HtmlTag *currentTag = peekCurrentTag(parseState);
+        HtmlTag *currentTag = peekStack(parseState->htmlTags);
         if (!tagNameNeedsClosingTag(currentTag->tagName))
         {
             popStack(parseState->htmlTags, true);
@@ -314,15 +314,14 @@ ParseState *newParseState()
         exit(EXIT_FAILURE);
     }
 
-    parseState->arena = newArena(sizeof(HtmlTag) * 10);
-    size_t *tagLoc = &parseState->arena->size;
-    HtmlTag *rootTag = arenaAllocate(parseState->arena, sizeof(HtmlTag) + sizeof("ROOT"));
+    parseState->arena = newArena(sizeof(HtmlTag) * 100);
+    HtmlTag *rootTag = getPointer(parseState, sizeof(HtmlTag) + sizeof("ROOT"));
     rootTag->children = NULL;
     rootTag->attributeCount = 0;
     rootTag->tagCount = 0;
     rootTag->tagName = "ROOT";
     parseState->htmlTags = newStack(10, 10);
-    pushStack(parseState->htmlTags, tagLoc);
+    pushStack(parseState->htmlTags, rootTag);
 
     parseState->currentIndex = 0;
     parseState->inTag = false;
@@ -330,8 +329,7 @@ ParseState *newParseState()
     parseState->lastChar = '\0';
     parseState->maxSize = 100 * sizeof(parseState->currentItem);
     parseState->attributeValueMark = '\0';
-    parseState->currentItem = arenaAllocate(parseState->arena, parseState->maxSize);
-
+    parseState->currentItem = getPointer(parseState, parseState->maxSize);
     return parseState;
 }
 
@@ -390,11 +388,10 @@ HtmlDoc *parseHtml(char *url)
         exit(EXIT_FAILURE);
     }
 
-    size_t *tagLoc = popStack(parseState->htmlTags, false);
-    HtmlTag *htmlTag = parseState->arena->content + *tagLoc;
+    HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
     freeParseState(parseState, false);
 
-    HtmlDoc *doc = arenaAllocate(parseState->arena, sizeof(HtmlDoc));
+    HtmlDoc *doc = getPointer(parseState, sizeof(HtmlDoc));
     doc->arena = parseState->arena;
     doc->rootTag = htmlTag;
     return doc;

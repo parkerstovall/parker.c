@@ -5,7 +5,7 @@
 
 void freeParseState(ParseState *parseState, bool freeTag);
 
-HtmlTag *peekCurrentTag(ParseState *parseState);
+void *getPointer(ParseState *parseState, size_t size);
 
 int handleTextNode(ParseState *parseState);
 

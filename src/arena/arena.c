@@ -28,18 +28,23 @@ Arena *newArena(int capacity)
     }
     arena->capacity = (size_t)capacity;
     arena->size = 0;
+    arena->parent = NULL;
     return arena;
 }
 
-void *arenaAllocate(Arena *arena, size_t requested)
+ArenaAllocateResp arenaAllocate(Arena *arena, size_t requested)
 {
+    ArenaAllocateResp resp;
+    resp.arena = arena;
+
     // First check if we have enough space
     size_t requestedSize = arena->size + requested;
     if (requestedSize <= arena->capacity)
     {
         void *returnPtr = arena->content + arena->size;
         arena->size = requestedSize;
-        return returnPtr;
+        resp.ptr = returnPtr;
+        return resp;
     }
 
     // Otherwise, double arena size and THEN allocate
@@ -49,34 +54,27 @@ void *arenaAllocate(Arena *arena, size_t requested)
         newSize *= 2;
     }
 
-    void *newContent = realloc(arena->content, newSize);
-    if (!newContent)
-    {
-        printf("Error Code: %d\n", errno);
-        perror("*newContent");
-        exit(EXIT_FAILURE);
-    }
+    Arena *largerArena = newArena(arena->capacity * 2);
+    largerArena->parent = arena;
 
-    arena->content = newContent;
-    arena->capacity = newSize;
-
-    void *returnPtr = arena->content + arena->size;
-    arena->size = requestedSize;
-    return returnPtr;
+    void *returnPtr = largerArena->content + largerArena->size;
+    resp.arena = largerArena;
+    resp.ptr = returnPtr;
+    return resp;
 }
 
-void *areanReallocate(Arena *arena, void *oldPtr, size_t oldSize, size_t newSize)
+ArenaAllocateResp areanReallocate(Arena *arena, void *oldPtr, size_t oldSize, size_t newSize)
 {
-    void *newPtr = arenaAllocate(arena, newSize);
-    if (!newPtr)
+    ArenaAllocateResp resp = arenaAllocate(arena, newSize);
+    if (!resp.ptr)
     {
         printf("Error Code: %d\n", errno);
-        perror("*newPtr");
+        perror("*resp.ptr");
         exit(EXIT_FAILURE);
     }
 
-    memcpy(newPtr, oldPtr, oldSize);
-    return newPtr;
+    memcpy(resp.ptr, oldPtr, oldSize);
+    return resp;
 }
 
 void freeArena(Arena *arena)
