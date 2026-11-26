@@ -8,7 +8,7 @@ Arena *newArena(int capacity)
     if (capacity <= 0)
     {
         perror("newArena -> all arguments should be higher than zero");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
 
     Arena *arena = malloc(sizeof(Arena));
@@ -16,7 +16,7 @@ Arena *newArena(int capacity)
     {
         printf("Error Code: %d\n", errno);
         perror("*arena");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
 
     arena->content = malloc((size_t)capacity);
@@ -24,7 +24,7 @@ Arena *newArena(int capacity)
     {
         printf("Error Code: %d\n", errno);
         perror("arena->content");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
     arena->capacity = (size_t)capacity;
     arena->size = 0;
@@ -54,7 +54,7 @@ ArenaAllocateResp arenaAllocate(Arena *arena, size_t requested)
         newSize *= 2;
     }
 
-    Arena *largerArena = newArena(arena->capacity * 2);
+    Arena *largerArena = newArena(newSize);
     largerArena->parent = arena;
 
     void *returnPtr = largerArena->content + largerArena->size;
@@ -79,6 +79,11 @@ ArenaAllocateResp areanReallocate(Arena *arena, void *oldPtr, size_t oldSize, si
 
 void freeArena(Arena *arena)
 {
+    if (arena->parent != NULL)
+    {
+        freeArena(arena->parent);
+    }
+
     free(arena->content);
     free(arena);
 }

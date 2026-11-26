@@ -27,19 +27,21 @@ void test_Arena_AllocingWillUpdateSize(void)
 void test_Arena_AllocingWillUpdateCapacityIfNeeded(void)
 {
     Arena *arena = newArena(75);
-    void *ptr = (arenaAllocate(arena, 100)).ptr;
-    TEST_ASSERT_NOT_NULL(ptr);
-    TEST_ASSERT_EQUAL_size_t(100, arena->size);
-    TEST_ASSERT_EQUAL_size_t(150, arena->capacity);
+    ArenaAllocateResp resp = arenaAllocate(arena, 100);
+    Arena *newArena = resp.arena;
+    TEST_ASSERT_NOT_NULL(resp.ptr);
+    TEST_ASSERT_EQUAL_size_t(0, newArena->size);
+    TEST_ASSERT_EQUAL_size_t(150, newArena->capacity);
 }
 
 void test_Arena_AllocingWillUpdateCapacityIfNeededMultipleTimes(void)
 {
     Arena *arena = newArena(50);
-    void *ptr = (arenaAllocate(arena, 101)).ptr;
-    TEST_ASSERT_NOT_NULL(ptr);
-    TEST_ASSERT_EQUAL_size_t(101, arena->size);
-    TEST_ASSERT_EQUAL_size_t(200, arena->capacity);
+    ArenaAllocateResp resp = arenaAllocate(arena, 101);
+    Arena *newArena = resp.arena;
+    TEST_ASSERT_NOT_NULL(resp.ptr);
+    TEST_ASSERT_EQUAL_size_t(0, newArena->size);
+    TEST_ASSERT_EQUAL_size_t(200, newArena->capacity);
 }
 
 void test_Arena_ReallocateWorks(void)
@@ -71,6 +73,16 @@ void test_Arena_ReallocateChangesSize(void)
     TEST_ASSERT_EQUAL_size_t(oldSize + newSize, arena->size);
 }
 
+void test_Arena_AllocationCreatesNewArenaWithParent(void)
+{
+    Arena *arena = newArena(75);
+    ArenaAllocateResp resp = arenaAllocate(arena, 100);
+    Arena *newArena = resp.arena;
+    TEST_ASSERT_NOT_EQUAL_PTR(arena->content, newArena->content);
+    TEST_ASSERT_NOT_EQUAL_PTR(arena, newArena);
+    TEST_ASSERT_EQUAL_PTR(arena, newArena->parent);
+}
+
 void run_arena_tests(void)
 {
     RUN_TEST(test_Arena_CanCreateArena);
@@ -80,4 +92,5 @@ void run_arena_tests(void)
     RUN_TEST(test_Arena_AllocingWillUpdateCapacityIfNeededMultipleTimes);
     RUN_TEST(test_Arena_ReallocateWorks);
     RUN_TEST(test_Arena_ReallocateChangesSize);
+    RUN_TEST(test_Arena_AllocationCreatesNewArenaWithParent);
 }

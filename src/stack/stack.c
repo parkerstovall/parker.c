@@ -8,7 +8,7 @@ Stack *newStack(int capacity, int growthStep)
     if (capacity <= 0 || growthStep <= 0)
     {
         perror("stack -> all arguments should be higher than zero");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
 
     Stack *stack = malloc(sizeof(Stack));
@@ -16,7 +16,7 @@ Stack *newStack(int capacity, int growthStep)
     {
         printf("Error Code: %d\n", errno);
         perror("stack-");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
 
     stack->size = 0;

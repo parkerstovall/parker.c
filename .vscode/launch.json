@@ -16,6 +16,19 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "preLaunchTask": "make debug"
+        },
+        {
+            "name": "(gdb) Debug Tests",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/test.out",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "preLaunchTask": "make test-norun"
         }
     ]
 }

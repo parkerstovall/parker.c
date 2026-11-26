@@ -15,6 +15,19 @@
             ]
         },
         {
+            "label": "make test-norun",
+            "type": "shell",
+            "command": "make clean && make test-norun",
+            "args": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
             "type": "cppbuild",
             "label": "C/C++: gcc build active file",
             "command": "/usr/bin/gcc",

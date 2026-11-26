@@ -11,9 +11,9 @@ int main(void)
 {
     UNITY_BEGIN();
 
-    // run_parser_tests();
+    run_parser_tests();
     run_stack_tests();
-    // run_arena_tests();
+    run_arena_tests();
 
     return UNITY_END();
 }
