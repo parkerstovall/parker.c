@@ -44,7 +44,6 @@ void *arenaAllocate(Arena *arena, size_t requested)
 
     // Otherwise, double arena size and THEN allocate
     size_t newSize = arena->capacity * 2;
-    printf("req: (%lu), new: (%lu), cur: (%lu)\n", requestedSize, newSize, arena->size);
     while (newSize <= requestedSize)
     {
         newSize *= 2;
@@ -56,16 +55,6 @@ void *arenaAllocate(Arena *arena, size_t requested)
         printf("Error Code: %d\n", errno);
         perror("*newContent");
         exit(EXIT_FAILURE);
-    }
-
-    if (newContent == NULL)
-    {
-        printf("Arena allocation failed\n");
-    }
-    else
-    {
-        printf("Arena reallocated to %lu, requested is: %lu\n", newSize, requestedSize);
-        printf("Current memory is %lu, requested additional %lu\n", arena->size, requested);
     }
 
     arena->content = newContent;
