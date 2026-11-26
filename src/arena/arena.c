@@ -12,21 +12,39 @@ Arena *newArena(int capacity)
     }
 
     Arena *arena = malloc(sizeof(Arena));
+    if (!arena)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("*arena");
+        return NULL;
+    }
+
     arena->content = malloc((size_t)capacity);
+    if (!arena->content)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("arena->content");
+        return NULL;
+    }
     arena->capacity = (size_t)capacity;
     arena->size = 0;
+    arena->parent = NULL;
     return arena;
 }
 
-void *arenaAllocate(Arena *arena, size_t requested)
+ArenaAllocateResp arenaAllocate(Arena *arena, size_t requested)
 {
+    ArenaAllocateResp resp;
+    resp.arena = arena;
+
     // First check if we have enough space
     size_t requestedSize = arena->size + requested;
     if (requestedSize <= arena->capacity)
     {
         void *returnPtr = arena->content + arena->size;
         arena->size = requestedSize;
-        return returnPtr;
+        resp.ptr = returnPtr;
+        return resp;
     }
 
     // Otherwise, double arena size and THEN allocate
@@ -36,31 +54,36 @@ void *arenaAllocate(Arena *arena, size_t requested)
         newSize *= 2;
     }
 
-    void *newContent = realloc(arena->content, newSize);
-    if (!newContent)
-    {
-        printf("Error Code: %d\n", errno);
-        perror("*newContent");
-        return NULL;
-    }
+    Arena *largerArena = newArena(newSize);
+    largerArena->parent = arena;
 
-    arena->content = newContent;
-    arena->capacity = newSize;
-
-    void *returnPtr = arena->content + arena->size;
-    arena->size = requestedSize;
-    return returnPtr;
+    void *returnPtr = largerArena->content + largerArena->size;
+    resp.arena = largerArena;
+    resp.ptr = returnPtr;
+    return resp;
 }
 
-void *areanReallocate(Arena *arena, void *oldPtr, size_t oldSize, size_t newSize)
+ArenaAllocateResp areanReallocate(Arena *arena, void *oldPtr, size_t oldSize, size_t newSize)
 {
-    void *newPtr = arenaAllocate(arena, newSize);
-    memcpy(newPtr, oldPtr, oldSize);
-    return newPtr;
+    ArenaAllocateResp resp = arenaAllocate(arena, newSize);
+    if (!resp.ptr)
+    {
+        printf("Error Code: %d\n", errno);
+        perror("*resp.ptr");
+        exit(EXIT_FAILURE);
+    }
+
+    memcpy(resp.ptr, oldPtr, oldSize);
+    return resp;
 }
 
 void freeArena(Arena *arena)
 {
+    if (arena->parent != NULL)
+    {
+        freeArena(arena->parent);
+    }
+
     free(arena->content);
     free(arena);
 }

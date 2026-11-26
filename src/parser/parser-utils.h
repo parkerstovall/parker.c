@@ -3,9 +3,9 @@
 
 #include "parser-structs.h"
 
-void freeHtmlTag(HtmlTag *htmlTag);
-
 void freeParseState(ParseState *parseState, bool freeTag);
+
+void *getPointer(ParseState *parseState, size_t size);
 
 int handleTextNode(ParseState *parseState);
 

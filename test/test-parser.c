@@ -8,7 +8,6 @@
 static char ultra_basic_html[] = "<html></html>";
 static char ultra_basic_html_with_text[] = "<html>Test</html>";
 static char more_complicated_html[] = "<html><a href=\"https://www.example.com\"><i attr1=\"test1\" attr2=\"test2\"></i></a></html>";
-// static char example_com_html[] = "<!doctype html><html lang=\"en\"><head><title>Example Domain</title><link rel=\"icon\" href=\"data:,\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><style>CSS</style></head><body><div><h1>Example Domain</h1><p>This domain is for use in documentation examples without needing permission. Avoid use in operations.</p><p><a href=\"https://iana.org/domains/example\">Learn more</a></p></div></body></html>";
 
 static int getTotalTags(HtmlTag *tag)
 {
@@ -258,6 +257,28 @@ void test_Parser_ScriptAndStyleTagsIgnored(void)
     TEST_ASSERT_EQUAL_INT(expected, tag->children[0]->tagCount);
 }
 
+void test_Parser_InputTag(void)
+{
+    char *html = "<input test=\"123\">";
+    char *expected = "ROOT";
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(expected, tag->tagName, strlen(expected));
+}
+
+void test_Parser_ScriptTagWithCarots(void)
+{
+    char *html = "<script>test<123>test123</script>";
+    int expected = 0;
+    ParseState *parseState = newParseState();
+    parseResponse(html, strlen(html), 1, parseState);
+    HtmlTag *tag = popStack(parseState->htmlTags, false);
+    printf("%d\n", tag->tagCount);
+    TEST_ASSERT_EQUAL_INT(expected, tag->tagCount);
+}
+
 void run_parser_tests()
 {
     RUN_TEST(test_Parser_OneTagExpected);
@@ -281,4 +302,6 @@ void run_parser_tests()
     RUN_TEST(test_Parser_FindsTextNotes);
     RUN_TEST(test_Parser_CanUseEitherSingleOrDoubleQuotesForAttrValues);
     RUN_TEST(test_Parser_ScriptAndStyleTagsIgnored);
+    RUN_TEST(test_Parser_InputTag);
+    RUN_TEST(test_Parser_ScriptTagWithCarots);
 }

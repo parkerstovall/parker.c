@@ -5,9 +5,9 @@
 
 Arena *newArena(size_t capacity);
 
-void *arenaAllocate(Arena *arena, size_t requested);
+ArenaAllocateResp arenaAllocate(Arena *arena, size_t requested);
 
-void *areanReallocate(Arena *arena, void *oldPtr, size_t oldSize, size_t newSize);
+ArenaAllocateResp areanReallocate(Arena *arena, void *oldPtr, size_t oldSize, size_t newSize);
 
 void freeArena(Arena *arena);
 

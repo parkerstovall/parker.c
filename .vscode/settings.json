@@ -1,0 +1,10 @@
+{
+    "makefile.configureOnOpen": false,
+    "unityExplorer.prettyTestCaseRegex": "test_(\\w+)",
+    "unityExplorer.prettyTestFileRegex": "test-(\\w+)",
+    "unityExplorer.testSourceFileRegex": "test-\\w+\\.c",
+    "unityExplorer.testBuildTargetRegex": "test-norun",
+    "unityExplorer.testCaseRegex": "test_(\\w+)",
+    "unityExplorer.testExecutableRegex": "./build/test.out",
+    "unityExplorer.testSourceFolder": "",
+}
