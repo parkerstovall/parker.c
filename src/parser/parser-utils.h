@@ -5,6 +5,8 @@
 
 void freeParseState(ParseState *parseState, bool freeTag);
 
+HtmlTag *peekCurrentTag(ParseState *parseState);
+
 int handleTextNode(ParseState *parseState);
 
 int handleAttributeValue(ParseState *parseState);

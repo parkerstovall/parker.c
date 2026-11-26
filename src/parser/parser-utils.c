@@ -20,6 +20,12 @@ void freeParseState(ParseState *parseState, bool freeTags)
     free(parseState);
 }
 
+HtmlTag *peekCurrentTag(ParseState *parseState)
+{
+    size_t *tagLocation = peekStack(parseState->htmlTags);
+    return parseState->arena->content + *tagLocation;
+}
+
 int handleTextNode(ParseState *parseState)
 {
     // Dont want to add whitespace as text content
@@ -58,7 +64,7 @@ int handleTextNode(ParseState *parseState)
     tag->tagCount = 0;
     tag->tagName = "TEXT";
 
-    HtmlTag *currentTag = peekStack(parseState->htmlTags);
+    HtmlTag *currentTag = peekCurrentTag(parseState);
     if (currentTag->tagCount == 0)
     {
         currentTag->children = arenaAllocate(parseState->arena, sizeof(HtmlTag *));
@@ -108,7 +114,7 @@ int handleTextNode(ParseState *parseState)
 
 int handleAttributeValue(ParseState *parseState)
 {
-    HtmlTag *tag = peekStack(parseState->htmlTags);
+    HtmlTag *tag = peekCurrentTag(parseState);
     HtmlAttribute *attr = tag->attributes[tag->attributeCount - 1];
     attr->attributeValue = arenaAllocate(parseState->arena, sizeof(char) * parseState->currentIndex + 1);
     if (attr->attributeValue == NULL)
@@ -135,7 +141,7 @@ int handleAttributeValue(ParseState *parseState)
 
 int handleNewAttribute(ParseState *parseState)
 {
-    HtmlTag *tag = peekStack(parseState->htmlTags);
+    HtmlTag *tag = peekCurrentTag(parseState);
     if (tag->attributeCount == 0)
     {
         tag->attributes = arenaAllocate(parseState->arena, sizeof(HtmlAttribute *));
@@ -196,6 +202,7 @@ int handleNewAttribute(ParseState *parseState)
 
 int handleNewTag(ParseState *parseState)
 {
+    size_t *tagLocation = &parseState->arena->size;
     HtmlTag *tag = arenaAllocate(parseState->arena, sizeof(HtmlTag));
     if (tag == NULL)
     {
@@ -208,7 +215,7 @@ int handleNewTag(ParseState *parseState)
     tag->tagCount = 0;
     tag->maxSize = 0;
 
-    HtmlTag *currentTag = peekStack(parseState->htmlTags);
+    HtmlTag *currentTag = peekCurrentTag(parseState);
     if (currentTag->tagCount == 0)
     {
         currentTag->children = arenaAllocate(parseState->arena, sizeof(HtmlTag *));
@@ -239,10 +246,13 @@ int handleNewTag(ParseState *parseState)
         }
     }
 
+    printf("Tag Name: %s\n", currentTag->tagName);
+    printf("Tag Count: %d\n", currentTag->tagCount);
+
     currentTag->children[currentTag->tagCount] = tag;
     currentTag->tagCount++;
 
-    pushStack(parseState->htmlTags, tag);
+    pushStack(parseState->htmlTags, tagLocation);
     tag->attributeCount = 0;
     tag->tagName = arenaAllocate(parseState->arena, parseState->currentIndex + 1);
     if (tag->tagName == NULL)

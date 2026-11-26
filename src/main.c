@@ -47,7 +47,7 @@ static void printTags(HtmlTag *tag, int depth)
 
 int main(int argc, char *argv[])
 {
-    char *file_name = "./src/file.html";
+    char *file_name = "/home/parker/repos/parker.c/src/file.html";
     FILE *fptr = fopen(file_name, "r");
     if (fptr == NULL)
     {
@@ -70,7 +70,9 @@ int main(int argc, char *argv[])
     }
 
     printf("%lu\n", parseState->htmlTags->size);
-    HtmlTag *htmlTag = popStack(parseState->htmlTags, false);
+
+    size_t *tagLoc = popStack(parseState->htmlTags, false);
+    HtmlTag *htmlTag = parseState->arena->content + *tagLoc;
     printTags(htmlTag, 0);
 
     freeParseState(parseState, true);
